@@ -25,7 +25,10 @@ namespace Care
             if (status.IsRetweetedStatus == "Visible")
             {
                 model.ForwardItem = new ItemViewModel();
-                model.ForwardItem.Title = status.retweeted_status.text;
+                if (status.retweeted_status.user != null)
+                {
+                    model.ForwardItem.Title = status.retweeted_status.user.name;
+                }
                 model.ForwardItem.Content = status.retweeted_status.text;
                 model.ForwardItem.ImageURL = status.retweeted_status.thumbnail_pic;
                 model.ForwardItem.Time = status.retweeted_status.CreatedAt;

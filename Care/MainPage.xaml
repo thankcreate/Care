@@ -17,7 +17,7 @@
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="StatusTemplateComplex">
-            <Grid Margin="0,3,8,0">
+            <Grid Margin="0,13,8,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -39,28 +39,38 @@
                 </StackPanel>
 
                 <StackPanel x:Name="RightPanel" Grid.Column="1" Grid.Row="0" Margin="0" Orientation="Vertical" d:LayoutOverrides="Height" >
-                    <Grid x:Name="HeaderGrid" Margin="0,0,0,10">
-                        <Grid.Background>
-                            <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
-                        </Grid.Background>
+                    <Grid x:Name="HeaderGrid" Margin="0,0,0,7">
+                        
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="Auto"/>
-                        </Grid.ColumnDefinitions>                        
-                        <TextBlock  x:Name="TitleBlock"   Text="{Binding Title}" TextWrapping="Wrap" FontSize="21.333"/>
-                        
+                        </Grid.ColumnDefinitions>
+                        <TextBlock  x:Name="TitleBlock"   Text="{Binding Title}" TextWrapping="Wrap" FontSize="21.333">
+                            <TextBlock.Foreground>
+    								<SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
+    						</TextBlock.Foreground>
+                        </TextBlock>
                     </Grid>
-                    <TextBlock x:Name="StatusBlock" Text="{Binding Content}" TextWrapping="Wrap" FontSize="21.333" />
-                    <Image x:Name="ThumbImage" Source="{Binding ImageURL}" HorizontalAlignment="Left" Stretch="Uniform" Height="120" Width="120" Visibility="{Binding IsImageExists}" Margin="0,12,0,0" VerticalAlignment="Top"/>
-                    <Border x:Name="RetweetBorder" Margin="0,0,0,0" Padding="8,4" Visibility="{Binding IsForwardItemExists}" CornerRadius="10">
+                    <TextBlock x:Name="StatusBlock" Text="{Binding Content}" TextWrapping="Wrap" FontSize="21.333">
+                        <TextBlock.Foreground>
+    						    <SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
+    					</TextBlock.Foreground>
+                    </TextBlock>
+                    <Border x:Name="ThunmbBorder" BorderThickness="2" Width="122" Height="122" HorizontalAlignment="Left" Visibility="{Binding IsImageExists}"  VerticalAlignment="Top">
+                        <Border.BorderBrush>
+                            <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
+                        </Border.BorderBrush>
+                        <Image x:Name="ThumbImage" Source="{Binding ImageURL}" HorizontalAlignment="Center" Stretch="Uniform" Height="120" Width="120" Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                    </Border>
+                    <Border x:Name="RetweetBorder" Margin="0,4,0,0" Padding="8,4" Visibility="{Binding IsForwardItemExists}" CornerRadius="10">
                         <Border.Background>
-                            <SolidColorBrush Color="{StaticResource PhoneChromeColor}"/>
+                            <SolidColorBrush Color="#FF7C6A68" />
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,10" FontWeight="Bold">
-    							<TextBlock.Foreground>
-    								<SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,10">
+                                <TextBlock.Foreground>
+    								<SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
     							</TextBlock.Foreground>
                             </TextBlock>
                             <TextBlock x:Name="RetweetStatusBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Content}">
@@ -68,16 +78,34 @@
     								<SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
     							</TextBlock.Foreground>
                             </TextBlock>
-                            <Image x:Name="RetweetThumbImage" 
+                            <Border x:Name="ForwardProfileBorder" Visibility="{Binding ForwardItem.IsImageExists}" BorderThickness="2" Width="122" Height="122" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
+                                </Border.BorderBrush>
+                                <Image x:Name="RetweetThumbImage" 
                                    Margin="0,0,0,0" 
                                    Stretch="Uniform" 
                                    Source="{Binding ForwardItem.ImageURL}" 
                                    Visibility="{Binding ForwardItem.IsImageExists}" 
-                                   HorizontalAlignment="Left" 
-                                   VerticalAlignment="Top" 
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
                                    Height="120" Width="120"/>
+                            </Border>
                         </StackPanel>
                     </Border>
+
+
+                    <Grid x:Name="FooterGrid" Margin="0,2,0,0" Grid.Row="1" Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="20" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right">
+    					    <TextBlock.Foreground>
+    						    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+    					    </TextBlock.Foreground>
+                        </TextBlock>
+                    </Grid>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -87,11 +115,13 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
  
         <!--Panorama control-->
-        <controls:Panorama  x:Name="MainPanorama"  Title="Care">
-            <controls:Panorama.Background>
-                <ImageBrush ImageSource="PanoramaBackground.png"/>
-            </controls:Panorama.Background>
- 
+        <controls:Panorama  x:Name="MainPanorama"  Title="Care" Background="Black">
+
+            <controls:Panorama.TitleTemplate>
+                <DataTemplate>
+                    <TextBlock Text="My Title" FontSize="70" Margin="0,80,0,0" FontFamily="Lucida Sans Unicode" />
+                </DataTemplate>
+            </controls:Panorama.TitleTemplate>
             <!--Panorama item one-->
 
             <controls:PanoramaItem  Header="微博">
@@ -101,11 +131,9 @@
                          ItemTemplate="{StaticResource StatusTemplateComplex}" />
                
             </controls:PanoramaItem>
-
+            
             <!--Panorama item two-->
             <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
-
-
             <controls:PanoramaItem Header="博客">
                 <!--Double line list with text wrapping-->
                 <ListBox Margin="0,0,-12,0" ItemsSource="{Binding Items}">
