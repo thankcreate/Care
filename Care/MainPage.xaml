@@ -6,14 +6,20 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="800" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ControlTiltEffect"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768" 
     d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="False" xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps">
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    local:TiltEffect.IsTiltEnabled="True"
+    xmlns:myTilt="clr-namespace:Care"
+    shell:SystemTray.IsVisible="True"
+    toolkit:TiltEffect.IsTiltEnabled="True"
+    xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps">
 
     <phone:PhoneApplicationPage.Resources>
         <DataTemplate x:Key="StatusTemplateComplex">
@@ -63,12 +69,12 @@
                         </Border.BorderBrush>
                         <Image x:Name="ThumbImage" Source="{Binding ImageURL}" HorizontalAlignment="Center" Stretch="Uniform" Height="120" Width="120" Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
                     </Border>
-                    <Border x:Name="RetweetBorder" Margin="0,4,0,0" Padding="8,4" Visibility="{Binding IsForwardItemExists}" CornerRadius="10">
+                    <Border x:Name="RetweetBorder"  Margin="0,4,0,0" Padding="8,4" Visibility="{Binding IsForwardItemExists}" CornerRadius="10">
                         <Border.Background>
                             <SolidColorBrush Color="#FF7C6A68" />
                         </Border.Background>
                         <StackPanel>
-                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,10">
+                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,5">
                                 <TextBlock.Foreground>
     								<SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
     							</TextBlock.Foreground>
@@ -78,7 +84,7 @@
     								<SolidColorBrush Color="{StaticResource PhoneContrastBackgroundColor}"/>
     							</TextBlock.Foreground>
                             </TextBlock>
-                            <Border x:Name="ForwardProfileBorder" Visibility="{Binding ForwardItem.IsImageExists}" BorderThickness="2" Width="122" Height="122" HorizontalAlignment="Left" VerticalAlignment="Top">
+                            <Border x:Name="ForwardProfileBorder" Visibility="{Binding ForwardItem.IsImageExists}" BorderThickness="2" Width="122" Height="122" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,3">
                                 <Border.BorderBrush>
                                     <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
                                 </Border.BorderBrush>
@@ -100,13 +106,15 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="20" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right">
+                        <TextBlock x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="20" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Left">
     					    <TextBlock.Foreground>
     						    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
     					    </TextBlock.Foreground>
                         </TextBlock>
                     </Grid>
+
                 </StackPanel>
+                
             </Grid>
         </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
@@ -119,42 +127,37 @@
 
             <controls:Panorama.TitleTemplate>
                 <DataTemplate>
-                    <TextBlock Text="My Title" FontSize="70" Margin="0,80,0,0" FontFamily="Lucida Sans Unicode" />
+                    <TextBlock Text="我只在乎你" FontSize="70" Margin="0,60,0,0" FontFamily="Lucida Sans Unicode" />
                 </DataTemplate>
             </controls:Panorama.TitleTemplate>
             <!--Panorama item one-->
 
-            <controls:PanoramaItem  Header="微博">
+            
+            <controls:PanoramaItem Margin="0,-20,0,0">
+                <controls:PanoramaItem.Header>
+                    <TextBlock Text="动态" FontSize="60" x:Name="txtDetails" />
+                </controls:PanoramaItem.Header>
                 <!--Double line list with image placeholder and text wrapping-->
-                <ListBox Margin="0,0,-12,0"
+                <ListBox Margin="0,-20,12,0"
                          ItemsSource="{Binding Items}"
-                         ItemTemplate="{StaticResource StatusTemplateComplex}" />
+                         ItemTemplate="{StaticResource StatusTemplateComplex}" Height="639" />
                
             </controls:PanoramaItem>
-            
-            <!--Panorama item two-->
-            <!--Use 'Orientation="Horizontal"' to enable a panel that lays out horizontally-->
-            <controls:PanoramaItem Header="博客">
-                <!--Double line list with text wrapping-->
-                <ListBox Margin="0,0,-12,0" ItemsSource="{Binding Items}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="0,0,0,17" Width="432" Height="78">
-                                <TextBlock Text="{Binding Title}" TextWrapping="Wrap" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-                                <TextBlock Text="{Binding Content}" TextWrapping="Wrap" Margin="12,-6,12,0" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </controls:PanoramaItem >
+        
             <controls:PanoramaItem Header="设置">
                 <Grid></Grid>         
             </controls:PanoramaItem>
 
             <controls:PanoramaItem Header="登陆">
-                <Grid>
-                    <Button Content="新浪微博" Height="72" HorizontalAlignment="Left" Margin="16,15,0,0" Name="button1" VerticalAlignment="Top" Width="160" Click="weiboLogin" />
-                    <Button Content="Button" Height="72" HorizontalAlignment="Left" Margin="65,128,0,0" Name="button2" VerticalAlignment="Top" Width="160" Click="button2_Click" />
+                <Grid TextInput="Grid_TextInput">
+                    <myTilt:TiltableControl>
+                        <toolkit:HubTile Title="新浪微博" IsFrozen="True" Name="123" Message="This is HubTile message!"  Margin="16,14,231,360" DataContext="{Binding}" Source="/Care;component/Images/Node.png"  />
+                        <toolkit:HubTile Title="人人"  x:Name="hubRenren" Margin="213,13,34,361" DataContext="{Binding}" Source="/Care;component/Images/AIM.png" Tap="button2_Click"/>
+                    
+                        
+                        <Button Content="新浪微博" Height="72" HorizontalAlignment="Left" Margin="45,487,0,0" Name="button1" VerticalAlignment="Top" Width="160" Click="WeiboLogin" />
+                        <Button Content="选择朋友" Height="72" HorizontalAlignment="Left" Margin="236,487,0,0" Name="button2" VerticalAlignment="Top" Width="160" Click="chooseSinaWeiboFriend" />
+                    </myTilt:TiltableControl>
                 </Grid>
             </controls:PanoramaItem>
 

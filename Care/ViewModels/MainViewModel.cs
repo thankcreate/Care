@@ -21,12 +21,20 @@ namespace Care
         public MainViewModel()
         {
             this.Items = new ObservableCollection<ItemViewModel>();
+            //this.Friends = new ObservableCollection<User>();
+            this.SinaWeiboAccount = new User();
+            this.IsChanged = true;
         }
 
         /// <summary>
         /// A collection for ItemViewModel objects.
         /// </summary>
         public ObservableCollection<ItemViewModel>  Items { get; private set; }
+        //public ObservableCollection<User> Friends { get; private set; }
+        public User SinaWeiboAccount;
+        public string SinaWeiboCareID;
+
+        public bool IsChanged;
 
         private string _sampleProperty = "Sample Runtime Property Value";
         /// <summary>
@@ -63,6 +71,8 @@ namespace Care
             // Sample data; replace with real data
             this.Items.Add(new ItemViewModel() { Title = "runtime one", Content = "Maecenas praesent accumsan bibendum"});
             this.Items.Add(new ItemViewModel() { Title = "runtime two", Content = "Dictumst eleifend facilisi faucibus"});
+            //this.Friends.Add(new User() { name = "xiechuang", profile_image_url = "love wxh" });
+            //this.Friends.Add(new User() { name = "wuxihui", profile_image_url = "don't love tron T_T" });
            this.IsDataLoaded = true;
         }
 

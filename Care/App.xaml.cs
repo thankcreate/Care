@@ -29,8 +29,7 @@ namespace Care
             {
                 // Delay creation of the view model until necessary
                 if (viewModel == null)
-                    viewModel = new MainViewModel();
-
+                    viewModel = new MainViewModel(); 
                 return viewModel;
             }
         }
