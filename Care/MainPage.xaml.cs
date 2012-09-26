@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,16 +18,15 @@ using Hammock.Web;
 using System.Diagnostics;
 using System.Runtime.Serialization.Json;
 using System.IO.IsolatedStorage;
+using System.Xml;
+using System.ServiceModel.Syndication;
 
 namespace Care
 {
 
-    public class TiltableControl : Grid
-    {
-    }
-
     public partial class MainPage : PhoneApplicationPage
     {
+        DoubanHelper m_doubanHelper;
         // Constructor
         public MainPage()
         {
@@ -36,11 +36,9 @@ namespace Care
 
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
-
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);            
+            m_doubanHelper = new DoubanHelper();
             InitSinaWeiboInfo();
-
-
         }
 
         private void InitSinaWeiboInfo()
@@ -136,17 +134,73 @@ namespace Care
                 NavigationService.GoBack();
             });
         }
-
+        private void Refresh_Click(object sender, EventArgs e)
+        {
+            refreshMainViewModel();
+        }
 
         private void refreshMainViewModel()
+        {
+            refreshNewsPage();
+            // refreshPicturePage();
+        }
+
+        private void refreshNewsPage()
         {
             Microsoft.Phone.Shell.SystemTray.ProgressIndicator = new Microsoft.Phone.Shell.ProgressIndicator();
             Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "数据传输中";
             Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = true;
             Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsVisible = true;
             App.ViewModel.Items.Clear();
+            // 1.Weibo
             refreshModelSinaWeibo();
+            // 2.Rss
+            refreshModelRssFeed();
+
+            //m_doubanHelper.getRequestToken();
+
+
             App.ViewModel.IsChanged = false;
+        }
+
+        private void refreshPicturePage()
+        {
+            App.ViewModel.PictureItems.Clear();
+            App.ViewModel.ListPictureItems.Clear();
+            App.ViewModel.ListPictureItems.AddRange(App.ViewModel.SinaWeiboPicItems);
+            App.ViewModel.ListPictureItems.Sort(
+                delegate(PicureItem a, PicureItem b)
+                {
+                    return (a.TimeObject < b.TimeObject ? 1 : a.TimeObject == b.TimeObject ? 0 : -1);
+                });
+            int count = App.ViewModel.ListPictureItems.Count;
+            if(count < 9)
+            {
+                int remain = 9 - count;
+                for (; remain != 0; --remain)
+                {
+                    App.ViewModel.ListPictureItems.Add(new PicureItem());
+                }
+            }
+            for (int i = 0; i < 9; i++)
+                App.ViewModel.PictureItems.Add(App.ViewModel.ListPictureItems[i]);
+        }
+
+        // Aggregation logic
+        private void refreshViewItems()
+        {
+            App.ViewModel.ListItems.Clear();
+            App.ViewModel.ListItems.AddRange(App.ViewModel.SinaWeiboItems);
+            App.ViewModel.ListItems.AddRange(App.ViewModel.RssItems);
+            App.ViewModel.ListItems.Sort(
+                delegate(ItemViewModel a, ItemViewModel b)
+                {
+                    return (a.TimeObject < b.TimeObject ? 1 : a.TimeObject ==  b.TimeObject ? 0 : -1);
+                }
+                );
+            App.ViewModel.Items.Clear();
+            App.ViewModel.ListItems.ForEach(p => App.ViewModel.Items.Add(p));
+            refreshPicturePage();
         }
 
         // Weibo logic
@@ -211,7 +265,12 @@ namespace Care
         private void LoadSinaWeiboContent()
         {
             if (App.ViewModel.SinaWeiboCareID == null)
+            {
+                MessageBox.Show("尚未设置新浪微博关注对象");
+                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "";
+                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = false;
                 return;
+            }
             // Define a new net engine
             netEngine = new SdkNetEngine();
 
@@ -231,38 +290,54 @@ namespace Care
                     if (response.errCode == SdkErrCode.SUCCESS)
                     {
                         WStatuses statuses = null;
-                        try
+                        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WStatuses));
+                        statuses = ser.ReadObject(response.stream) as WStatuses;
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WStatuses));
-                            statuses = ser.ReadObject(response.stream) as WStatuses;
-                            Deployment.Current.Dispatcher.BeginInvoke(() =>
+                            foreach (WStatus status in statuses.statuses)
                             {
-                                foreach (WStatus status in statuses.statuses)
-                                {
-                                    App.ViewModel.Items.Add(SinaWeiboModelConverter.ConvertSinaWeiboToCommon(status));
-                                }
-                                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "";
-                                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = false;
+                                App.ViewModel.SinaWeiboItems.Add(SinaWeiboModelConverter.ConvertSinaWeiboToCommon(status));
                             }
-
-                            );
+                            Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "";
+                            Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = false;
+                            refreshViewItems();
                         }
-                        catch (Exception)
-                        {
-                            throw;
-                        }
-
+                        );
                     }
                     else
                     {
                         Deployment.Current.Dispatcher.BeginInvoke(() => MessageBox.Show(response.content, response.errCode.ToString(), MessageBoxButton.OK));
+                        Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "";
+                        Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = false;
+                        refreshViewItems();
                     }
                 });
         }
         private void refreshModelRssFeed()
         {
+            string url = "http://blog.sina.com.cn/rss/1713845420.xml";
+            WebClient client = new WebClient();
+            client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+            client.DownloadStringAsync(new Uri(url));
 
         }
+
+        private void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
+        {
+            XmlReader reader = XmlReader.Create(new StringReader(e.Result));
+            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                App.ViewModel.RssItems.Clear();
+                foreach (SyndicationItem item in feed.Items)
+                {
+                    App.ViewModel.RssItems.Add(FeedModelConverter.ConvertFeedToCommon(item));
+                }
+                refreshViewItems();
+            }
+            );
+        }
+
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
@@ -278,5 +353,25 @@ namespace Care
         {
 
         }
+
+
+        private void MainListBoxSelectionChanged(object sender, EventArgs e)
+        {
+            if (MainList.SelectedIndex != 0)
+            {
+                NavigationService.Navigate(new Uri("/RssDetails.xaml?item=" + MainList.SelectedIndex, UriKind.Relative));
+            }
+        }
+
+        private void Test(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/SelectOnly.xaml", UriKind.Relative));
+        }
     }
+
+
+    public class TiltableControl : Grid
+    {
+    }
+
 }

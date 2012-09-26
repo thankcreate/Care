@@ -66,11 +66,11 @@ namespace Care
     public class WStatus
     {
         public string created_at { get; set; }
-        public string CreatedAt
+        public DateTimeOffset CreatedAt
         {
             get
             {
-                return string.IsNullOrEmpty(created_at) ? string.Empty : ExtHelpers.GetTimeFull(created_at);
+                return string.IsNullOrEmpty(created_at) ? new DateTimeOffset() : ExtHelpers.GetSinaTimeFullObject(created_at);
             }
         }
 

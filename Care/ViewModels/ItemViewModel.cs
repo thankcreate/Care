@@ -15,84 +15,23 @@ namespace Care
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
-        private string _lineOne;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
-        public string LineOne
-        {
-            get
-            {
-                return _lineOne;
-            }
-            set
-            {
-                if (value != _lineOne)
-                {
-                    _lineOne = value;
-                    NotifyPropertyChanged("LineOne");
-                }
-            }
-        }
-
-        private string _lineTwo;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
-        public string LineTwo
-        {
-            get
-            {
-                return _lineTwo;
-            }
-            set
-            {
-                if (value != _lineTwo)
-                {
-                    _lineTwo = value;
-                    NotifyPropertyChanged("LineTwo");
-                }
-            }
-        }
-
-        private string _lineThree;
-        /// <summary>
-        /// Sample ViewModel property; this property is used in the view to display its value using a Binding.
-        /// </summary>
-        /// <returns></returns>
-        public string LineThree
-        {
-            get
-            {
-                return _lineThree;
-            }
-            set
-            {
-                if (value != _lineThree)
-                {
-                    _lineThree = value;
-                    NotifyPropertyChanged("LineThree");
-                }
-            }
-        }
-
         public enum EntryType
         {
             SinaWeibo,
-            BlogFeed,
+            Feed,
             Renren,
             Douban,
         };
 
         private string _iconURL;
         private string _imageURL;
+        private DateTimeOffset _timeObject;
         private string _time;
         private EntryType _type;
         private string _content;
         private string _title;
         private string _originalURL;
+        private string _description;
 
 
         public ItemViewModel ForwardItem{ get; set; }
@@ -102,6 +41,14 @@ namespace Care
             get
             {
                 return ForwardItem == null ? "Collapsed" : "Visible";
+            }
+        }
+
+        public string IsContentExists
+        {
+            get
+            {
+                return Content == null ? "Collapsed" : "Visible";
             }
         }
 
@@ -162,12 +109,45 @@ namespace Care
                 }
             }
         }
-
+        
+        public DateTimeOffset TimeObject
+        {
+            get
+            {
+                return _timeObject;
+            }
+            set
+            {
+                if (value != _timeObject)
+                {
+                    _timeObject = value;
+                    NotifyPropertyChanged("TimeObject");
+                }
+            }
+        }
         public string Time
         {
             get
             {
-                return _time;
+                string timePart = ExtHelpers.TimeObjectToString(_timeObject);
+                string fromPart = "";
+                switch (Type)
+                {
+                    case EntryType.Renren:
+                        fromPart = "   来自人人";
+                        break;
+                    case EntryType.Douban:
+                        fromPart = "   来自豆瓣";
+                        break;
+                    case EntryType.SinaWeibo:
+                        fromPart = "   来自新浪微博";
+                        break;
+                    case EntryType.Feed:
+                        fromPart = "   来自RSS订阅";
+                        break;
+                }
+
+                return _time = timePart + fromPart;
             }
             set
             {
@@ -226,6 +206,22 @@ namespace Care
                 {
                     _title = value;
                     NotifyPropertyChanged("Title");
+                }
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                if (value != _description)
+                {
+                    _title = value;
+                    NotifyPropertyChanged("_description");
                 }
             }
         }

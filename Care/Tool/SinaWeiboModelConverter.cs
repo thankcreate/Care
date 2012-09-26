@@ -15,12 +15,14 @@ namespace Care
     {
         public static ItemViewModel ConvertSinaWeiboToCommon(WStatus status)
         {
+            FiltPicture(status);
             ItemViewModel model = new ItemViewModel();
             model.IconURL = status.user.profile_image_url;
             model.Title = status.user.name;
             model.Content = status.text;
             model.ImageURL = status.thumbnail_pic;
-            model.Time = status.CreatedAt;
+            model.TimeObject = status.CreatedAt;
+            model.Type = ItemViewModel.EntryType.SinaWeibo;
 
             if (status.IsRetweetedStatus == "Visible")
             {
@@ -31,9 +33,23 @@ namespace Care
                 }
                 model.ForwardItem.Content = status.retweeted_status.text;
                 model.ForwardItem.ImageURL = status.retweeted_status.thumbnail_pic;
-                model.ForwardItem.Time = status.retweeted_status.CreatedAt;
+                model.ForwardItem.TimeObject = status.retweeted_status.CreatedAt;
             }
             return model;
+        }
+
+        public static void FiltPicture(WStatus status)
+        {
+            if (string.IsNullOrEmpty(status.thumbnail_pic))
+            {
+                return;
+            }
+            PicureItem picItem = new PicureItem();
+            picItem.Url = status.thumbnail_pic;
+            picItem.Title = status.user.name;
+            picItem.Content = status.text;
+            picItem.TimeObject = status.CreatedAt;
+            App.ViewModel.SinaWeiboPicItems.Add(picItem);
         }
     }
 }

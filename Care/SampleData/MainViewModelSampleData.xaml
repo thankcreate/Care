@@ -8,4 +8,9 @@
         <local:ItemViewModel Title="design haha" Content="Maecenas praesent accumsan bibendum" LineThree="Maecenas praesent accumsan bibendum dictumst eleifend facilisi faucibus habitant inceptos interdum lobortis nascetur"/>
         <local:ItemViewModel Title="design hehe" Content="Dictumst eleifend facilisi faucibus" LineThree="Pharetra placerat pulvinar sagittis senectus sociosqu suscipit torquent ultrices vehicula volutpat maecenas praesent"/>
     </local:MainViewModel.Items>
+
+    <local:MainViewModel.PictureItems>
+        <local:PicureItem Title="aa" />
+    </local:MainViewModel.PictureItems>
+    
 </local:MainViewModel>

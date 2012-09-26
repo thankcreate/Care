@@ -23,7 +23,7 @@ namespace Care
             return result;
         }
 
-        public static string GetTimeFull(string sinaFormat)
+        public static string GetSinaTimeFullString(string sinaFormat)
         {
             string result;
             string[] strTemps = sinaFormat.Split(' ');
@@ -31,9 +31,27 @@ namespace Care
             result = String.Join(" ", strTemps);
 
             DateTime dt = DateTime.ParseExact(result, "ddd MMM dd HH:mm:ff zzz yyyy", cInfo);
+            DateTimeOffset of = new DateTimeOffset(dt);
             result = dt.ToString("yy/MM/dd");
             return result;
         }
 
+        public static DateTimeOffset GetSinaTimeFullObject(string sinaFormat)
+        {
+            string result;
+            string[] strTemps = sinaFormat.Split(' ');
+            strTemps[4] = strTemps[4].Substring(0, 3) + ":" + strTemps[4].Substring(3, 2);
+            result = String.Join(" ", strTemps);
+
+            DateTime dt = DateTime.ParseExact(result, "ddd MMM dd HH:mm:ff zzz yyyy", cInfo);
+            DateTimeOffset off = new DateTimeOffset(dt);
+            result = dt.ToString("yy/MM/dd");
+            return off;
+        }
+
+        public static string TimeObjectToString(DateTimeOffset offset)
+        {
+            return offset.LocalDateTime.ToString("yy/MM/dd HH:mm:ff");                
+        }
     }
 }

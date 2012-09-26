@@ -21,20 +21,37 @@ namespace Care
         public MainViewModel()
         {
             this.Items = new ObservableCollection<ItemViewModel>();
-            //this.Friends = new ObservableCollection<User>();
+            this.ListItems = new List<ItemViewModel>();
+            this.SinaWeiboItems = new List<ItemViewModel>();
+            this.RssItems = new List<ItemViewModel>();
+
+            this.PictureItems = new ObservableCollection<PicureItem>();
+            this.ListPictureItems = new List<PicureItem>();
+            this.SinaWeiboPicItems = new List<PicureItem>();
+          
+
+            this.ItemsNeedRefresh = 2;
             this.SinaWeiboAccount = new User();
             this.IsChanged = true;
         }
 
-        /// <summary>
-        /// A collection for ItemViewModel objects.
-        /// </summary>
-        public ObservableCollection<ItemViewModel>  Items { get; private set; }
-        //public ObservableCollection<User> Friends { get; private set; }
+
+        // Main items
+        public ObservableCollection<ItemViewModel> Items { get; private set; }
+        public List<ItemViewModel> ListItems { get; private set; }
+        public List<ItemViewModel> SinaWeiboItems { get; private set; }
+        public List<ItemViewModel> RssItems { get; private set; }
+        public int ItemsNeedRefresh;
         public User SinaWeiboAccount;
         public string SinaWeiboCareID;
 
         public bool IsChanged;
+
+        // Pic items
+        public ObservableCollection<PicureItem> PictureItems { get; private set; }
+        public List<PicureItem> ListPictureItems { get; private set; }
+        public List<PicureItem> SinaWeiboPicItems { get; private set; }
+        public List<PicureItem> RssPicItems { get; private set; }
 
         private string _sampleProperty = "Sample Runtime Property Value";
         /// <summary>
