@@ -11,39 +11,63 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="Red"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" OpacityMask="#FFE51212">
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True" >
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Black">
+    <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Foreground="Black" Text="我只在乎你" Style="{StaticResource PhoneTextNormalStyle}"/>
-
-            <TextBlock x:Name="PageTitle" Foreground="Black" Text="类别过滤" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle"  Text="我只在乎你" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="类别过滤" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Background="Transparent" Grid.Row="1" Margin="12,0,12,0">
-            <toolkit:LoopingSelector x:Name="selector" ItemMargin="2,3,3,2" ItemSize="100,100" BorderBrush="#FFF20C0C" Background="#FF0000F5" />
+        <Grid x:Name="ContentPanel"  Grid.Row="1" Margin="12,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="231*" />
+                <ColumnDefinition Width="225*" />
+            </Grid.ColumnDefinitions>
+            <toolkit:LoopingSelector Grid.Column="0"  x:Name="selectorLeft" ItemMargin="5" ItemSize="200,100" >
+                <toolkit:LoopingSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Border Width="200" Background="#FF4F55D1">
+                                <TextBlock Height="100" FontSize="30"  Name="textBlock" Padding="10,30,0,0" Text="{Binding}" Width="200" Foreground="#FFFFFFFF" />
+                            </Border>
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkit:LoopingSelector.ItemTemplate>
+            </toolkit:LoopingSelector>
+            <toolkit:LoopingSelector Grid.Column="1"  x:Name="selectorRight" ItemMargin="5" ItemSize="200,100" >
+                <toolkit:LoopingSelector.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <Border Width="200" Background="#FF4F55D1">
+                                <TextBlock Height="100" FontSize="30"  Name="textBlock1" Padding="10,30,0,0" Text="{Binding}" Width="200" Foreground="#FFFFFFFF" />
+                            </Border>                           
+                        </StackPanel>
+                    </DataTemplate>
+                </toolkit:LoopingSelector.ItemTemplate>                
+            </toolkit:LoopingSelector>            
         </Grid>
     </Grid>
  
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
+    
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1">
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/confirm.png" Click="Confirm_Click"  Text="确认"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/close.png" Click="Close_Click"  Text="取消"/>
+            <!--<shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
                 <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
+            </shell:ApplicationBar.MenuItems>-->
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

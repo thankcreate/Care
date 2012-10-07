@@ -12,13 +12,15 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using RenrenSDKLibrary;
+using Care.Tool;
 
 namespace Care
 {
     public partial class App : Application
     {
         private static MainViewModel viewModel = null;
-
+        public static RenrenAPI RenrenAPI;
         /// <summary>
         /// A static ViewModel used by the views to bind against.
         /// </summary>
@@ -74,6 +76,13 @@ namespace Care
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            RenrenAPIInit();
+
+        }
+        private void RenrenAPIInit()
+        {            
+            // 三个参数分别是：应用ID， API Key, Secret Key
+            RenrenAPI = new RenrenAPI("214071", "0b434803c2c7435691bd398eaf44d4fc", "172d2ba967924bc9b457983e1dba1127");
         }
 
         // Code to execute when the application is launching (eg, from Start)
@@ -90,6 +99,10 @@ namespace Care
             if (!App.ViewModel.IsDataLoaded)
             {
                 App.ViewModel.LoadData();
+            }
+            if (PreferenceHelper.GetPreference("Global_UsePassword") == "True")
+            {
+
             }
         }
 
@@ -127,22 +140,24 @@ namespace Care
         }
 
 
-        public static string AccessToken
+        public static string SinaWeibo_AccessToken
         {
             get;
             set;
         }
 
-        public static string AccessTokenSecret
+        public static string SinaWeibo_AccessTokenSecret
         {
             get;
             set;
         }
-        public static string RefleshToken
+        public static string SinaWeibo_RefleshToken
         {
             get;
             set;
         }
+
+
 
 
         #region Phone application initialization

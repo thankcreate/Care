@@ -25,6 +25,8 @@
     <SilverlightAppEntry>Care.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.30816.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -48,6 +50,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Coding4Fun.Phone.Controls">
+      <HintPath>dll\Coding4Fun.Phone.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Advertising.Mobile, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.Advertising.Mobile.UI, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.Phone" />
@@ -55,8 +60,17 @@
     <Reference Include="Microsoft.Phone.Controls.Maps, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="RenrenSDKLibrary">
+      <HintPath>dll\RenrenSDKLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="SinaBase">
       <HintPath>dll\SinaBase.dll</HintPath>
+    </Reference>
+    <Reference Include="SLWpVisifire.Charts">
+      <HintPath>dll\SLWpVisifire.Charts.dll</HintPath>
+    </Reference>
+    <Reference Include="SLWpVisifire.Gauges">
+      <HintPath>dll\SLWpVisifire.Gauges.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Device" />
@@ -79,17 +93,56 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataModel\SinaWeibo\ExtHelpers.cs" />
+    <Compile Include="DataModel\Renren\RenrenNews.cs" />
+    <Compile Include="DataModel\Renren\RenrenSearchedMan.cs" />
+    <Compile Include="Tool\ExtHelpers.cs" />
     <Compile Include="DataModel\SinaWeibo\StatusItem.cs" />
     <Compile Include="DoubanHelper\DoubanHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RssDetails.xaml.cs">
+    <Compile Include="Tool\ProgressIndicatorHelper.cs" />
+    <Compile Include="Tool\RefreshViewHelper.cs" />
+    <Compile Include="Tool\RenrenModelConverter.cs" />
+    <Compile Include="Views\Common\ImageView.xaml.cs">
+      <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\CharactorAnalysis.xaml.cs">
+      <DependentUpon>CharactorAnalysis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\LabMainPage.xaml.cs">
+      <DependentUpon>LabMainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\LovePercentage.xaml.cs">
+      <DependentUpon>LovePercentage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\PotentialEnemy.xaml.cs">
+      <DependentUpon>PotentialEnemy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\TimeSpan.xaml.cs">
+      <DependentUpon>TimeSpan.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Rss\RssDetails.xaml.cs">
       <DependentUpon>RssDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SelectSinaFollower.xaml.cs">
+    <Compile Include="Tool\PreferenceHelper.cs" />
+    <Compile Include="Views\Password\EditPassWord.xaml.cs">
+      <DependentUpon>EditPassWord.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Password\PassWord.xaml.cs">
+      <DependentUpon>PassWord.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Renren\RenrenAccount.xaml.cs">
+      <DependentUpon>RenrenAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Rss\RssAcount.xaml.cs">
+      <DependentUpon>RssAcount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Renren\SelectRenrenFollower.xaml.cs">
+      <DependentUpon>SelectRenrenFollower.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SinaWeibo\SelectSinaFollower.xaml.cs">
       <DependentUpon>SelectSinaFollower.xaml</DependentUpon>
     </Compile>
     <Compile Include="TiltEffect.cs" />
@@ -103,8 +156,12 @@
     <Compile Include="ViewModels\LoopingDataSourceBase .cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PicureItem.cs" />
+    <Compile Include="Views\Loop.cs" />
     <Compile Include="Views\SelectOnly.xaml.cs">
       <DependentUpon>SelectOnly.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SinaWeibo\SinaAcount.xaml.cs">
+      <DependentUpon>SinaAcount.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -112,6 +169,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Resource Include="CustomTheme\CustomThemeResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="CustomTheme\CustomThemeStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -120,7 +187,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignData>
-    <Page Include="RssDetails.xaml">
+    <Page Include="Views\Common\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\CharactorAnalysis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\LabMainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\LovePercentage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\PotentialEnemy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\TimeSpan.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Rss\RssDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,7 +219,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SelectSinaFollower.xaml">
+    <Page Include="Views\Password\EditPassWord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Password\PassWord.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Renren\RenrenAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Rss\RssAcount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Renren\SelectRenrenFollower.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SinaWeibo\SelectSinaFollower.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -136,10 +247,16 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SinaWeibo\SinaAcount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -154,15 +271,47 @@
     <Resource Include="Images\RSS feeds.png" />
     <Resource Include="Images\Shape-Heart.png" />
     <Resource Include="Images\Tape Recorder.png" />
+    <Resource Include="Images\Account\RenrenLogo_Gray.PNG" />
+    <Resource Include="Images\Account\RssLogo_Blue.PNG" />
+    <Resource Include="Images\Account\SinaLogo_Yellow.png" />
+    <Resource Include="Images\Account\Douban.png" />
+    <Resource Include="Images\Background\sea.jpg" />
+    <Resource Include="Images\Background\pagebackground.jpg" />
+    <Resource Include="Images\Background\PanoramaBackground.png" />
+    <Resource Include="Images\Background\cloud.png" />
+    <Resource Include="Images\Background\bk.PNG" />
+    <Content Include="Images\Bar\close.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\confirm.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\Help.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\list.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\microscope.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\next.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\previous.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\Bar\refresh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\tt.png" />
     <Resource Include="Images\Heart2.png" />
+    <Resource Include="Images\PasswordPage.PNG" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataModel\RSS\" />
+    <Folder Include="Resource\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

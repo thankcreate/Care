@@ -10,7 +10,7 @@
     </local:MainViewModel.Items>
 
     <local:MainViewModel.PictureItems>
-        <local:PicureItem Title="aa" />
+        <local:PictureItem Title="aa" />
     </local:MainViewModel.PictureItems>
     
 </local:MainViewModel>

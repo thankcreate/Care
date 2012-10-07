@@ -8,6 +8,12 @@
 
     <!--Application Resources-->
     <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="CustomTheme/CustomThemeResources.xaml"/>
+                <ResourceDictionary Source="CustomTheme/CustomThemeStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

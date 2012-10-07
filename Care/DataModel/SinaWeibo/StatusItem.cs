@@ -144,5 +144,8 @@ namespace Care
     public class Friends
     {
         public User[] users { get; set; }
+        public string next_cursor { get; set; }
+        public string previous_cursor { get; set; }
+        public string total_number { get; set; }
     }
 }

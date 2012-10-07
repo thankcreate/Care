@@ -44,7 +44,7 @@ namespace Care
             {
                 return;
             }
-            PicureItem picItem = new PicureItem();
+            PictureItem picItem = new PictureItem();
             picItem.Url = status.thumbnail_pic;
             picItem.Title = status.user.name;
             picItem.Content = status.text;
