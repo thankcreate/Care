@@ -283,5 +283,10 @@ namespace Care
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public void test()
+        {
+            NotifyPropertyChanged("UsingPassword");
+        }
     }
 }

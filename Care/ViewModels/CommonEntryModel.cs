@@ -9,11 +9,11 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace Care.ViewModels
+namespace Care
 {
     public enum EntryType{
         SinaWeibo,
-        BlogFeed,
+        Feed,
         Renren,
         Douban,
     };

@@ -102,11 +102,15 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tool\PictureMap.cs" />
     <Compile Include="Tool\ProgressIndicatorHelper.cs" />
     <Compile Include="Tool\RefreshViewHelper.cs" />
-    <Compile Include="Tool\RenrenModelConverter.cs" />
+    <Compile Include="Tool\Converter\RenrenModelConverter.cs" />
     <Compile Include="Views\Common\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Common\StatuesView.xaml.cs">
+      <DependentUpon>StatuesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Lab\CharactorAnalysis.xaml.cs">
       <DependentUpon>CharactorAnalysis.xaml</DependentUpon>
@@ -146,10 +150,10 @@
       <DependentUpon>SelectSinaFollower.xaml</DependentUpon>
     </Compile>
     <Compile Include="TiltEffect.cs" />
-    <Compile Include="Tool\FeedModelConverter.cs" />
+    <Compile Include="Tool\Converter\FeedModelConverter.cs" />
     <Compile Include="Tool\JSONConvert.cs" />
     <Compile Include="Tool\OAuthBase.cs" />
-    <Compile Include="Tool\SinaWeiboModelConverter.cs" />
+    <Compile Include="Tool\Converter\SinaWeiboModelConverter.cs" />
     <Compile Include="ViewModels\CommonEntryList.cs" />
     <Compile Include="ViewModels\CommonEntryModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
@@ -188,6 +192,10 @@
       <SubType>Designer</SubType>
     </DesignData>
     <Page Include="Views\Common\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Common\StatuesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -280,6 +288,8 @@
     <Resource Include="Images\Background\PanoramaBackground.png" />
     <Resource Include="Images\Background\cloud.png" />
     <Resource Include="Images\Background\bk.PNG" />
+    <Resource Include="Images\Background\StatusViewBkg.PNG" />
+    <Resource Include="Images\Background\RssViewBkg.png" />
     <Content Include="Images\Bar\close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -307,6 +317,13 @@
     <Resource Include="Images\tt.png" />
     <Resource Include="Images\Heart2.png" />
     <Resource Include="Images\PasswordPage.PNG" />
+    <Content Include="Images\Bar\reply.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Bar\share.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\Thumb\rss.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

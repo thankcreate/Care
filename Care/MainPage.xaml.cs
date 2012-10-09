@@ -30,6 +30,7 @@ namespace Care
 
     public partial class MainPage : PhoneApplicationPage
     {
+        
         DoubanHelper m_doubanHelper;
         ProgressIndicatorHelper m_progressIndicatorHelper;
         bool m_bIsNavigateFromSelectPage;
@@ -38,14 +39,13 @@ namespace Care
 
         // Constructor
         public MainPage()
-        {
-
+        {            
             m_bIsNavigateFromSelectPage = false;
 
             TiltEffect.TiltableItems.Add(typeof(TiltableControl));
 
             InitializeComponent();
-
+            
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
@@ -81,6 +81,7 @@ namespace Care
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            toggleUsePassword.IsChecked = App.ViewModel.UsingPassword == "True" ? true : false;
             string value = string.Empty;
             IDictionary<string, string> queryString = this.NavigationContext.QueryString;
             string showType = "";
@@ -468,6 +469,7 @@ namespace Care
         private void refreshModelRssFeed()
         {
             string url = "http://blog.sina.com.cn/rss/1713845420.xml";
+            //string url = "http://www.thankcreate.com/feed";
             WebClient client = new WebClient();
             client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
             client.DownloadStringAsync(new Uri(url));
@@ -522,12 +524,16 @@ namespace Care
 
         private void MainListBoxSelectionChanged(object sender, EventArgs e)
         {
-            if (MainList.SelectedIndex != 0)
+            if (MainList.SelectedIndex != -1)
             {
                 ItemViewModel item = App.ViewModel.Items[MainList.SelectedIndex];
-                if (item.Type == ItemViewModel.EntryType.Feed)
+                if (item.Type == EntryType.Feed)
                 {
-                    NavigationService.Navigate(new Uri("/Views/Rss/RssDetails.xaml?item=" + MainList.SelectedIndex, UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Views/Rss/RssDetails.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
+                }
+                if (item.Type == EntryType.SinaWeibo)
+                {
+                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
             }
         }
@@ -566,6 +572,54 @@ namespace Care
         private void RenrenAcount_Click(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Renren/RenrenAccount.xaml", UriKind.Relative));
+        }
+
+        private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (sender == hub0)
+            {
+                NavigateImageView(0);
+            }
+            if (sender == hub1)
+            {
+                NavigateImageView(1);
+            }
+            if (sender == hub2)
+            {
+                NavigateImageView(2);
+            }
+            if (sender == hub3)
+            {
+                NavigateImageView(3);
+            }
+            if (sender == hub4)
+            {
+                NavigateImageView(4);
+            }
+            if (sender == hub5)
+            {
+                NavigateImageView(5);
+            }
+            if (sender == hub6)
+            {
+                NavigateImageView(6);
+            }
+            if (sender == hub7)
+            {
+                NavigateImageView(7);
+            }
+            if (sender == hub8)
+            {
+                NavigateImageView(8);
+            } 
+        }
+
+        private void NavigateImageView(int index)
+        {
+            StringBuilder url = new StringBuilder();
+            url.Append("/Views/Common/ImageView.xaml");
+            url.AppendFormat("?Index={0}", index);
+            NavigationService.Navigate(new Uri(url.ToString(), UriKind.Relative));
         }
     }
 

@@ -17,6 +17,9 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     local:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
     toolkit:TiltEffect.IsTiltEnabled="True"
     >
 
@@ -338,7 +341,7 @@
         </Grid.Background>
         
         <!--Panorama control-->
-        <controls:Panorama  x:Name="MainPanorama"  Title="Care"  Foreground="#FF4F55D1">
+        <controls:Panorama Margin="0,18,0,0"  x:Name="MainPanorama"  Title="Care"  Foreground="#FF4F55D1">
             <controls:Panorama.Background>
                 <ImageBrush ImageSource="Images/Background/cloud.png"/>
             </controls:Panorama.Background>
@@ -374,31 +377,31 @@
                 </controls:PanoramaItem.Header>
                 <Grid Margin="0,-20,0,0">
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem0.Title}"  x:Name="hub0" Message="{Binding PictureItem0.Content}"  Margin="11,-9,404,360" DataContext="{Binding}" Source="{Binding PictureItem0.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem0.IsImageExists}"  />
+                        <toolkit:HubTile Tap="Image_Tap"  Title="{Binding PictureItem0.Title}"  x:Name="hub0" Message="{Binding PictureItem0.Content}"  Margin="11,-9,404,360" DataContext="{Binding}" Source="{Binding PictureItem0.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem0.IsImageExists}"  />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem1.Title}"  x:Name="hub1" Message="{Binding PictureItem1.Content}"  Margin="198,-8,217,359" DataContext="{Binding}" Source="{Binding PictureItem1.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem1.IsImageExists}"  />
+                        <toolkit:HubTile Tap="Image_Tap" Title="{Binding PictureItem1.Title}"  x:Name="hub1" Message="{Binding PictureItem1.Content}"  Margin="198,-8,217,359" DataContext="{Binding}" Source="{Binding PictureItem1.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem1.IsImageExists}"  />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem2.Title}"  x:Name="hub2" Message="{Binding PictureItem2.Content}"  Margin="386,-8,29,359" DataContext="{Binding}" Source="{Binding PictureItem2.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem2.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Title="{Binding PictureItem2.Title}"  x:Name="hub2" Message="{Binding PictureItem2.Content}"  Margin="386,-8,29,359" DataContext="{Binding}" Source="{Binding PictureItem2.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem2.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem3.Title}"  x:Name="hub3" Message="{Binding PictureItem3.Content}"  Margin="11,180,404,171" DataContext="{Binding}" Source="{Binding PictureItem3.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem3.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Title="{Binding PictureItem3.Title}"  x:Name="hub3" Message="{Binding PictureItem3.Content}"  Margin="11,180,404,171" DataContext="{Binding}" Source="{Binding PictureItem3.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem3.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem4.Title}"  x:Name="hub4" Message="{Binding PictureItem4.Content}"  Margin="198,180,217,168" DataContext="{Binding}" Source="{Binding PictureItem4.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem4.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Title="{Binding PictureItem4.Title}"  x:Name="hub4" Message="{Binding PictureItem4.Content}"  Margin="198,180,217,168" DataContext="{Binding}" Source="{Binding PictureItem4.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem4.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Title="{Binding PictureItem5.Title}"  x:Name="hub5" Message="{Binding PictureItem5.Content}"  Margin="386,180,29,171" DataContext="{Binding}" Source="{Binding PictureItem5.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem5.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Title="{Binding PictureItem5.Title}"  x:Name="hub5" Message="{Binding PictureItem5.Content}"  Margin="386,180,29,171" DataContext="{Binding}" Source="{Binding PictureItem5.Url}" Height="180" Background="#FF4F55D1" Visibility="{Binding PictureItem5.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="9,367,406,-16" Message="{Binding PictureItem6.Content}" x:Name="hubTile1" Source="{Binding PictureItem6.Url}" Title="{Binding PictureItem6.Title}" Visibility="{Binding PictureItem6.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="9,367,406,-16" Message="{Binding PictureItem6.Content}" x:Name="hub6" Source="{Binding PictureItem6.Url}" Title="{Binding PictureItem6.Title}" Visibility="{Binding PictureItem6.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="198,367,215,-16" Message="{Binding PictureItem7.Content}" x:Name="hubTile2" Source="{Binding PictureItem7.Url}" Title="{Binding PictureItem7.Title}" Visibility="{Binding PictureItem7.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="198,367,215,-16" Message="{Binding PictureItem7.Content}" x:Name="hub7" Source="{Binding PictureItem7.Url}" Title="{Binding PictureItem7.Title}" Visibility="{Binding PictureItem7.IsImageExists}" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <toolkit:HubTile Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="386,367,29,-18" Message="{Binding PictureItem8.Content}" x:Name="hubTile3" Source="{Binding PictureItem8.Url}" Title="{Binding PictureItem8.Title}" Visibility="{Binding PictureItem8.IsImageExists}" />
+                        <toolkit:HubTile Tap="Image_Tap" Background="#FF4F55D1" DataContext="{Binding}" Height="180" Margin="386,367,29,-18" Message="{Binding PictureItem8.Content}" x:Name="hub8" Source="{Binding PictureItem8.Url}" Title="{Binding PictureItem8.Title}" Visibility="{Binding PictureItem8.IsImageExists}" />
                     </myTilt:TiltableControl>
                 </Grid>
             </controls:PanoramaItem>

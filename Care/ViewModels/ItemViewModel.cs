@@ -15,20 +15,17 @@ namespace Care
 {
     public class ItemViewModel : INotifyPropertyChanged
     {
-        public enum EntryType
-        {
-            SinaWeibo,
-            Feed,
-            Renren,
-            Douban,
-        };
 
         private string _iconURL;
         private string _imageURL;
+        private string _midImageURL;
+        private string _fullImageURL;
+
         private DateTimeOffset _timeObject;
         private string _time;
         private EntryType _type;
         private string _content;
+        private string _rssSummary;
         private string _title;
         private string _originalURL;
         private string _description;
@@ -92,7 +89,37 @@ namespace Care
             }
         }
 
-      
+        public string MidImageURL
+        {
+            get
+            {
+                return _midImageURL;
+            }
+            set
+            {
+                if (value != _midImageURL)
+                {
+                    _midImageURL = value;
+                    NotifyPropertyChanged("MidImageURL");
+                }
+            }
+        }
+
+        public string FullImageURL
+        {
+            get
+            {
+                return _fullImageURL;
+            }
+            set
+            {
+                if (value != _fullImageURL)
+                {
+                    _fullImageURL = value;
+                    NotifyPropertyChanged("FullImageURL");
+                }
+            }
+        }
 
         public EntryType Type
         {
@@ -175,6 +202,21 @@ namespace Care
             }
         }
 
+        public string RssSummary
+        {
+            get
+            {
+                return _rssSummary;
+            }
+            set
+            {
+                if (value != _rssSummary)
+                {
+                    _rssSummary = value;
+                    NotifyPropertyChanged("RssSummary");
+                }
+            }
+        }
 
 
         public string OriginalURL
