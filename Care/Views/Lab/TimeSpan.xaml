@@ -1,0 +1,58 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.Lab.TimeSpan"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <vc:Chart xmlns:vc="clr-namespace:Visifire.Charts;assembly=SLWpVisifire.Charts"
+                  Padding="2,2,2,0" BorderThickness="0" LightingEnabled="False" Background="Black">
+
+                <!--<vc:Chart.Titles>
+                    <vc:Title Text="Athens 2004 Olympics"/>
+                </vc:Chart.Titles>-->
+
+                <vc:Chart.AxesY>
+                    <vc:Axis AxisMinimum="0" AxisMaximum="50" Title="发贴数"/>
+                </vc:Chart.AxesY>
+
+                <vc:Chart.Series>
+                    <vc:DataSeries RenderAs="Column" LightingEnabled="true" LabelEnabled="True">
+                        <vc:DataSeries.DataPoints>
+                            <vc:DataPoint AxisXLabel="8-12" YValue="50"/>
+                            <vc:DataPoint AxisXLabel="12-18" YValue="35"/>
+                            <vc:DataPoint AxisXLabel="18-24" YValue="27"/>
+                            <vc:DataPoint AxisXLabel="0-8" YValue="17"/>
+                   
+                        </vc:DataSeries.DataPoints>
+                    </vc:DataSeries>
+                </vc:Chart.Series>
+            </vc:Chart>
+        </Grid>
+  
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

@@ -1,0 +1,55 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.RenrenAccount"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="帐号设置" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="人人网" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock Foreground="#FF0087FF" Height="30" FontSize="25"  HorizontalAlignment="Left" Margin="130,24,0,0" Name="textBlock1" Text="当前帐号:" VerticalAlignment="Top" />
+            <TextBlock Foreground="#FF000000" Height="30" FontSize="22"  HorizontalAlignment="Left" Margin="130,64,0,0" Name="textCurrentAccount" Text="{Binding CurrentNickName}" VerticalAlignment="Top" Width="220" />
+            <Button Content="登陆" Height="82" HorizontalAlignment="Left" Margin="19,274,0,0" Name="btnLogin" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnLogin_Click"  />
+            <Button Content="退出登陆" Height="82" HorizontalAlignment="Left" Margin="19,361,0,0" Name="btnExitLogin" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnExitLogin_Click" />
+            <Button Content="指定关注对象" Height="82" HorizontalAlignment="Left" Margin="19,449,0,0" Name="btnSetFollower" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnSetFollower_Click" />
+            <TextBlock FontSize="25" Foreground="#FF0087FF" Height="30" HorizontalAlignment="Left" Margin="130,122,0,0" Name="textBlock2" Text="当前关注人:" VerticalAlignment="Top" />
+            <TextBlock FontSize="22" Foreground="#FF000000" Height="30" HorizontalAlignment="Left" Margin="130,158,0,0" Name="textCurrentFollower" Text="{Binding FollowerNickName}" VerticalAlignment="Top" Width="220" />
+            <Image Height="75" Source="{Binding CurrentAvatar}"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="imageMy" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+            <Image Height="75" Source="{Binding FollowerAvatar}" HorizontalAlignment="Left" Margin="30,122,0,0" Name="imageFollower" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

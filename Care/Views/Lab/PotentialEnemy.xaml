@@ -1,0 +1,46 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.Lab.PotentialEnemy"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <Grid x:Name="ContentPaneEnemy" Background="Transparent" Margin="0,10,0,0">
+        <vc:Chart xmlns:vc="clr-namespace:Visifire.Charts;assembly=SLWpVisifire.Charts"
+                  LightingEnabled="False" View3D="true" BorderThickness="0" Padding="2,2,2,0">
+
+            <vc:Chart.AxesX>
+                <vc:Axis>
+                    <vc:Axis.Grids>
+                        <vc:ChartGrid LineThickness="0.25"/>
+                    </vc:Axis.Grids>
+                </vc:Axis>
+            </vc:Chart.AxesX>
+
+            <vc:Chart.AxesY>
+                <vc:Axis Title="可能性"/>
+            </vc:Chart.AxesY>
+
+            <vc:Chart.Series>
+                <vc:DataSeries LegendText="2006" RenderAs="Bubble" ZValueFormatString="#0.##" 
+                               ToolTipText="Production: #YValue, Reserves: #ZValue" >
+                    <vc:DataSeries.DataPoints>
+                        <vc:DataPoint AxisXLabel="陈曦骏" YValue="10.2" ZValue="130"/>
+                        <vc:DataPoint AxisXLabel="王开豪" YValue="9.1" ZValue="110"/>
+                        <vc:DataPoint AxisXLabel="龚小聪" YValue="8.4" ZValue="80"/>
+                        <vc:DataPoint AxisXLabel="陈圆" YValue="4.2" ZValue="132"/>
+                    </vc:DataSeries.DataPoints>
+                </vc:DataSeries>
+            </vc:Chart.Series>
+        </vc:Chart>
+    </Grid>
+
+</phone:PhoneApplicationPage>
