@@ -536,6 +536,8 @@ namespace Care
                     NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
             }
+
+            MainList.SelectedIndex = -1;
         }
 
         private void Test(object sender, RoutedEventArgs e)
