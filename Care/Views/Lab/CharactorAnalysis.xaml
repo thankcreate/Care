@@ -32,13 +32,11 @@
             <vc:Chart.Series>
                 <vc:DataSeries RenderAs="Radar">
                     <vc:DataSeries.DataPoints>
-                        <vc:DataPoint AxisXLabel="萝莉" YValue="20"/>
-                        <vc:DataPoint AxisXLabel="女王" YValue="18"/>
-                        <vc:DataPoint AxisXLabel="无口" YValue="22"/>
-                        <vc:DataPoint AxisXLabel="天然呆" YValue="20"/>
-                        <vc:DataPoint AxisXLabel="御姐" YValue="25"/>
-                        <vc:DataPoint AxisXLabel="吃货" YValue="22"/>
-                        <vc:DataPoint AxisXLabel="伪娘" YValue="20"/>
+                        <vc:DataPoint AxisXLabel="萝莉" YValue="{Binding Value1}"/>
+                        <vc:DataPoint AxisXLabel="女王" YValue="{Binding Value2}"/>
+                        <vc:DataPoint AxisXLabel="天然呆" YValue="{Binding Value3}"/>
+                        <vc:DataPoint AxisXLabel="吃货" YValue="{Binding Value4}"/>
+                        <vc:DataPoint AxisXLabel="伪娘" YValue="{Binding Value5}"/>
                     </vc:DataSeries.DataPoints>
                 </vc:DataSeries>
             </vc:Chart.Series>

@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Threading;
 using Microsoft.Phone.Controls;
-
+using System.Threading;
 using System.Diagnostics;
 
 namespace Care.Tool
@@ -30,14 +30,17 @@ namespace Care.Tool
         // 此函数应在UI线程执行
         public void PushTask()
         {
-            Interlocked.Increment(ref m_nTaskInProcess);
-            // 如果是第一个任务，作更新加载条的操作
-            if (m_nTaskInProcess == 1)
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                m_progressIndicator.Text = "数据传输中";
-                m_progressIndicator.IsIndeterminate = true;                
-                m_progressIndicator.IsVisible = true;
-            }
+                Interlocked.Increment(ref m_nTaskInProcess);
+                // 如果是第一个任务，作更新加载条的操作
+                if (m_nTaskInProcess == 1)
+                {
+                    m_progressIndicator.Text = "数据传输中";
+                    m_progressIndicator.IsIndeterminate = true;
+                    m_progressIndicator.IsVisible = true;
+                }
+            });
         }
 
         // 此函数应在UI线程执行
@@ -50,19 +53,22 @@ namespace Care.Tool
         // 此函数应在UI线程执行 ，哈哈哈....我为什么要笑呢？
         public void PopTask()
         {
-            if (m_nTaskInProcess == 0)
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
-                return;
-            }
-            Interlocked.Decrement(ref m_nTaskInProcess);
-            // 写你妹注释！
-            if(m_nTaskInProcess == 0)
-            {
-                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.Text = "";
-                Microsoft.Phone.Shell.SystemTray.ProgressIndicator.IsIndeterminate = false;
-                m_delAllTaskCompleCallback();
-                
-            }
+                if (m_nTaskInProcess == 0)
+                {
+                    return;
+                }
+                Interlocked.Decrement(ref m_nTaskInProcess);
+                // 写你妹注释！
+                if (m_nTaskInProcess == 0)
+                {
+                    m_progressIndicator.Text = "";
+                    m_progressIndicator.IsIndeterminate = false;
+                    m_delAllTaskCompleCallback();
+
+                }
+            });
         }
 
         public void PopTask(String id)

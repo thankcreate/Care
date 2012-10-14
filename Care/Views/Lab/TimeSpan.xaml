@@ -25,22 +25,22 @@
                 </vc:Chart.Titles>-->
 
                 <vc:Chart.AxesY>
-                    <vc:Axis AxisMinimum="0" AxisMaximum="50" Title="发贴数"/>
+                <vc:Axis AxisMinimum="0" AxisMaximum="{Binding Max}" Title="发贴数"/>
                 </vc:Chart.AxesY>
 
                 <vc:Chart.Series>
                     <vc:DataSeries RenderAs="Column" LightingEnabled="true" LabelEnabled="True">
                         <vc:DataSeries.DataPoints>
-                            <vc:DataPoint AxisXLabel="8-12" YValue="50"/>
-                            <vc:DataPoint AxisXLabel="12-18" YValue="35"/>
-                            <vc:DataPoint AxisXLabel="18-24" YValue="27"/>
-                            <vc:DataPoint AxisXLabel="0-8" YValue="17"/>
+                        <vc:DataPoint AxisXLabel="8-12" YValue="{Binding Para1}"/>
+                        <vc:DataPoint AxisXLabel="12-18" YValue="{Binding Para2}"/>
+                        <vc:DataPoint AxisXLabel="18-24" YValue="{Binding Para3}"/>
+                        <vc:DataPoint AxisXLabel="0-8" YValue="{Binding Para4}"/>
                    
                         </vc:DataSeries.DataPoints>
                     </vc:DataSeries>
                 </vc:Chart.Series>
             </vc:Chart>
-        </Grid>
+    </Grid>
   
  
     <!--Sample code showing usage of ApplicationBar-->

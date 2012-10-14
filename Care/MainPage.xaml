@@ -78,6 +78,7 @@
                             <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
                         </Border.BorderBrush>
                         <Canvas Margin="0">
+                            <Image x:Name="default1" Source="/Care;component/Images/Thumb/Cheeky.png" Height="56" Width="56" Canvas.Left="2" Canvas.Top="2"/>
                             <Image x:Name="ProfileImage" Source="{Binding IconURL}" Height="56" Width="56" Canvas.Left="2" Canvas.Top="2"/>
                         </Canvas>
                     </Border>
@@ -98,7 +99,9 @@
                         <Border.BorderBrush>
                             <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
                         </Border.BorderBrush>
-                        <Image x:Name="ThumbImage" Source="{Binding ImageURL}" HorizontalAlignment="Center" Stretch="Uniform" Height="120" Width="120" Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                        <Canvas>                          
+                            <Image x:Name="ThumbImage" Source="{Binding ImageURL}" HorizontalAlignment="Center" Stretch="Uniform" Height="120" Width="120" Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                        </Canvas>
                     </Border>
                     <c4fToolkit:ChatBubble Background="#FFFFD8D8"  ChatBubbleDirection="UpperLeft" Visibility="{Binding IsForwardItemExists}" Margin="0,4,0,0" Padding="8,4"> 
                         
@@ -111,14 +114,16 @@
                                 <Border.BorderBrush>
                                     <SolidColorBrush Color="#FF323B32" Opacity="0.5" />
                                 </Border.BorderBrush>
-                                <Image x:Name="RetweetThumbImage" 
-                                   Margin="0,0,0,0" 
-                                   Stretch="Uniform" 
-                                   Source="{Binding ForwardItem.ImageURL}" 
-                                   Visibility="{Binding ForwardItem.IsImageExists}" 
-                                   HorizontalAlignment="Center" 
-                                   VerticalAlignment="Center" 
-                                   Height="120" Width="120"/>
+                                <Canvas Margin="0">                                
+                                    <Image x:Name="RetweetThumbImage" 
+                                       Margin="0,0,0,0" 
+                                       Stretch="Uniform" 
+                                       Source="{Binding ForwardItem.ImageURL}" 
+                                       Visibility="{Binding ForwardItem.IsImageExists}" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       Height="120" Width="120"/>
+                                 </Canvas >
                             </Border>
                         </StackPanel>
                     <!--</Border>-->
@@ -416,9 +421,7 @@
                             <Grid>
                                 <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleUsePassword"  Content="{Binding UsingPasswordText}"  IsChecked="{Binding UsingPassword, Mode=OneWay}" Header="使用密码" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black"  Click="toggleUsePassword_Click" />                                   
                             </Grid>
-                            <Grid>
-                                <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggle"  Content="开"  IsChecked="True" Header="使用密码" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black" />
-                            </Grid>
+
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -442,9 +445,7 @@
                     <myTilt:TiltableControl>
                         <Image x:Name="RenrenAccount" Width="180" Height="180" Source="/Care;component/Images/Account/RenrenLogo_Gray.png" Margin="216,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="RenrenAcount_Click"  />
                     </myTilt:TiltableControl>
-                    <myTilt:TiltableControl>
-                        <Button Content="Test" Height="74" HorizontalAlignment="Left" Margin="35,422,0,0" x:Name="button1" VerticalAlignment="Top" Width="160" Click="Test" Background="#FF0087FF" />
-                    </myTilt:TiltableControl>
+                    
                 </Grid>
             </controls:PanoramaItem>
 

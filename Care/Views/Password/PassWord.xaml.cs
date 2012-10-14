@@ -41,6 +41,7 @@ namespace Care.Views
         }
         public PassWord()
         {
+            App.NeedChangeStartPage = false;
             DataContext = this;
             IsDeletePasswordPage = false;
             RealPassWord = PreferenceHelper.GetPreference("Global_Password");            
@@ -72,6 +73,7 @@ namespace Care.Views
         {
             if(RealPassWord == InputPassWord)
             {
+                // 如果本页的目标是为了删除密码
                 if (IsDeletePasswordPage)
                 {
                     App.ViewModel.UsingPassword = "False";

@@ -14,6 +14,9 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     local:TiltEffect.IsTiltEnabled="True"   
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -24,7 +27,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,28">
             <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="新浪微博" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="关注对象" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
@@ -40,7 +43,7 @@
                 <Button  Margin="-25,0,0,0"  local:TiltEffect.SuppressTilt="True" Foreground="#FF4F55D1" Content="指定朋友" Click="Search_Click"></Button>
             </StackPanel>
 
-            <ListBox x:Name="ResultListBox"  Grid.Row="1" Grid.Column="0" Margin="0,0,0,0" ItemsSource="{Binding Friends}" Padding="0,0,0,0" SelectionChanged="ListSelectionChanged">
+            <ListBox x:Name="ResultListBox"  Grid.Row="1" Grid.Column="0" Margin="12,0,0,0" ItemsSource="{Binding Friends}" Padding="0,0,0,0" SelectionChanged="ListSelectionChanged">
                 <ListBox.ItemTemplate >
                     <DataTemplate>
                         <Grid x:Name="FriendItem"   Margin="0,0,0,12">
@@ -58,7 +61,8 @@
                                     <Border.BorderBrush>
                                         <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
                                     </Border.BorderBrush>
-                                    <Canvas Margin="0">
+                                    <Canvas Margin="0">                                        
+                                        <Image x:Name="default" Source="/Care;component/Images/Thumb/Cheeky.png" Height="70" Width="70" Canvas.Left="2" Canvas.Top="2"/>
                                         <Image x:Name="ProfileImage" Source="{Binding profile_image_url}" Height="70" Width="70" Canvas.Left="2" Canvas.Top="2"/>
                                     </Canvas>
                                 </Border>

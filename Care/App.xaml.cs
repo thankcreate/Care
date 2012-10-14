@@ -19,8 +19,12 @@ namespace Care
 {
     public partial class App : Application
     {
+        public static int Test1 = 0;
+        public static int Test2 = 0;
+        public static int Test3 = 0;
         private static MainViewModel viewModel = null;
         public static RenrenAPI RenrenAPI;
+        public static bool NeedChangeStartPage = true;
         /// <summary>
         /// A static ViewModel used by the views to bind against.
         /// </summary>
@@ -77,8 +81,39 @@ namespace Care
             }
 
             RenrenAPIInit();
+            // 启动页相关
+            RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
 
         }
+
+        private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            // 如果不是到MainPage页，或者现在根本就不是启动过程中，就不管
+            // 因我我们只想在启动过程中将转向MainPage的请求重定向到PassWord页
+            // NeedChangeStartPage被初始化为True
+            // 只要加载了任何一个页面就会被更改为False
+            // 目前可能作为启动页的有Password.xaml和MainPage.xaml
+            
+            if (e.Uri.ToString().Contains("/MainPage.xaml") != true || !NeedChangeStartPage)
+                return;
+            NeedChangeStartPage = false;
+            // 如果是到MainPage的话：
+            bool needPassWord = PreferenceHelper.GetPreference("Global_UsePassword") == "True";
+            e.Cancel = true;
+            RootFrame.Dispatcher.BeginInvoke(delegate
+            {
+                if (needPassWord)
+                {
+                    RootFrame.Navigate(new Uri("/Views/Password/PassWord.xaml", UriKind.Relative));
+                }                   
+                else
+                {
+                    RootFrame.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                    
+                }
+            });
+        }
+
         private void RenrenAPIInit()
         {            
             // 三个参数分别是：应用ID， API Key, Secret Key

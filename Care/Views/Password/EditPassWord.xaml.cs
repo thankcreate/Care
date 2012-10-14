@@ -104,6 +104,7 @@ namespace Care.Views
                 return;
             }
             PreferenceHelper.SetPreference("Global_Password", txtNew.Text);
+            PreferenceHelper.SetPreference("Global_UsePassword", "True");
             // refresh the butotn state
             App.ViewModel.UsingPassword = "True";
             NavigationService.GoBack();            

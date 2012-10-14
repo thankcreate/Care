@@ -45,9 +45,13 @@ namespace Care.Views
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtName.Text))
+            {
+                return;
+            }
             List<APIParameter> param = new List<APIParameter>();
             param.Add(new APIParameter("method", "friends.search"));
-            param.Add(new APIParameter("name", "佳琦"));
+            param.Add(new APIParameter("name", txtName.Text));
             App.RenrenAPI.RequestAPIInterface(SearchCallback, param);
             m_progressIndicatorHelper.PushTask();
         }

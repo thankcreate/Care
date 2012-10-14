@@ -11,6 +11,9 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+     shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -21,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,28">
             <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="帐号设置" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="人人网" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
@@ -35,7 +38,9 @@
             <Button Content="指定关注对象" Height="82" HorizontalAlignment="Left" Margin="19,449,0,0" Name="btnSetFollower" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnSetFollower_Click" />
             <TextBlock FontSize="25" Foreground="#FF0087FF" Height="30" HorizontalAlignment="Left" Margin="130,122,0,0" Name="textBlock2" Text="当前关注人:" VerticalAlignment="Top" />
             <TextBlock FontSize="22" Foreground="#FF000000" Height="30" HorizontalAlignment="Left" Margin="130,158,0,0" Name="textCurrentFollower" Text="{Binding FollowerNickName}" VerticalAlignment="Top" Width="220" />
-            <Image Height="75" Source="{Binding CurrentAvatar}"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="imageMy" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+            <Image Height="75" Source="/Care;component/Images/Thumb/Cheeky.png"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="default1" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+            <Image Height="75" Source="{Binding CurrentAvatar}"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="imageMy" Stretch="Fill" VerticalAlignment="Top" Width="75"  />
+            <Image Height="75" Source="/Care;component/Images/Thumb/Cheeky.png" HorizontalAlignment="Left" Margin="30,122,0,0" Name="defaul2" Stretch="Fill" VerticalAlignment="Top" Width="75" />
             <Image Height="75" Source="{Binding FollowerAvatar}" HorizontalAlignment="Left" Margin="30,122,0,0" Name="imageFollower" Stretch="Fill" VerticalAlignment="Top" Width="75" />
         </Grid>
     </Grid>

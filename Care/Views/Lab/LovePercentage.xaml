@@ -21,7 +21,7 @@
             </vg:Gauge.CircularScales>
 
             <vg:Gauge.Indicators>
-                <vg:NeedleIndicator Value="0"/>
+                <vg:NeedleIndicator Value="{Binding Value1}"/>
             </vg:Gauge.Indicators>
 
         </vg:Gauge>

@@ -15,7 +15,7 @@ using System.ComponentModel;
 using Care.Tool;
 using System.ServiceModel.Syndication;
 using System.Xml;
-
+using System.Text.RegularExpressions;
 
 namespace Care.Views
 {
@@ -75,6 +75,12 @@ namespace Care.Views
             MessageBox.Show("RSS是一种同步网站内容的格式。\n在地址框中输入其RSS地址，可以订阅其博客更新");
         }
 
+        private void Confirm_Click(object sender, EventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+        }
+        
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void NotifyPropertyChanged(String propertyName)
         {
@@ -88,11 +94,25 @@ namespace Care.Views
         private void UpdatePath_Click(object sender, RoutedEventArgs e)
         {
             // TODO: 改掉这个写死的URL
-            string url = "http://blog.sina.com.cn/rss/1713845420.xml";
-            PreferenceHelper.SetPreference("RSS_FollowerPath", url); 
-            WebClient client = new WebClient();
-            client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
-            client.DownloadStringAsync(new Uri(url));
+            //string url = "http://blog.sina.com.cn/rss/1713845420.xml";
+            //PreferenceHelper.SetPreference("RSS_FollowerPath", url); 
+            //WebClient client = new WebClient();
+            //client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+            //client.DownloadStringAsync(new Uri(url));
+            String text = textSitePath.Text;
+            if (text.StartsWith("http"))
+            {
+                PreferenceHelper.SetPreference("RSS_FollowerPath", text);
+                WebClient client = new WebClient();
+                client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
+                client.DownloadStringAsync(new Uri(text));
+            }
+            else
+            {
+                string url = "/Views/Rss/RssSearch.xaml?Key=";
+                url += text;
+                NavigationService.Navigate(new Uri(url, UriKind.Relative));
+            }            
         }
 
         private void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
@@ -106,6 +126,6 @@ namespace Care.Views
                 PreferenceHelper.SetPreference("RSS_FollowerSite", FollowerSiteName);  
             }            
             );
-        }
+        }      
     }
 }

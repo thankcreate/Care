@@ -17,7 +17,7 @@ using Hammock.Web;
 using System.Runtime.Serialization.Json;
 using System.IO.IsolatedStorage;
 using Care.Tool;
- 
+using System.Collections;
 
 namespace Care
 {
@@ -26,6 +26,8 @@ namespace Care
         private int m_nPrevois = -1;
         private int m_nNext = -1;
         private int m_nTotalNumber = -1;
+        private List<int> m_listPrevios;
+        private int m_nCurrentIndex = 0;
 
         public ObservableCollection<User> Friends { get; private set; }
 
@@ -33,6 +35,8 @@ namespace Care
 
         public SelectSinaFollower()
         {
+            m_listPrevios = new List<int>();
+
             Friends = new ObservableCollection<User>();
             InitializeComponent();
             DataContext = this;
@@ -43,7 +47,7 @@ namespace Care
         {
             Microsoft.Phone.Shell.SystemTray.ProgressIndicator = new Microsoft.Phone.Shell.ProgressIndicator();
             m_progressIndicatorHelper = new ProgressIndicatorHelper(Microsoft.Phone.Shell.SystemTray.ProgressIndicator, () => { });
-            m_progressIndicatorHelper.PushTask();
+            
             GetFriendList(-1);
         }
 
@@ -54,6 +58,7 @@ namespace Care
 
         private void GetFriendList(int cursor)
         {
+            m_progressIndicatorHelper.PushTask();
             if (string.IsNullOrEmpty(App.ViewModel.SinaWeiboAccount.id))
                 return;
             // Define a new net engine
@@ -84,6 +89,15 @@ namespace Care
                         DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Friends));
                         friends = ser.ReadObject(response.stream) as Friends;
                         m_nPrevois = int.Parse(friends.previous_cursor);
+                        if (m_nCurrentIndex > m_listPrevios.Count - 1)
+                        {
+                            m_listPrevios.Add(m_nPrevois);
+                        }
+                        else
+                        {
+                            m_listPrevios[m_nCurrentIndex] = m_nPrevois;
+                        }                      
+
                         m_nNext = int.Parse(friends.next_cursor);
                         m_nTotalNumber = int.Parse(friends.total_number);
                         
@@ -95,7 +109,9 @@ namespace Care
                             {
                                 //App.ViewModel.Friends.Add(friend);
                                 Friends.Add(friend);
-                            }                            
+                            }     
+                            ScrollViewer v = VisualTreeHelper.GetChild(this.ResultListBox, 0) as ScrollViewer;
+                            v.ScrollToVerticalOffset(0);                            
                         }
                         );
                     }
@@ -181,6 +197,7 @@ namespace Care
             User item = Friends[index];
             PreferenceHelper.SetPreference("SinaWeibo_FollowerID", item.id);
             PreferenceHelper.SetPreference("SinaWeibo_FollowerNickName", item.name);
+            PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar", item.profile_image_url);
             PreferenceHelper.SavePreference();
             NavigationService.Navigate(new Uri("/Views/SinaWeibo/SinaAcount.xaml", UriKind.Relative));
         }
@@ -196,7 +213,8 @@ namespace Care
                 MessageBox.Show("已经是第一页");
                 return;
             }
-            GetFriendList(m_nPrevois);
+            m_nCurrentIndex -= 1;
+            GetFriendList(m_listPrevios[m_nCurrentIndex]);
         }
 
         private void Next_Click(object sender, EventArgs e)
@@ -210,6 +228,7 @@ namespace Care
                 MessageBox.Show("已经是最后一页");
                 return;
             }
+            m_nCurrentIndex += 1;
             GetFriendList(m_nNext);
         }
 

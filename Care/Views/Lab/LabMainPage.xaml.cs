@@ -27,7 +27,7 @@ namespace Care.Views.Lab
                 // Content loaded already
                 return;
             }
-
+            
             Pivot pivot = (Pivot)sender;
 
             if (e.Item == pivot.Items[0])

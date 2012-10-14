@@ -39,7 +39,8 @@ namespace Care
 
         // Constructor
         public MainPage()
-        {            
+        {
+            App.NeedChangeStartPage = false;
             m_bIsNavigateFromSelectPage = false;
 
             TiltEffect.TiltableItems.Add(typeof(TiltableControl));
@@ -51,6 +52,25 @@ namespace Care
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);
             m_doubanHelper = new DoubanHelper();
             InitSinaWeiboInfo();
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("确定退出程序？", "提示", MessageBoxButton.OKCancel);
+            // 如果确实退出, 则清空back stack，退出
+            if (result == MessageBoxResult.OK)
+            {
+                while (NavigationService.BackStack.Any())
+                {
+                    NavigationService.RemoveBackEntry();
+                }
+                // 因为这里本质上是通过抛异常退出的，所以应该提前收尾
+                // 比如保存本地存储
+                PreferenceHelper.SavePreference();
+                NavigationService.GoBack();
+            }
+            // 否则取消退出过程
+            e.Cancel = true;            
         }
 
         private void InitSinaWeiboInfo()
@@ -189,7 +209,7 @@ namespace Care
 
         private void Microscope_Click(object sender, EventArgs e)
         {
-            NavigationService.Navigate(new Uri("/Views/Lab/LabMainPage.xaml", UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/Lab/LabPage.xaml", UriKind.Relative));
         }
 
         private void refreshMainViewModel()
@@ -462,7 +482,6 @@ namespace Care
                             MessageBox.Show(response.content, response.errCode.ToString(), MessageBoxButton.OK);
                             m_progressIndicatorHelper.PopTask();
                         });
-
                     }
                 });
         }
@@ -622,6 +641,11 @@ namespace Care
             url.Append("/Views/Common/ImageView.xaml");
             url.AppendFormat("?Index={0}", index);
             NavigationService.Navigate(new Uri(url.ToString(), UriKind.Relative));
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Lab/Test/TimeSpanWrapper.xaml", UriKind.Relative));
         }
     }
 

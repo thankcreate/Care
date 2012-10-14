@@ -28,7 +28,7 @@
 
         <Grid >
             <Rectangle VerticalAlignment="top" HorizontalAlignment="Left"  RadiusX="10" RadiusY="10" Height="130" Width="130" Margin="317,115,0,0" Fill="#FFd5bdaa"  />
-            <Image Source="http://tp1.sinaimg.cn/1713845420/180/39998655596/0"  Height="110" HorizontalAlignment="Left" Margin="327,126,0,0" Name="headIcon" Stretch="Fill" VerticalAlignment="Top" Width="110" />
+            <Image Source="{Binding IconURL}"  Height="110" HorizontalAlignment="Left" Margin="327,126,0,0" Name="headIcon" Stretch="Fill" VerticalAlignment="Top" Width="110" />
             <TextBlock MaxWidth="300"  VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="24" Foreground="#FF4F55D1"  Text="{Binding Title}" Margin="12,200,0,9" Height="auto" />
         </Grid>
         <!--ContentPanel - place additional content here-->

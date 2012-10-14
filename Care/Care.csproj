@@ -104,27 +104,54 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tool\Fetcher\AllFetcher.cs" />
+    <Compile Include="Tool\Fetcher\BaseFetcher.cs" />
+    <Compile Include="Tool\Fetcher\SinaWeiboFetcher.cs" />
+    <Compile Include="Tool\MiscTool.cs" />
     <Compile Include="Tool\PictureMap.cs" />
     <Compile Include="Tool\ProgressIndicatorHelper.cs" />
     <Compile Include="Tool\RefreshViewHelper.cs" />
     <Compile Include="Tool\Converter\RenrenModelConverter.cs" />
+    <Compile Include="Tool\TaskHelper.cs" />
+    <Compile Include="ViewModels\RssSiteItem.cs" />
     <Compile Include="Views\Common\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Common\StatuesView.xaml.cs">
       <DependentUpon>StatuesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Guide\GuidePage.xaml.cs">
+      <DependentUpon>GuidePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\Ad.xaml.cs">
+      <DependentUpon>Ad.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Lab\CharactorAnalysis.xaml.cs">
       <DependentUpon>CharactorAnalysis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\CharactorAnalysisWrapper.xaml.cs">
+      <DependentUpon>CharactorAnalysisWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Lab\LabMainPage.xaml.cs">
       <DependentUpon>LabMainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Lab\LabPage.xaml.cs">
+      <DependentUpon>LabPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Lab\LovePercentage.xaml.cs">
       <DependentUpon>LovePercentage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Lab\LovePercentageWrapper.xaml.cs">
+      <DependentUpon>LovePercentageWrapper.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Lab\PotentialEnemy.xaml.cs">
       <DependentUpon>PotentialEnemy.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\PotentialEnemyWrapper.xaml.cs">
+      <DependentUpon>PotentialEnemyWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\TimeSpanWrapper.xaml.cs">
+      <DependentUpon>TimeSpanWrapper.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Lab\TimeSpan.xaml.cs">
       <DependentUpon>TimeSpan.xaml</DependentUpon>
@@ -148,6 +175,9 @@
     <Compile Include="Views\Renren\SelectRenrenFollower.xaml.cs">
       <DependentUpon>SelectRenrenFollower.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Rss\RssSearch.xaml.cs">
+      <DependentUpon>RssSearch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SinaWeibo\SelectSinaFollower.xaml.cs">
       <DependentUpon>SelectSinaFollower.xaml</DependentUpon>
     </Compile>
@@ -162,7 +192,6 @@
     <Compile Include="ViewModels\LoopingDataSourceBase .cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\PicureItem.cs" />
-    <Compile Include="Views\Loop.cs" />
     <Compile Include="Views\SelectOnly.xaml.cs">
       <DependentUpon>SelectOnly.xaml</DependentUpon>
     </Compile>
@@ -201,7 +230,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Guide\GuidePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\Ad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Lab\CharactorAnalysis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\CharactorAnalysisWrapper.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -209,11 +250,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Lab\LabPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Lab\LovePercentage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Lab\LovePercentageWrapper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Lab\PotentialEnemy.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\PotentialEnemyWrapper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\TimeSpanWrapper.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -246,6 +303,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Renren\SelectRenrenFollower.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Rss\RssSearch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -326,11 +387,19 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\Thumb\rss.png" />
+    <Resource Include="Images\Lab\BarChart.png" />
+    <Resource Include="Images\Lab\Cat.png" />
+    <Resource Include="Images\Lab\FlowChart.png" />
+    <Resource Include="Images\Lab\Girl.png" />
+    <Resource Include="Images\Lab\PieChart.png" />
+    <Resource Include="Images\Lab\Spy.png" />
+    <Resource Include="Images\Thumb\Cheeky.png" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataModel\RSS\" />
     <Folder Include="Resource\" />
+    <Folder Include="Views\Lab\Test\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

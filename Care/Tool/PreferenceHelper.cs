@@ -57,7 +57,9 @@ namespace Care.Tool
             RemovePreference("SinaWeibo_ID");
             RemovePreference("SinaWeibo_FollowerID");
             RemovePreference("SinaWeibo_FollowerNickName");
-            RemovePreference("SinaWeibo_Token");            
+            RemovePreference("SinaWeibo_Token");
+            RemovePreference("SinaWeibo_Avatar");
+            RemovePreference("SinaWeibo_FollowerAvatar"); 
         }
 
         public static void RemoveRenrenPreference()
@@ -67,6 +69,8 @@ namespace Care.Tool
             RemovePreference("Renren_FollowerID");
             RemovePreference("Renren_FollowerNickName");
             RemovePreference("Renren_Token");
+            RemovePreference("Renren_Avatar");
+            RemovePreference("Renren_FollowerAvatar");
         }
 
         public static void RemovePasswordPreference()

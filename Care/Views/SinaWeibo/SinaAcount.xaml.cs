@@ -38,7 +38,19 @@ namespace Care.Views
             }
         }
 
-
+        public String _CurrentAvatar = "";
+        public String CurrentAvatar
+        {
+            get
+            {
+                return _CurrentAvatar;
+            }
+            set
+            {
+                _CurrentAvatar = value;
+                NotifyPropertyChanged("CurrentAvatar");
+            }
+        }
 
         public String _FollowerNickName;
         public String FollowerNickName
@@ -53,11 +65,25 @@ namespace Care.Views
                 NotifyPropertyChanged("FollowerNickName");
             }
         }
-
+        public String _FollowerAvatar = "";
+        public String FollowerAvatar
+        {
+            get
+            {
+                return _FollowerAvatar;
+            }
+            set
+            {
+                _FollowerAvatar = value;
+                NotifyPropertyChanged("FollowerAvatar");
+            }
+        }
         public SinaAcount()
         {
             CurrentNickName = PreferenceHelper.GetPreference("SinaWeibo_NickName");
             FollowerNickName = PreferenceHelper.GetPreference("SinaWeibo_FollowerNickName");
+            CurrentAvatar = PreferenceHelper.GetPreference("SinaWeibo_Avatar");
+            FollowerAvatar = PreferenceHelper.GetPreference("SinaWeibo_FollowerAvatar");
             if (string.IsNullOrEmpty(CurrentNickName))
             {
                 CurrentNickName = "未登陆";
@@ -213,9 +239,9 @@ namespace Care.Views
                 {
                     User user = null;
                     DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(User));
-                    user = ser.ReadObject(e1.stream) as User;
-                    String nickName = user.screen_name;
-                    PreferenceHelper.SetPreference("SinaWeibo_NickName", nickName);
+                    user = ser.ReadObject(e1.stream) as User;                    
+                    PreferenceHelper.SetPreference("SinaWeibo_NickName", user.screen_name);
+                    PreferenceHelper.SetPreference("SinaWeibo_Avatar", user.profile_image_url);
                     // 设置显示当前用户昵称的UI
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
@@ -232,10 +258,17 @@ namespace Care.Views
             PreferenceHelper.RemoveSinaWeiboPreference();
             CurrentNickName = "未登陆";
             FollowerNickName = "未关注";
+            CurrentAvatar = "";
+            FollowerAvatar = "";
         }
 
         private void btnSetFollower_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
+            {
+                MessageBox.Show("请先登陆新浪帐号 -_-#");
+                return;
+            }
             NavigationService.Navigate(new Uri("/Views/SinaWeibo/SelectSinaFollower.xaml", UriKind.Relative));            
         }
 

@@ -11,6 +11,9 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+        shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -21,18 +24,19 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,28">
             <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="帐号设置" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="RSS订阅" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock Foreground="#FF0087FF"  FontSize="25" HorizontalAlignment="Left" Margin="29,6,0,499" Name="textBlock1" Text="当前关注站点：" />
-            <TextBlock FontSize="22" Foreground="#FF000000"  Text="{Binding FollowerSiteName}" Height="30" HorizontalAlignment="Left" Margin="29,0,0,464" Name="siteName"  VerticalAlignment="Bottom" />
-            <TextBlock Foreground="#FF0087FF" FontSize="25" Height="30" HorizontalAlignment="Left" Margin="29,87,0,0" Name="textBlock3" Text="当前关注地址：" VerticalAlignment="Top" />
-            <TextBox Text="{Binding FollowerSitePath}"  Height="72" HorizontalAlignment="Left" Margin="13,112,0,0" Name="textSitePath"  VerticalAlignment="Top" Width="349" />
-            <Button Content="更新" Height="72" HorizontalAlignment="Left" Margin="348,111,0,0" Name="btnUpdatePath" VerticalAlignment="Top" Width="102" Click="UpdatePath_Click" />
+            <TextBlock Foreground="#FF0087FF"  FontSize="25" HorizontalAlignment="Left" Margin="29,6,0,482" Name="textBlock1" Text="当前关注站点名：" />
+            <TextBlock Height="30" FontSize="22" Foreground="Black"  HorizontalAlignment="Left" Margin="29,42,0,0" Name="siteName" Text="{Binding FollowerSiteName}" VerticalAlignment="Top" />
+            <TextBlock Foreground="#FF0087FF" FontSize="25" Height="30" HorizontalAlignment="Left" Margin="29,76,0,0" Name="textBlock3" Text="确定关注地址：" VerticalAlignment="Top" />
+            <TextBox Text="{Binding FollowerSitePath}"  Height="72" HorizontalAlignment="Left" Margin="13,108,0,0" Name="textSitePath"  VerticalAlignment="Top" Width="362"/>
+            <Button Content="确定" Height="72" HorizontalAlignment="Left" Margin="348,108,0,0" Name="btnUpdatePath" VerticalAlignment="Top" Width="102" Click="UpdatePath_Click" />
+            <TextBlock FontSize="20" Foreground="Gray" Height="131" HorizontalAlignment="Left" Margin="29,186,0,0" Name="textBlock2" TextWrapping="Wrap"  Text="可从别处复制相应站点的RSS地址到此， 也可在此输入站点名进行查询" VerticalAlignment="Top" Width="371" />
             
         </Grid>
     </Grid>
@@ -41,12 +45,12 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1">
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/Help.png" Text="如何指定" Click="Help_Click" />
-            
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/confirm.png" Click="Confirm_Click"  Text="确认"/>
+
             <!--<shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
                 <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
             </shell:ApplicationBar.MenuItems>-->
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>
-
+    </phone:PhoneApplicationPage.ApplicationBar>    
 </phone:PhoneApplicationPage>

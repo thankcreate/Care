@@ -167,5 +167,10 @@ namespace Care.Views
             }
         }
         #endregion  
+
+        private void Fail(object sender, ExceptionRoutedEventArgs e)
+        {
+            int a = 1;
+        }
     }
 }

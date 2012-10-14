@@ -25,18 +25,17 @@
                 </vc:Axis>
             </vc:Chart.AxesX>
 
-            <vc:Chart.AxesY>
+            <!--<vc:Chart.AxesY>
                 <vc:Axis Title="可能性"/>
-            </vc:Chart.AxesY>
+            </vc:Chart.AxesY>-->
 
             <vc:Chart.Series>
                 <vc:DataSeries LegendText="2006" RenderAs="Bubble" ZValueFormatString="#0.##" 
-                               ToolTipText="Production: #YValue, Reserves: #ZValue" >
+                               ToolTipText="最近评论次数: #YValue" >
                     <vc:DataSeries.DataPoints>
-                        <vc:DataPoint AxisXLabel="陈曦骏" YValue="10.2" ZValue="130"/>
-                        <vc:DataPoint AxisXLabel="王开豪" YValue="9.1" ZValue="110"/>
-                        <vc:DataPoint AxisXLabel="龚小聪" YValue="8.4" ZValue="80"/>
-                        <vc:DataPoint AxisXLabel="陈圆" YValue="4.2" ZValue="132"/>
+                        <vc:DataPoint AxisXLabel="{Binding Name2}" YValue="{Binding Value2}" ZValue="{Binding Value2}"/>
+                        <vc:DataPoint AxisXLabel="{Binding Name1}" YValue="{Binding Value1}" ZValue="{Binding Value1}"/>
+                        <vc:DataPoint AxisXLabel="{Binding Name3}" YValue="{Binding Value3}" ZValue="{Binding Value3}"/>                       
                     </vc:DataSeries.DataPoints>
                 </vc:DataSeries>
             </vc:Chart.Series>

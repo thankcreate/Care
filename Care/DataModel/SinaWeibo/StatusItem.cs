@@ -148,4 +148,25 @@ namespace Care
         public string previous_cursor { get; set; }
         public string total_number { get; set; }
     }
+
+    public class Comments
+    {
+        public Comment[] comments { get; set; }
+
+        //先不管下面的，目前用不着
+        //public string previous_cursor { get; set; }
+        //public string next_cursor { get; set; }
+        //public string total_number { get; set; }
+    }
+
+    public class Comment
+    {
+        public string created_at { get; set; }
+        public string id { get; set; }
+        public string text { get; set; }
+        public string source { get; set; }
+        public string mid { get; set; }
+        public User user { get; set; }
+        public WStatus status { get; set; }
+    }
 }

@@ -15,6 +15,9 @@
     xmlns:local="clr-namespace:ControlTiltEffect"
     local:TiltEffect.IsTiltEnabled="True"
     toolkit:TiltEffect.IsTiltEnabled="True"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
     shell:SystemTray.IsVisible="True">
 
     <phone:PhoneApplicationPage.Resources>
@@ -80,20 +83,25 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,28">
             <TextBlock  Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="帐号设置" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock  Foreground="#FF4F55D1" x:Name="PageTitle" Text="新浪微博" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBlock Foreground="#FF0087FF" Height="30" FontSize="25"  HorizontalAlignment="Left" Margin="30,24,0,0" Name="textBlock1" Text="当前帐号:" VerticalAlignment="Top" />
-            <TextBlock Foreground="#FF000000" Height="30" FontSize="22"  HorizontalAlignment="Left" Margin="30,64,0,0" Name="textCurrentAccount" Text="{Binding CurrentNickName}" VerticalAlignment="Top" Width="320" />
+            <TextBlock Foreground="#FF0087FF" Height="30" FontSize="25"  HorizontalAlignment="Left" Margin="130,24,0,0" Name="textBlock1" Text="当前帐号:" VerticalAlignment="Top" />
+            <TextBlock Foreground="#FF000000" Height="30" FontSize="22"  HorizontalAlignment="Left" Margin="130,64,0,0" Name="textCurrentAccount" Text="{Binding CurrentNickName}" VerticalAlignment="Top" Width="320" />
             <Button Content="登陆" Height="82" HorizontalAlignment="Left" Margin="19,274,0,0" Name="btnLogin" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnLogin_Click"  />
             <Button Content="退出登陆" Height="82" HorizontalAlignment="Left" Margin="19,361,0,0" Name="btnExitLogin" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnExitLogin_Click" />
             <Button Content="指定关注对象" Height="82" HorizontalAlignment="Left" Margin="19,449,0,0" Name="btnSetFollower" VerticalAlignment="Top" Width="404" BorderBrush="Black" Click="btnSetFollower_Click" />
-            <TextBlock FontSize="25" Foreground="#FF0087FF" Height="30" HorizontalAlignment="Left" Margin="30,119,0,0" Name="textBlock2" Text="当前关注人:" VerticalAlignment="Top" />
-            <TextBlock FontSize="22" Foreground="#FF000000" Height="30" HorizontalAlignment="Left" Margin="30,158,0,0" Name="textCurrentFollower" Text="{Binding FollowerNickName}" VerticalAlignment="Top" Width="320" />
+            <TextBlock FontSize="25" Foreground="#FF0087FF" Height="30" HorizontalAlignment="Left" Margin="130,119,0,0" Name="textBlock2" Text="当前关注人:" VerticalAlignment="Top" />
+            <TextBlock FontSize="22" Foreground="#FF000000" Height="30" HorizontalAlignment="Left" Margin="130,158,0,0" Name="textCurrentFollower" Text="{Binding FollowerNickName}" VerticalAlignment="Top" Width="320" />
+            <Image Height="75" Source="/Care;component/Images/Thumb/Cheeky.png"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="default1" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+            <Image Height="75" Source="{Binding CurrentAvatar}"  HorizontalAlignment="Left" Margin="30,27,0,0" Name="imageMy" Stretch="Fill" VerticalAlignment="Top" Width="75"  />
+            <Image Height="75" Source="/Care;component/Images/Thumb/Cheeky.png" HorizontalAlignment="Left" Margin="30,122,0,0" Name="defaul2" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+            <Image Height="75" Source="{Binding FollowerAvatar}" HorizontalAlignment="Left" Margin="30,122,0,0" Name="imageFollower" Stretch="Fill" VerticalAlignment="Top" Width="75" />
+
         </Grid>
     </Grid>
  
