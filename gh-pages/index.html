@@ -1,0 +1,284 @@
+<!-- saved from url=(0050)http://172.22.171.196:8080/testcase/FileEntry.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=GBK">  
+        <script>
+            function errorHandler(e){
+                var msg = '';
+
+                switch (e.code) {
+                    case FileError.QUOTA_EXCEEDED_ERR:
+                    msg = 'QUOTA_EXCEEDED_ERR';
+                    break;
+                    case FileError.NOT_FOUND_ERR:
+                    msg = 'NOT_FOUND_ERR';
+                    break;
+                    case FileError.SECURITY_ERR:
+                    msg = 'SECURITY_ERR';
+                    break;
+                    case FileError.INVALID_MODIFICATION_ERR:
+                    msg = 'INVALID_MODIFICATION_ERR';
+                    break;
+                    case FileError.INVALID_STATE_ERR:
+                    msg = 'INVALID_STATE_ERR';
+                    break;
+                    default:
+                    msg = e.code;
+                    break;
+                };
+                alert(msg);
+            }
+            function onInitFs(fs){
+                var e = fs.root;
+/*
+                e.getMetadata(function(m){
+                    alert("first time");
+                }, errorHandler);
+*/
+                e.getDirectory("test", {
+                    create : true
+                    }, function(e) {
+                        e.getMetadata(function(m){
+                        alert("yes");
+                    }, errorHandler);
+                }, errorHandler);
+            }
+
+            function requestException(){
+                if (window.webkitRequestFileSystem) {
+                    window.webkitRequestFileSystem(2, 0 ,onInitFs,errorHandler);
+                } 
+                else {
+                    window.requestFileSystem(window.PERSISTENT, 1024*1024, onInitFs, errorHandler);
+                }
+            }
+
+            function readClick(){
+                if (window.webkitRequestFileSystem) {
+                    window.webkitRequestFileSystem(window.TEMPORARY, 0 ,onInitFs,errorHandler);
+                } 
+                else {
+                    window.requestFileSystem(window.PERSISTENT, 1024*1024, onInitFs, errorHandler);
+                }
+            }
+            function resolveClick(){
+                webkitRequestFileSystem(TEMPORARY, 0, function(fs){
+                    webkitResolveLocalFileSystemURL(fs.root.toURL(), function(e){
+                        alert("inreslove");
+                    }, errorHandler);
+                }, errorHandler);
+            }
+           function readerOnload() { 
+                var b = new WebKitBlobBuilder();
+                b.append("test");
+                // alert("first");
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    // alert("haha, I'm in reader.onload");
+                    var result = this.result;
+                    alert(result == "test");
+                }
+                reader.readAsText(b.getBlob());
+            }
+            function CreateWriter(){
+                webkitRequestFileSystem(TEMPORARY, 0, function(fs){
+                    fs.root.getFile("testFileWriter1231230", {
+                        create : true
+                        }, function(test){
+                        //alert("555");
+                            test.createWriter(function(w){
+                             //alert(w.readyState == w.INIT);
+/*
+                            w.onwritestart = function() {
+                                alert("st");
+                                alert("st2");
+                               // alert(w.length);
+                            };
+
+                            w.onerror = function() {
+                                alert("erro");
+                            };
+                            w.onabort = function() {
+                                alert("abort");
+                            };
+                            w.onwrite = function() {
+                                alert("onwrite");
+                            };
+                            w.onwriteend = function() {
+                                alert("onend");
+                                test.remove(function() {
+                                });
+                            };*/
+                            w.abort();
+                            w.truncate(4);
+
+
+                            //w.truncate(8);
+                        });
+                    }, errorHandler);
+                }, errorHandler);
+            }
+            function readerror(){
+                webkitRequestFileSystem(TEMPORARY, 0, function(fs){
+                    fs.root.getFile("testFileWriter0", {
+                        create : true
+                        }, function(test){
+                            test.createWriter(function(w){
+                                var bb = new WebKitBlobBuilder();
+                                bb.append("test");
+                                w.onwriteend = function(){
+                                    test.file( function(f){
+                                        test.remove(function(){});
+                                        var readError = new FileReader();
+                                        readError.onabort = function(){
+                                            alert("123");
+                                        };
+                                        readError.onerror = function(){
+                                            alert("onerr");
+                                            alert(typeof readError.result);
+                                        }
+                                        readError.readAsText(f);
+                                    });
+                                };
+                                w.write(bb.getBlob());
+                        });
+                    });
+                });
+            }
+            function TestWriteEnd(){
+                webkitRequestFileSystem(TEMPORARY, 0, function(fs){
+                    fs.root.getFile("testFileWriter0", {
+                        create : true
+                        }, function(test){
+                            test.createWriter(function(w){
+                                var bb = new WebKitBlobBuilder();
+                                bb.append("test");
+                                w.onerror = function() {
+                                    alert("error");
+                                }
+                                w.onprogress = function() {
+                                    alert("onPregresss");
+                                }
+                                w.onabort = function() {
+                                    alert("onAbort");
+                                }
+                                w.onwrite = function(){
+                                    alert("onWirte"); 
+                                }
+                                w.onwritestart = function(){
+                                    alert("onWriteStart");
+                                };
+                                w.onwriteend = function(){
+                                    alert("onWriteEnd");
+                                }
+                                test.remove(function(){
+                                });
+                                w.write(bb.getBlob());
+                        });
+                    });
+                });
+            }
+
+            function r(){
+                
+                var not2 = new Notification("yes", 
+                {
+                    iconUrl: "123.gif",
+                    body: "room 101",
+                    onclose: function() {alert("123");}
+                });
+                Notification.requestPermission(back22);
+                //alert(not2.permission);
+            }
+
+            function back22(e){
+                //alert(e);
+            }
+            function noti(){
+                var noti = new Notification("mytitle");
+                noti.show();
+            }
+
+            function objecturl()
+            {
+                var blobURL = webkitURL.createObjectURL(null);
+                alert( (typeof blogURL) == "undefined");
+            }
+            function slice()
+            {
+                var bb = new WebKitBlobBuilder; 
+                bb.append("1234567890");
+                //var b = bb.getBlob("text/plain").webkitSlice(2);
+                //alert(b.size);
+                //alert(b.type);
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    alert(this.result);
+                }
+                var b1 = bb.getBlob();
+                //alert("2");
+                reader.readAsText(b1);
+            }
+
+            function readdataurl(){
+                var bb = new WebKitBlobBuilder();
+                bb.append("test");
+                var reader = new FileReader();
+                reader.onloadstart = function(){
+                   /* try {
+                        reader.readAsDataURL(bb.getBlob());
+                    } catch (e){
+                    alert(e.constructor);
+                    alert(e.code);
+                    }*/
+                    reader.abort();
+                };
+                reader.onloadend = function()
+                {
+                    alert("loadend");
+                    alert(reader.readyState == reader.DONE);
+                }
+                reader.onload = function(){
+                    alert(reader.result);
+                    alert(reader.readyState == reader.DONE);
+                }
+                reader.readAsDataURL(bb.getBlob());
+            }
+            function a()
+            {
+                alert("123");
+            }
+            function time(){
+                var i = 0;
+                //setTimeout(function() { i += 1; alert(i);}, 1000);
+                setTimeout(a, 1000);
+            }
+        </script>
+    </head>
+    <body>
+        <input type="button" value="Read dir" onclick="readClick()">
+        <br />
+        <input type="button" value="Reolve" onclick="resolveClick()">
+        <br />
+        <input type="button" value="BlobBuilderAppend" onclick="readerOnload()">
+        <br />
+        <input type="button" value="CreateWriter" onclick="CreateWriter()")>
+        <br />
+        <input type="button" value="Notification" onclick="r()")>
+        <br />
+        <input type="button" value="Notification1" onclick="noti()")>
+        <br />
+        <input type="button" value="ObjectUrl" onclick="objecturl()")>
+        <br />
+        <input type="button" value="exceptionreqeuest" onclick="requestException()">
+        <br />
+        <input type="button" value="TestWriteEnd" onclick="TestWriteEnd()">
+        <br />
+        <input type="button" value="Blob.slice" onclick="slice()" />
+        <br />
+        <input type="button" value="ReaderError" onclick="readerror()" />
+        <br />
+        <input type="button" value="ReaderAsDataURL" onclick="readdataurl()" />
+        <br />
+        <input type="button" value="time" onclick="time()" />
+        <br />
+    </body>
+</html>
