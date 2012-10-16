@@ -328,7 +328,6 @@ Full-Width Styles
   bottom: -40px;
   right: 0;
   height: 70px;
-  background: url('../images/icon_download.png') no-repeat 0% 90%;
 }
 
 .zip_download_link {
@@ -350,6 +349,10 @@ Full-Width Styles
   overflow: hidden;
   background: url(../images/sprite_download.png) no-repeat bottom right;
   margin-left: 10px;
+}
+.main_pic{
+  width: 240px;
+  height: 400px;
 }
 
 .zip_download_link:hover {
