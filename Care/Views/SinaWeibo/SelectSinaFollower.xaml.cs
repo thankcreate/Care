@@ -198,6 +198,7 @@ namespace Care
             PreferenceHelper.SetPreference("SinaWeibo_FollowerID", item.id);
             PreferenceHelper.SetPreference("SinaWeibo_FollowerNickName", item.name);
             PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar", item.profile_image_url);
+            PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar2", item.avatar_large);
             PreferenceHelper.SavePreference();
             NavigationService.Navigate(new Uri("/Views/SinaWeibo/SinaAcount.xaml", UriKind.Relative));
         }

@@ -348,7 +348,12 @@ namespace Care
             param.Add(new APIParameter("type", "10"));
             param.Add(new APIParameter("uid", renrenFollowID));            
             // TODO: 注意此处30条合不合适
-            param.Add(new APIParameter("count", "30"));
+            String strCount = PreferenceHelper.GetPreference("Renren_RecentCount");
+            if (string.IsNullOrEmpty(strCount))
+            {
+                strCount = "30";
+            }
+            param.Add(new APIParameter("count", strCount));
             App.RenrenAPI.RequestAPIInterface(RenrenFeedGetCallback, param);
         }
 
@@ -449,11 +454,16 @@ namespace Care
             netEngine = new SdkNetEngine();
 
             // Define a new command base
+            String strCount = PreferenceHelper.GetPreference("SinaWeibo_RecentCount");
+            if (string.IsNullOrEmpty(strCount))
+            {
+                strCount = "30";
+            }
             cmdBase = new cdmUserTimeline
             {
                 acessToken = App.SinaWeibo_AccessToken,
                 userId = App.ViewModel.SinaWeiboCareID,
-                count = "20"
+                count = strCount
             };
             // Request server, the last parameter is set as default (".xml")
             netEngine.RequestCmd(SdkRequestType.USER_TIMELINE, cmdBase,
@@ -646,6 +656,28 @@ namespace Care
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Lab/Test/TimeSpanWrapper.xaml", UriKind.Relative));
+        }
+
+        private void toggleFetchImageInRetweet_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)toggleFetchImageInRetweet.IsChecked)
+            {
+                App.ViewModel.NeedFetchImageInRetweet = "True";
+            }
+            else
+            {
+                App.ViewModel.NeedFetchImageInRetweet = "False";
+            }
+        }
+
+        private void textSeletRefreshItemCount_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Preference/SetFreshItemCount.xaml", UriKind.Relative));
+        }
+
+        private void TiltableControl_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Preference/SetTileTheme.xaml", UriKind.Relative));
         }
     }
 

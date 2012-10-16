@@ -9,6 +9,10 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.IO.IsolatedStorage;
+using Microsoft.Phone.Shell;
+using System.Collections.Generic;
+using System.Linq;
+
 
 namespace Care.Tool
 {
@@ -35,7 +39,52 @@ namespace Care.Tool
             {
                 settings[key] = value;
             }
+            Filt(key, value);
             return true;
+        }
+
+        public static void Filt(String key, String value)
+        {
+            if(key == "SinaWeibo_FollowerAvatar" ||
+                key == "SinaWeibo_FollowerAvatar2"||
+                key == "Renren_FollowerAvatar"  ||
+                key == "SinaWeibo_FollowerNickName" ||
+                key == "Renren_FollowerNickName" )
+            {
+                if (PreferenceHelper.GetPreference("Global_TileMode") != "1")
+                {
+                    String herName = MiscTool.GetHerName();
+                    String herIcon = MiscTool.GetHerIconUrl();
+                    Uri herUri;
+                    if (string.IsNullOrEmpty(herIcon))
+                    {
+                        herUri = new Uri("/Images/Thumb/CheekyTransparent.png", UriKind.Relative);
+                    }
+                    else
+                    {
+                        herUri = new Uri(herIcon, UriKind.Absolute);
+                    }
+                    ShellTile TileToFind = ShellTile.ActiveTiles.First();
+
+                    // Application should always be found
+                    if (TileToFind != null)
+                    {
+                        StandardTileData NewTileData = new StandardTileData
+                        {
+                            Title = "我只在乎你",
+                            BackgroundImage = new Uri("/Images/Thumb/HeartTransparent.png", UriKind.Relative),
+                            Count = 0,
+                            BackTitle = herName,
+                            BackBackgroundImage = herUri,
+                            BackContent = " "
+                        };
+
+                        // Update the Application Tile
+                        TileToFind.Update(NewTileData);
+                        PreferenceHelper.SetPreference("Global_TileMode", "0");
+                    }
+                }
+            }
         }
 
         public static void RemovePreference(String key)

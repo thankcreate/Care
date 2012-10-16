@@ -156,6 +156,12 @@
     <Compile Include="Views\Lab\TimeSpan.xaml.cs">
       <DependentUpon>TimeSpan.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Preference\SetFreshItemCount.xaml.cs">
+      <DependentUpon>SetFreshItemCount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Preference\SetTileTheme.xaml.cs">
+      <DependentUpon>SetTileTheme.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Rss\RssDetails.xaml.cs">
       <DependentUpon>RssDetails.xaml</DependentUpon>
     </Compile>
@@ -278,6 +284,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Preference\SetFreshItemCount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Preference\SetTileTheme.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Rss\RssDetails.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -353,6 +367,7 @@
     <Resource Include="Images\Background\bk.PNG" />
     <Resource Include="Images\Background\StatusViewBkg.PNG" />
     <Resource Include="Images\Background\RssViewBkg.png" />
+    <Resource Include="Heart_Blue.png" />
     <Content Include="Images\Bar\close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -394,6 +409,16 @@
     <Resource Include="Images\Lab\PieChart.png" />
     <Resource Include="Images\Lab\Spy.png" />
     <Resource Include="Images\Thumb\Cheeky.png" />
+    <Content Include="Images\Thumb\CheekyTransparent.png" />
+    <Content Include="Images\Thumb\HeartTransparent.png" />
+    <Content Include="Images\Thumb\Heart_Blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\Thumb\yangmi.jpg" />
+    <Resource Include="Images\Thumb\OpenBook.PNG" />
+    <Resource Include="Images\Thumb\OpenBook2.PNG" />
+    <Content Include="Images\Thumb\OpenBookTransparent2.PNG" />
+    <Content Include="Images\Thumb\OpenBookTransparent.PNG" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>

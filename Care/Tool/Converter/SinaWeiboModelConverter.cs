@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Care.ViewModels;
-
+using Care.Tool;
 namespace Care
 {
     public class SinaWeiboModelConverter
@@ -45,6 +45,10 @@ namespace Care
 
         public static void FiltPicture(WStatus status)
         {
+            if (status.retweeted_status != null && PreferenceHelper.GetPreference("Global_NeedFetchImageInRetweet") != "False")
+            {
+                FiltPicture(status.retweeted_status);
+            }
             if (string.IsNullOrEmpty(status.thumbnail_pic))
             {
                 return;

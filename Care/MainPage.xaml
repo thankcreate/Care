@@ -296,7 +296,7 @@
     								</VisualState>
     							</VisualStateGroup>
     						</VisualStateManager.VisualStateGroups>
-    						<Grid Margin="12,5,36,42">
+    						<Grid Margin="12,5,36,22">
     							<Grid.ColumnDefinitions>
     								<ColumnDefinition Width="*"/>
     								<ColumnDefinition Width="Auto"/>
@@ -418,10 +418,21 @@
                 <Grid>
                     <ScrollViewer >
                         <StackPanel>
-                            <Grid>
-                                <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleUsePassword"  Content="{Binding UsingPasswordText}"  IsChecked="{Binding UsingPassword, Mode=OneWay}" Header="使用密码" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black"  Click="toggleUsePassword_Click" />                                   
-                            </Grid>
-
+                            <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleUsePassword"  Content="{Binding UsingPasswordText}"  IsChecked="{Binding UsingPassword, Mode=OneWay}" Header="使用密码" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black"  Click="toggleUsePassword_Click" />
+                            <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleFetchImageInRetweet"  Content="{Binding NeedFetchImageInRetweetText}"  IsChecked="{Binding NeedFetchImageInRetweet}" Header="在图片墙中显示转发图片" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black" Click="toggleFetchImageInRetweet_Click" />
+                            <myTilt:TiltableControl>
+                                <StackPanel>
+                                    <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,0,0,0"   Name="textSeletRefreshItemCount" Text="新鲜事条数" Tap="textSeletRefreshItemCount_Tap" />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="设置更新的新浪、人人新鲜事数目" />
+                                </StackPanel>
+                            </myTilt:TiltableControl>
+                            <myTilt:TiltableControl Tap="TiltableControl_Tap">
+                                <StackPanel>
+                                    <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtSelectTileTheme" Text="磁贴风格"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="可选风格：1.动态头像     2.屌丝专用" />
+                                </StackPanel>
+                                
+                            </myTilt:TiltableControl>
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>

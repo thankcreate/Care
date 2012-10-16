@@ -233,6 +233,39 @@ namespace Care
                 NotifyPropertyChanged("UsingPasswordText");
             }
         }
+         
+        public String NeedFetchImageInRetweet
+        {
+            // 只有False和True两种可能值
+            get
+            {
+                String ifUsePassword = PreferenceHelper.GetPreference("Global_NeedFetchImageInRetweet");
+                if (String.IsNullOrEmpty(ifUsePassword))
+                {
+                    return "True";
+                }
+                return PreferenceHelper.GetPreference("Global_NeedFetchImageInRetweet");
+            }
+            set
+            {
+                PreferenceHelper.SetPreference("Global_NeedFetchImageInRetweet", value);
+                NotifyPropertyChanged("NeedFetchImageInRetweet");
+                NotifyPropertyChanged("NeedFetchImageInRetweetText");
+            }
+        }
+
+        public String NeedFetchImageInRetweetText
+        {
+            // 直接依赖于NeedFetchImageInRetweet的值
+            get
+            {
+                return NeedFetchImageInRetweet == "True" ? "是" : "否";
+            }
+            set
+            {
+                NotifyPropertyChanged("NeedFetchImageInRetweetText");
+            }
+        }
 
         private string _sampleProperty = "Sample Runtime Property Value";
         /// <summary>
