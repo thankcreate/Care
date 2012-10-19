@@ -70,6 +70,15 @@ namespace Care.Views
             InitializeComponent();
         }
 
+
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/MainPage.xaml"
+                    , UriKind.Relative));
+        }
+
+
         private void Help_Click(object sender, EventArgs e)
         {
             MessageBox.Show("RSS是一种同步网站内容的格式。\n在地址框中输入其RSS地址，可以订阅其博客更新");

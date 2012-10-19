@@ -75,9 +75,9 @@ namespace Care
 
         private void InitSinaWeiboInfo()
         {
-            SdkData.AppKey = "1385220836";
-            SdkData.AppSecret = "6c8a1cd05efe4ff69839de695c68e8f0";
-            SdkData.RedirectUri = "www.thankcreate.com";
+            SdkData.AppKey = "466921770";
+            SdkData.AppSecret = "548cb1a27cf896d304a9704e2be0e62e";
+            SdkData.RedirectUri = "http://thankcreate.github.com/Care";
 
             IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
             if (settings.Contains("SinaWeibo_Token"))
@@ -214,8 +214,8 @@ namespace Care
 
         private void refreshMainViewModel()
         {
-            // 如果是由SelectOnly页面转发过来，则不进行网络数据请求，只更新UI
-            if (m_bIsNavigateFromSelectPage)
+            // 如果是由SelectOnly页面转发过来，且不是选则“所有”，则不进行网络数据请求，只更新UI
+            if (m_bIsNavigateFromSelectPage && m_strDataSource != SelectOnly.DATASOURCE_ALL)
             {
                 filtPage();
             }
@@ -252,6 +252,10 @@ namespace Care
             else if (m_strDataSource == SelectOnly.DATASOURCE_RSS)
             {
                 App.ViewModel.ListItems.AddRange(App.ViewModel.RssItems);
+            }
+            else if (m_strDataSource == SelectOnly.DATASOURCE_RENREN)
+            {
+                App.ViewModel.ListItems.AddRange(App.ViewModel.RenrenItems);
             }
             // switch end
 
@@ -376,6 +380,10 @@ namespace Care
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
+                    if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
+                    {
+                        MessageBox.Show("人人信息源获取失败，可能是网络问题，也可能是帐号过期", "失败", MessageBoxButton.OK);
+                    } 
                     m_progressIndicatorHelper.PopTask("Renren");
                 });
             }   
@@ -418,14 +426,6 @@ namespace Care
                 }
                 else
                 {
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        MessageBoxResult result = MessageBox.Show("新浪微博用户尚未登陆，或登陆已过期", "提示", MessageBoxButton.OKCancel);
-                        if (result == MessageBoxResult.OK)
-                        {
-                            WeiboLogin(null, null);
-                        }
-                    });
                 }
             });
         }
@@ -446,7 +446,11 @@ namespace Care
         {
             if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_FollowerID")))
             {
-                MessageBox.Show("尚未设置新浪微博关注对象");
+                // 如果有SinaWeibo_ID，说明之前登陆过，则提示相关信息
+                if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
+                {
+                    MessageBox.Show("尚未设置新浪微博关注对象");
+                }               
                 m_progressIndicatorHelper.PopTask();
                 return;
             }
@@ -486,10 +490,14 @@ namespace Care
                         );
                     }
                     else
-                    {
+                    {                          
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            MessageBox.Show(response.content, response.errCode.ToString(), MessageBoxButton.OK);
+                            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
+                            {
+                                MessageBox.Show(response.content, response.errCode.ToString(), MessageBoxButton.OK);
+                            } 
+                            
                             m_progressIndicatorHelper.PopTask();
                         });
                     }
@@ -561,6 +569,10 @@ namespace Care
                     NavigationService.Navigate(new Uri("/Views/Rss/RssDetails.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
                 if (item.Type == EntryType.SinaWeibo)
+                {
+                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
+                }
+                if (item.Type == EntryType.Renren)
                 {
                     NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
@@ -678,6 +690,11 @@ namespace Care
         private void TiltableControl_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Preference/SetTileTheme.xaml", UriKind.Relative));
+        }
+
+        private void DoubanAcount_Click(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            MessageBox.Show("由于豆瓣API实在太烂，UP主仍在开发中呢~~~~", "温馨提示", MessageBoxButton.OK);
         }
     }
 

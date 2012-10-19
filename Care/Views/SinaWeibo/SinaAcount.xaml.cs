@@ -78,12 +78,16 @@ namespace Care.Views
                 NotifyPropertyChanged("FollowerAvatar");
             }
         }
+
+        private String OriginFollowerAvatar;
+
         public SinaAcount()
         {
             CurrentNickName = PreferenceHelper.GetPreference("SinaWeibo_NickName");
             FollowerNickName = PreferenceHelper.GetPreference("SinaWeibo_FollowerNickName");
             CurrentAvatar = PreferenceHelper.GetPreference("SinaWeibo_Avatar");
             FollowerAvatar = PreferenceHelper.GetPreference("SinaWeibo_FollowerAvatar");
+            OriginFollowerAvatar = FollowerAvatar;
             if (string.IsNullOrEmpty(CurrentNickName))
             {
                 CurrentNickName = "未登陆";

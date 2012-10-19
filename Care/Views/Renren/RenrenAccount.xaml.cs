@@ -98,6 +98,13 @@ namespace Care.Views
             DataContext = this;            
         }
 
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/MainPage.xaml"
+                    , UriKind.Relative));
+        }
+
         // 点击登陆
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {

@@ -21,6 +21,7 @@ namespace Care.Views
         public static string DATASOURCE_RSS = "RSS源";
         public static string DATASOURCE_DOUBAN = "豆瓣社区";
         public static string DATASOURCE_RENREN = "人人网";
+        public static string DATASOURCE_ALL = "全部";
 
         LoopingArrayDataSource<string> sourceLeft;
         LoopingArrayDataSource<string> sourceRight;       
@@ -28,7 +29,7 @@ namespace Care.Views
         public SelectOnly()
         {
             sourceLeft = new LoopingArrayDataSource<string>(new string[] { SHOWTYPE_NEWS, SHOWTYPE_PICTURES }, 0);
-            sourceRight = new LoopingArrayDataSource<string>(new string[] { DATASOURCE_SINAWEIBO, DATASOURCE_RSS, DATASOURCE_DOUBAN, DATASOURCE_RENREN }, 0);
+            sourceRight = new LoopingArrayDataSource<string>(new string[] { DATASOURCE_SINAWEIBO, DATASOURCE_RSS, DATASOURCE_DOUBAN, DATASOURCE_RENREN, DATASOURCE_ALL }, 0);
             InitializeComponent();
             this.Loaded += new RoutedEventHandler(PageLoaded);
         }

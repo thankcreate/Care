@@ -451,7 +451,7 @@
                         <Image x:Name="RssAccount" Width="180" Height="180" Source="/Care;component/Images/Account/RssLogo_Blue.png" Margin="216,12,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="RssAcount_Click" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image x:Name="DoubanAccount" Width="180" Height="180" Source="/Care;component/Images/Account/Douban.png" Margin="16,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
+                        <Image x:Name="DoubanAccount" Width="180" Height="180" Source="/Care;component/Images/Account/Douban.png" Margin="16,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="DoubanAcount_Click" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
                         <Image x:Name="RenrenAccount" Width="180" Height="180" Source="/Care;component/Images/Account/RenrenLogo_Gray.png" Margin="216,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="RenrenAcount_Click"  />

@@ -18,6 +18,8 @@ using System.Runtime.Serialization.Json;
 using System.IO.IsolatedStorage;
 using Care.Tool;
 using System.Collections;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
 
 namespace Care
 {
@@ -30,6 +32,9 @@ namespace Care
         private int m_nCurrentIndex = 0;
 
         public ObservableCollection<User> Friends { get; private set; }
+        public delegate void FetchAllFriendsCallback();
+        // 存储了所有朋友的列表，方便查询时使用
+        public List<User> AllFriends { get; private set; }
 
         private ProgressIndicatorHelper m_progressIndicatorHelper;
 
@@ -38,6 +43,7 @@ namespace Care
             m_listPrevios = new List<int>();
 
             Friends = new ObservableCollection<User>();
+            AllFriends = new List<User>();
             InitializeComponent();
             DataContext = this;
             this.Loaded += new RoutedEventHandler(SelectSinaFollower_Loaded);
@@ -128,17 +134,107 @@ namespace Care
             });
         }
         
+
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             string searchName = nameBox.Text;
-            App.ViewModel.SinaWeiboCareID = nameBox.Text;
-            App.ViewModel.IsChanged = true;
-            PreferenceHelper.SetPreference("SinaWeibo_FollowerID", nameBox.Text);
-            PreferenceHelper.SavePreference();
+            //App.ViewModel.SinaWeiboCareID = nameBox.Text;
+            //App.ViewModel.IsChanged = true;
+            //PreferenceHelper.SetPreference("SinaWeibo_FollowerID", nameBox.Text);
+            //PreferenceHelper.SavePreference();
 
-            refreshFollowerSinaAccountInfo();
-
+            GetFriendListIterator(-1, () =>
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    Friends.Clear();
+                    if (AllFriends.Count == 0)
+                    {
+                        MessageBox.Show("未能搜索到任何结果");
+                        return;
+                    }
+                    foreach (User user in AllFriends)
+                    {
+                        if (user.name.ToLower().Contains(searchName.ToLower()))
+                        {
+                            Friends.Add(user);
+                        }
+                    }
+                });                
+            });
+            //refreshFollowerSinaAccountInfo();
         }
+
+        private void GetFriendListIterator(int cursor, FetchAllFriendsCallback callback)
+        {
+            m_progressIndicatorHelper.PushTask();
+            if (string.IsNullOrEmpty(App.ViewModel.SinaWeiboAccount.id))
+            {
+                m_progressIndicatorHelper.PopTask();
+                return;
+            }
+            // Define a new net engine
+            netEngine = new SdkNetEngine();
+            // Define a new command base
+            cmdBase = new SdkCmdBase
+            {
+                acessToken = App.SinaWeibo_AccessToken,
+            };
+            RestRequest request = new RestRequest();
+            request.Method = WebMethod.Get;
+            request.Path = "friendships/friends.json";
+            request.AddParameter("access_token", App.SinaWeibo_AccessToken);
+            request.AddParameter("uid", App.ViewModel.SinaWeiboAccount.id);
+            // curosr = -1 说明是第一次进来
+            if (cursor != -1)
+            {
+                request.AddParameter("cursor", cursor.ToString());
+            }
+            else
+            {
+                AllFriends.Clear();
+            }
+
+            // use my uid to get the friends list.
+            netEngine.SendRequest(request, cmdBase, (SdkResponse response) =>
+            {
+                if (response.errCode == SdkErrCode.SUCCESS)
+                {
+                    Friends friends;
+                    try
+                    {
+                        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(Friends));
+                        friends = ser.ReadObject(response.stream) as Friends;                        
+                        int next = int.Parse(friends.next_cursor);
+                        foreach (User friend in friends.users)
+                        {                          
+                            AllFriends.Add(friend);
+                        }
+                        // 如果还没有遍历完，则继续遍历
+                        if (next != 0)
+                        {
+                            GetFriendListIterator(next, callback);  
+                        }
+                        // 遍历完后执行后续回调（其实就是从得到的名单中搜索，刷新UI)
+                        else
+                        {
+                            callback();
+                        }
+                        m_progressIndicatorHelper.PopTask();
+                    }
+                    catch (Exception)
+                    {
+                        m_progressIndicatorHelper.PopTask();
+                        throw;
+                    }
+                }
+                else
+                {
+                    m_progressIndicatorHelper.PopTask();
+                }
+            });
+        }
+
 
         // 得到关注用户信息
         private void refreshFollowerSinaAccountInfo()
@@ -188,18 +284,26 @@ namespace Care
 
         private void Help_Click(object sender, EventArgs e)
         {    
-            MessageBox.Show("可以用两种方式指定关注对象：\n1.指定其UID值\n2:在关注人列表中选则");
+            MessageBox.Show("由于渣浪暂不开放全局搜索API，目前只能在当前用户的关注者范围内搜索 T_T..");
         }
 
         private void ListSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = ResultListBox.SelectedIndex;
             User item = Friends[index];
-            PreferenceHelper.SetPreference("SinaWeibo_FollowerID", item.id);
-            PreferenceHelper.SetPreference("SinaWeibo_FollowerNickName", item.name);
-            PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar", item.profile_image_url);
-            PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar2", item.avatar_large);
-            PreferenceHelper.SavePreference();
+
+            String prefID = PreferenceHelper.GetPreference("SinaWeibo_FollowerID");
+            if (prefID != item.id)
+            {
+                PreferenceHelper.SetPreference("SinaWeibo_FollowerID", item.id);
+                PreferenceHelper.SetPreference("SinaWeibo_FollowerNickName", item.name);
+                PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar", item.profile_image_url);
+                PreferenceHelper.SetPreference("SinaWeibo_FollowerAvatar2", item.avatar_large);
+                PreferenceHelper.SavePreference();
+
+                App.ViewModel.IsChanged = true;
+            }
+           
             NavigationService.Navigate(new Uri("/Views/SinaWeibo/SinaAcount.xaml", UriKind.Relative));
         }
 
