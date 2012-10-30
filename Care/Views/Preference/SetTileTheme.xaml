@@ -1,0 +1,180 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.Preference.SetTileTheme"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="#FF4F55D1"
+    shell:SystemTray.BackgroundColor="Transparent"
+    shell:SystemTray.IsVisible="True">
+	<phone:PhoneApplicationPage.Resources>
+<!--x:Key="PhoneRadioButton"-->
+		<Style x:Key="RadioButtonStyle1" TargetType="RadioButton" BasedOn="{StaticResource PhoneRadioButtonCheckBoxBase}">
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="RadioButton">
+						<Grid Background="Transparent" >
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="MouseOver"/>
+									<VisualState x:Name="Pressed" >
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="EnabledCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="PressedDarkCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="PressedLightCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckMark" Storyboard.TargetProperty="Fill">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckBrush}" />
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Disabled">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="EnabledCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledDarkCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledLightCheckBackground" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckMark" Storyboard.TargetProperty="Fill">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckDisabledBrush}" />
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentContainer" Storyboard.TargetProperty="Foreground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}" />
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="CheckStates">
+									<VisualState x:Name="Checked">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="CheckMark" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Unchecked" />
+									<VisualState x:Name="Indeterminate"/>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="ValidationStates">
+									<VisualState x:Name="InvalidFocused"/>
+									<VisualState x:Name="Valid"/>
+									<VisualState x:Name="InvalidUnfocused"/>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="FocusStates">
+									<VisualState x:Name="Unfocused"/>
+									<VisualState x:Name="Focused"/>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Grid Margin="{StaticResource PhoneTouchTargetLargeOverhang}">
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="Auto" MinWidth="32"/>
+									<ColumnDefinition Width="*"/>
+								</Grid.ColumnDefinitions>
+								<Ellipse x:Name="EnabledCheckBackground" IsHitTestVisible="False" VerticalAlignment="Center" HorizontalAlignment="Left" Fill="{TemplateBinding Background}" Height="32" Width="32" Stroke="Black"/>
+								<Canvas Opacity="{StaticResource PhoneDarkThemeOpacity}" IsHitTestVisible="False" VerticalAlignment="Center" HorizontalAlignment="Left" Height="32" Width="32">
+									<Ellipse x:Name="PressedDarkCheckBackground" Fill="{StaticResource PhoneRadioCheckBoxPressedBrush}" Height="32" Width="32" Visibility="Collapsed"/>
+									<Ellipse x:Name="DisabledDarkCheckBackground" Fill="{StaticResource PhoneRadioCheckBoxDisabledBrush}" Height="32" Width="32" Visibility="Collapsed"/>
+								</Canvas>
+								<Canvas Opacity="{StaticResource PhoneLightThemeOpacity}" IsHitTestVisible="False" VerticalAlignment="Center" HorizontalAlignment="Left" Height="32" Width="32">
+									<Ellipse x:Name="PressedLightCheckBackground" Fill="{StaticResource PhoneRadioCheckBoxPressedBrush}" Stroke="{StaticResource PhoneForegroundBrush}" StrokeThickness="{StaticResource PhoneStrokeThickness}" Height="32" Width="32" Visibility="Collapsed"/>
+									<Ellipse x:Name="DisabledLightCheckBackground" Fill="{StaticResource PhoneRadioCheckBoxDisabledBrush}" Stroke="{StaticResource PhoneDisabledBrush}" StrokeThickness="{StaticResource PhoneStrokeThickness}" Height="32" Width="32" Visibility="Collapsed"/>
+								</Canvas>
+								<Ellipse x:Name="CheckMark" IsHitTestVisible="False" Visibility="Collapsed" Fill="{StaticResource PhoneRadioCheckBoxCheckBrush}" Height="16" Width="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
+								<ContentControl x:Name="ContentContainer" Grid.Column="1" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" Margin="12,0,0,0" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Padding="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}" />
+							</Grid>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" >
+
+        <Grid.Background>
+            <ImageBrush ImageSource="../../Images/Background/cloud2.PNG" />
+        </Grid.Background>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,38,0,28">
+            <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="设置" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="磁贴样式" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Image Height="170" Source="../../Images/Thumb/Heart_Blue.png"  HorizontalAlignment="Left" Margin="12,78,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="170" />
+            <Image Height="170" HorizontalAlignment="Left" Margin="221,78,0,0" Name="image2" Source="../../Images/Thumb/yangmi.jpg" Stretch="Fill" VerticalAlignment="Top" Width="170" />
+            <RadioButton Content="动态头像" Height="100" HorizontalAlignment="Left" Margin="9,-6,0,0" Name="radioUseDynamic" Style="{StaticResource RadioButtonStyle1}" VerticalAlignment="Top" Checked="radioUseDynamic_Checked" />
+            <Image Height="170" HorizontalAlignment="Left" Margin="12,338,0,0" Name="image3" Source="../../Images/Thumb/OpenBook.png" Stretch="Fill" VerticalAlignment="Top" Width="170" />
+            <Image Height="170" HorizontalAlignment="Left" Margin="221,338,0,0" Name="image4" Source="../../Images/Thumb/OpenBook2.PNG" Stretch="Fill" VerticalAlignment="Top" Width="170" />
+            <RadioButton Content="屌丝专用" Height="100" HorizontalAlignment="Left" Margin="8,254,0,0" Name="radioUseDiaosi" Style="{StaticResource RadioButtonStyle1}" VerticalAlignment="Top" Checked="radioUseDiaosi_Checked" />
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

@@ -18,7 +18,7 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Margin="0,18,0,0" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Margin="0,18,0,0" Background="Black">
         <!--Pivot Control-->
         <controls:Pivot LoadingPivotItem="OnLoadingPivotItem" Title="奇怪的地方">
             <!--Pivot item one-->

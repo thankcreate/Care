@@ -14,6 +14,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RenrenSDKLibrary;
 using Care.Tool;
+using SmartMad.Ads.WindowsPhone7.WPF;
 
 namespace Care
 {
@@ -83,6 +84,8 @@ namespace Care
             RenrenAPIInit();
             // 启动页相关
             RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
+            // 广告参数设置
+            AdView.SetApplicationID("fc955e087f89a189");
 
         }
 

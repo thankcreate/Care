@@ -21,6 +21,7 @@ namespace Care.Tool
             model.Content = news.message;
             model.TimeObject = ExtHelpers.GetRenrenTimeFullObject(news.update_time);
             model.Type = EntryType.Renren;
+            model.ID = news.post_id;
             return model;
         }
     }

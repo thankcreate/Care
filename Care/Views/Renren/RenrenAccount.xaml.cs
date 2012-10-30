@@ -95,7 +95,42 @@ namespace Care.Views
             }
             
             InitializeComponent();
-            DataContext = this;            
+            DataContext = this;
+            this.Loaded += new RoutedEventHandler(RenrenAccount_Loaded);
+        }
+
+
+
+        private void RenrenAccount_Loaded(object sender, RoutedEventArgs e)
+        {
+            RefreshRealData();
+        }
+
+        // 此处的目的是试探到底人人帐号的信息有没有过期
+        // 因为即使过期了，一开始加载的数据还是从IsolatedStorage中拉取的
+        // 用户会误认为当前登陆仍然有效
+        // 绝大多数情况下这一些得到的数据和构造函数中得到的数据应该是完全一样的
+        // 之所以构造函数里那一块不删，是为了使用户加载页面时不显得卡顿
+        private void RefreshRealData()
+        {
+            api.GetCurUserInfo((e1 , e) =>
+                {
+                    if (e.Error != null)
+                    {
+                        CurrentNickName = "未登陆";
+                        CurrentAvatar = "";                       
+                    }
+                    else
+                    {
+                        UserDetails user = new UserDetails();
+                        user = e.Result;
+                        CurrentNickName = user.name;
+                        CurrentAvatar = user.headurl;
+                        PreferenceHelper.SetPreference("Renren_Avatar", user.headurl);
+                        PreferenceHelper.SetPreference("Renren_NickName", user.name);
+                        PreferenceHelper.SetPreference("Renren_ID", user.uid.ToString());
+                    }
+                });
         }
 
 
@@ -108,7 +143,8 @@ namespace Care.Views
         // 点击登陆
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            api.Login(this, renren_LoginCompletedHandler);
+            List<string> scope = new List<string> { "publish_feed", "publish_blog", "read_user_album", "create_album", "photo_upload" };
+            api.Login(this,scope, renren_LoginCompletedHandler);
         }
 
         public void renren_LoginCompletedHandler(object sender, LoginCompletedEventArgs e)
@@ -152,6 +188,8 @@ namespace Care.Views
             FollowerNickName = "未关注";
             CurrentAvatar = "";
             FollowerAvatar = "";
+            api.LogOut();
+            App.ViewModel.IsChanged = true;
         }
 
         private void btnSetFollower_Click(object sender, RoutedEventArgs e)

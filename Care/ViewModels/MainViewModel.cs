@@ -30,24 +30,11 @@ namespace Care
             this.PictureItems2 = new ObservableCollection<PictureItem>();
             this.ListPictureItems = new List<PictureItem>();
             this.SinaWeiboPicItems = new List<PictureItem>();
-            this.RssPicItems = new List<PictureItem>();
-          
+            this.RssPicItems = new List<PictureItem>();          
 
             this.ItemsNeedRefresh = 2;
             this.SinaWeiboAccount = new User();
             this.IsChanged = true;
-
-            #region PicItems by hard code.
-            this.PictureItem0 = new PictureItem();
-            this.PictureItem1 = new PictureItem();
-            this.PictureItem2 = new PictureItem();
-            this.PictureItem3 = new PictureItem();
-            this.PictureItem4 = new PictureItem();
-            this.PictureItem5 = new PictureItem();
-            this.PictureItem6 = new PictureItem();
-            this.PictureItem7 = new PictureItem();
-            this.PictureItem8 = new PictureItem();
-            #endregion
         }
 
 
@@ -64,136 +51,7 @@ namespace Care
         public bool IsChanged;
 
         public ObservableCollection<PictureItem> PictureItems2 { get; private set; }
-
-       #region PictureItems by hard code.
-
-        public PictureItem _pictureItem0;
-        public PictureItem PictureItem0
-        {
-            get
-            {
-                return _pictureItem0;
-            }
-            set
-            {
-                _pictureItem0 = value;
-                NotifyPropertyChanged("PictureItem0");
-            }
-        }
-
-        public PictureItem _pictureItem1;
-        public PictureItem PictureItem1
-        {
-            get
-            {
-                return _pictureItem1;
-            }
-            set
-            {
-                _pictureItem1 = value;
-                NotifyPropertyChanged("PictureItem1");
-            }
-        }
-
-        public PictureItem _pictureItem2;
-        public PictureItem PictureItem2
-        {
-            get
-            {
-                return _pictureItem2;
-            }
-            set
-            {
-                _pictureItem2 = value;
-                NotifyPropertyChanged("PictureItem2");
-            }
-        }
-
-        public PictureItem _pictureItem3;
-        public PictureItem PictureItem3
-        {
-            get
-            {
-                return _pictureItem3;
-            }
-            set
-            {
-                _pictureItem3 = value;
-                NotifyPropertyChanged("PictureItem3");
-            }
-        }
-
-        public PictureItem _pictureItem4;
-        public PictureItem PictureItem4
-        {
-            get
-            {
-                return _pictureItem4;
-            }
-            set
-            {
-                _pictureItem4 = value;
-                NotifyPropertyChanged("PictureItem4");
-            }
-        }
-
-        public PictureItem _pictureItem5;
-        public PictureItem PictureItem5
-        {
-            get
-            {
-                return _pictureItem5;
-            }
-            set
-            {
-                _pictureItem5 = value;
-                NotifyPropertyChanged("PictureItem5");
-            }
-        }
-
-        public PictureItem _pictureItem6;
-        public PictureItem PictureItem6
-        {
-            get
-            {
-                return _pictureItem6;
-            }
-            set
-            {
-                _pictureItem6 = value;
-                NotifyPropertyChanged("PictureItem6");
-            }
-        }
-        public PictureItem _pictureItem7;
-        public PictureItem PictureItem7
-        {
-            get
-            {
-                return _pictureItem7;
-            }
-            set
-            {
-                _pictureItem7 = value;
-                NotifyPropertyChanged("PictureItem7");
-            }
-        }
-
-        public PictureItem _pictureItem8;
-        public PictureItem PictureItem8
-        {
-            get
-            {
-                return _pictureItem8;
-            }
-            set
-            {
-                _pictureItem8 = value;
-                NotifyPropertyChanged("PictureItem8");
-            }
-        }
-
-#endregion
-
+    
         // Pic items
         public ObservableCollection<PictureItem> PictureItems { get; private set; }
         public List<PictureItem> ListPictureItems { get; private set; }

@@ -514,7 +514,14 @@ THE SOURCE CODE IS PROVIDED "AS IS", WITH NO WARRANTIES OR INDEMNITIES.
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ListBox">
-					<ScrollViewer x:Name="ScrollViewer" Foreground="{TemplateBinding Foreground}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+					<ScrollViewer x:Name="ScrollViewer" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" Background="#000D43ED" BorderBrush="#FFAB4A4A" Foreground="#FF060606">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="ValidationStates">
+								<VisualState x:Name="Valid"/>
+								<VisualState x:Name="InvalidUnfocused"/>
+								<VisualState x:Name="InvalidFocused"/>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
 						<ItemsPresenter/>
 					</ScrollViewer>
 				</ControlTemplate>

@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
 
 namespace Care
 {
@@ -23,13 +24,16 @@ namespace Care
 
         private DateTimeOffset _timeObject;
         private string _time;
-        private EntryType _type;
+        private EntryType _type;        
         private string _content;
         private string _rssSummary;
         private string _title;
         private string _originalURL;
         private string _description;
 
+        public ObservableCollection<CommentViewModel> Comments { get; set; }
+
+        public string ID { get; set; }
 
         public ItemViewModel ForwardItem{ get; set; }
 
@@ -152,6 +156,7 @@ namespace Care
                 }
             }
         }
+
         public string Time
         {
             get
@@ -218,7 +223,6 @@ namespace Care
             }
         }
 
-
         public string OriginalURL
         {
             get
@@ -234,7 +238,6 @@ namespace Care
                 }
             }
         }
-
 
         public string Title
         {

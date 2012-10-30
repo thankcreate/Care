@@ -24,11 +24,14 @@ namespace Care
             OriginUrl = "";
             Type = EntryType.SinaWeibo;
         }
+        // 小图
         public string Url { get; set; }
+        // 大图
         public string FullUrl { get; set; }
         public string Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
+        // 目前没用
         public string OriginUrl { get; set; }
         public EntryType Type { get; set; }
         public String TypeString

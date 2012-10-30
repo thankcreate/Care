@@ -328,9 +328,16 @@ namespace Care
         }
 
         private void refreshModelRenren()
-        {            
+        {
+            App.ViewModel.RenrenItems.Clear();
+            // TODO: 如果有RenrenPicItems也要Clear，目前还没有
             if (!App.RenrenAPI.IsAccessTokenValid())
             {
+                // 有值说明之前登陆过，须提示过期
+                if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
+                {
+                    MessageBox.Show("人人帐号授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                }
                 m_progressIndicatorHelper.PopTask("Renren");
                 return;
             }
@@ -436,6 +443,11 @@ namespace Care
         }
         private void refreshModelSinaWeibo()
         {
+            if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
+            {
+                m_progressIndicatorHelper.PopTask("Sina");
+                return;
+            }
             refreshMySinaAccount();
             App.ViewModel.SinaWeiboPicItems.Clear();
             App.ViewModel.SinaWeiboItems.Clear();
@@ -445,12 +457,8 @@ namespace Care
         private void LoadSinaWeiboContent()
         {
             if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_FollowerID")))
-            {
-                // 如果有SinaWeibo_ID，说明之前登陆过，则提示相关信息
-                if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
-                {
-                    MessageBox.Show("尚未设置新浪微博关注对象");
-                }               
+            {                
+                MessageBox.Show("尚未设置新浪微博关注对象");               
                 m_progressIndicatorHelper.PopTask();
                 return;
             }
@@ -463,10 +471,11 @@ namespace Care
             {
                 strCount = "30";
             }
+            String careID = PreferenceHelper.GetPreference("SinaWeibo_FollowerID");
             cmdBase = new cdmUserTimeline
             {
                 acessToken = App.SinaWeibo_AccessToken,
-                userId = App.ViewModel.SinaWeiboCareID,
+                userId = careID,
                 count = strCount
             };
             // Request server, the last parameter is set as default (".xml")
@@ -483,19 +492,24 @@ namespace Care
                         {
                             foreach (WStatus status in statuses.statuses)
                             {
-                                App.ViewModel.SinaWeiboItems.Add(SinaWeiboModelConverter.ConvertSinaWeiboToCommon(status));
+                                App.ViewModel.SinaWeiboItems.Add(SinaWeiboModelConverter.ConvertItemToCommon(status));
                             }
                             m_progressIndicatorHelper.PopTask();
                         }
                         );
                     }
+                    // 失败
                     else
                     {                          
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
+                            // 21327 expired_token Token 过期
+                            if (response.specificCode == "21327")
                             {
-                                MessageBox.Show(response.content, response.errCode.ToString(), MessageBoxButton.OK);
+                                MessageBox.Show("新浪微博帐号已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                                // 清掉保存的当前帐号信息
+                                // 但是关注人信息还保留着
+                                PreferenceHelper.RemoveSinaWeiboLoginAccountPreference();
                             } 
                             
                             m_progressIndicatorHelper.PopTask();
@@ -505,8 +519,13 @@ namespace Care
         }
         private void refreshModelRssFeed()
         {
-            string url = "http://blog.sina.com.cn/rss/1713845420.xml";
-            //string url = "http://www.thankcreate.com/feed";
+            App.ViewModel.RssItems.Clear();
+            string url = PreferenceHelper.GetPreference("RSS_FollowerPath");
+            if (string.IsNullOrEmpty(url))
+            {
+                m_progressIndicatorHelper.PopTask();
+                return;                
+            }
             WebClient client = new WebClient();
             client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
             client.DownloadStringAsync(new Uri(url));
@@ -531,8 +550,7 @@ namespace Care
            
             SyndicationFeed feed = SyndicationFeed.Load(reader);
             Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                App.ViewModel.RssItems.Clear();
+            {                
                 foreach (SyndicationItem item in feed.Items)
                 {
                     App.ViewModel.RssItems.Add(FeedModelConverter.ConvertFeedToCommon(item));
@@ -617,46 +635,6 @@ namespace Care
             NavigationService.Navigate(new Uri("/Views/Renren/RenrenAccount.xaml", UriKind.Relative));
         }
 
-        private void Image_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            if (sender == hub0)
-            {
-                NavigateImageView(0);
-            }
-            if (sender == hub1)
-            {
-                NavigateImageView(1);
-            }
-            if (sender == hub2)
-            {
-                NavigateImageView(2);
-            }
-            if (sender == hub3)
-            {
-                NavigateImageView(3);
-            }
-            if (sender == hub4)
-            {
-                NavigateImageView(4);
-            }
-            if (sender == hub5)
-            {
-                NavigateImageView(5);
-            }
-            if (sender == hub6)
-            {
-                NavigateImageView(6);
-            }
-            if (sender == hub7)
-            {
-                NavigateImageView(7);
-            }
-            if (sender == hub8)
-            {
-                NavigateImageView(8);
-            } 
-        }
-
         private void NavigateImageView(int index)
         {
             StringBuilder url = new StringBuilder();
@@ -692,10 +670,27 @@ namespace Care
             NavigationService.Navigate(new Uri("/Views/Preference/SetTileTheme.xaml", UriKind.Relative));
         }
 
+        private void About_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Preference/About.xaml", UriKind.Relative));
+        }
+
         private void DoubanAcount_Click(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            MessageBox.Show("由于豆瓣API实在太烂，UP主仍在开发中呢~~~~", "温馨提示", MessageBoxButton.OK);
+            // TODO:TEST
+            // NavigationService.Navigate(new Uri("/Views/Common/CommitView.xaml", UriKind.Relative));
+            MessageBox.Show("由于豆瓣API实在太烂，UP主仍在开发中的说~~~~", "温馨提示", MessageBoxButton.OK);
         }
+
+        private void PicList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PicList.SelectedIndex != -1)
+            {
+                NavigateImageView(PicList.SelectedIndex);
+            }
+            PicList.SelectedIndex = -1;
+        }
+
     }
 
 

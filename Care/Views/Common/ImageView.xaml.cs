@@ -32,28 +32,28 @@ namespace Care.Views.Common
         {
             double horizonChange = e.HorizontalChange;
             // horizonChange < 0 表示手向左滑
-            if (horizonChange < 0)
+            if (horizonChange < -100)
             {
-                if (m_nIndex == 8)
+                if (m_nIndex == (App.ViewModel.PictureItems.Count - 1))
                 {
-                    MessageBox.Show("已经是最后一页哦~");
+                    MessageBox.Show("已经是最后一页的说~");
                     return;
                 }
                 else
                 {
-                    this.DataContext = PictureMap.StaticPictureMap[++m_nIndex];
+                    this.DataContext = App.ViewModel.PictureItems[++m_nIndex];
                 }
             }
-            else
+            else if (horizonChange > 100)
             {
                 if (m_nIndex < 1)
                 {
-                    MessageBox.Show("已经是第一页了哦~");
+                    MessageBox.Show("已经是第一页了的说~");
                     return;
                 }
                 else
                 {
-                    this.DataContext = PictureMap.StaticPictureMap[--m_nIndex];
+                    this.DataContext = App.ViewModel.PictureItems[--m_nIndex];
                 }
             }
             
@@ -65,7 +65,7 @@ namespace Care.Views.Common
             if (queryString.ContainsKey("Index"))
             {
                 m_nIndex = int.Parse(queryString["Index"]);
-                this.DataContext = App.ViewModel._pictureItem4;
+                this.DataContext = App.ViewModel.PictureItems[m_nIndex];
             }
             
             base.OnNavigatedTo(e);
@@ -99,7 +99,7 @@ namespace Care.Views.Common
 
         private void ApplicationBarIconButton_Click(object sender, EventArgs e)
         {
-            String url = PictureMap.StaticPictureMap[m_nIndex].FullUrl;
+            String url = App.ViewModel.PictureItems[m_nIndex].FullUrl;
             WebClient client = new WebClient();
             client.OpenReadCompleted += (s, e1) =>
             {
@@ -107,6 +107,10 @@ namespace Care.Views.Common
                 {
                     MediaLibrary library = new MediaLibrary();
                     library.SavePicture("Image_From_Care", e1.Result);
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                   {
+                       MessageBox.Show("保存成功");
+                   });
                 }
             };
             client.OpenReadAsync(new Uri(url, UriKind.Absolute));

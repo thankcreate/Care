@@ -28,6 +28,13 @@ namespace Care.Tool
                     }
                     );
                 App.ViewModel.Items.Clear();
+                if (App.ViewModel.ListItems.Count == 0)
+                {
+                    ItemViewModel model = new ItemViewModel();
+                    model.Title = "没有得到任何结果的说~~~";
+                    model.Content = "请到帐号设置页中登陆并设置关注人";
+                    App.ViewModel.ListItems.Add(model);
+                }
                 App.ViewModel.ListItems.ForEach(p => App.ViewModel.Items.Add(p));
                
                 RefreshPicturePage();
@@ -46,26 +53,16 @@ namespace Care.Tool
                     {
                         return (a.TimeObject < b.TimeObject ? 1 : a.TimeObject == b.TimeObject ? 0 : -1);
                     });
-                int count = App.ViewModel.ListPictureItems.Count;
-                if (count < 9)
-                {
-                    int remain = 9 - count;
-                    for (; remain != 0; --remain)
-                    {
-                        App.ViewModel.ListPictureItems.Add(new PictureItem());
-                    }
-                }
 
+                // 目前最多只需要9个
+                int count = App.ViewModel.ListPictureItems.Count > 9 ? 9 : App.ViewModel.ListPictureItems.Count;
 
-                App.ViewModel.PictureItem0 = App.ViewModel.ListPictureItems[0];
-                App.ViewModel.PictureItem1 = App.ViewModel.ListPictureItems[1];
-                App.ViewModel.PictureItem2 = App.ViewModel.ListPictureItems[2];
-                App.ViewModel.PictureItem3 = App.ViewModel.ListPictureItems[3];
-                App.ViewModel.PictureItem4 = App.ViewModel.ListPictureItems[4];
-                App.ViewModel.PictureItem5 = App.ViewModel.ListPictureItems[5];
-                App.ViewModel.PictureItem6 = App.ViewModel.ListPictureItems[6];
-                App.ViewModel.PictureItem7 = App.ViewModel.ListPictureItems[7];
-                App.ViewModel.PictureItem8 = App.ViewModel.ListPictureItems[8];
+                App.ViewModel.PictureItems.Clear();
+                App.ViewModel.ListPictureItems.GetRange(0, count).ForEach(p => 
+                   {
+                       string test = p.Url;
+                       App.ViewModel.PictureItems.Add(p);
+                   });
             });
         }
     }

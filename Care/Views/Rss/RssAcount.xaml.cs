@@ -114,7 +114,17 @@ namespace Care.Views
                 PreferenceHelper.SetPreference("RSS_FollowerPath", text);
                 WebClient client = new WebClient();
                 client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
-                client.DownloadStringAsync(new Uri(text));
+                try
+                {
+                    client.DownloadStringAsync(new Uri(text));
+                }
+                catch
+                {
+                   Deployment.Current.Dispatcher.BeginInvoke(() =>
+                   {
+                       MessageBox.Show("请输入合法地址");
+                   });
+                }                
             }
             else
             {
@@ -132,9 +142,18 @@ namespace Care.Views
             {
                 App.ViewModel.RssItems.Clear();
                 FollowerSiteName = feed.Title.Text;  
-                PreferenceHelper.SetPreference("RSS_FollowerSite", FollowerSiteName);  
+                PreferenceHelper.SetPreference("RSS_FollowerSite", FollowerSiteName);
+                App.ViewModel.IsChanged = true;
             }            
             );
+        }
+
+        private void StopFeed_Click(object sender, RoutedEventArgs e)
+        {
+            FollowerSitePath = "未设置";
+            FollowerSiteName = "未关注"; 
+            PreferenceHelper.RemoveRssPreference();
+            App.ViewModel.IsChanged = true;            
         }      
     }
 }

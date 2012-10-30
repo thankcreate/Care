@@ -12,7 +12,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
     xmlns:c4fToolkit="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
-    shell:SystemTray.IsVisible="False">
+    shell:SystemTray.IsVisible="False" >
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
@@ -32,20 +32,18 @@
             <TextBlock MaxWidth="300"  VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" FontSize="24" Foreground="#FF4F55D1"  Text="{Binding Title}" Margin="12,200,0,9" Height="auto" />
         </Grid>
         <!--ContentPanel - place additional content here-->
-        
+
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <ScrollViewer Margin="0,0,0,10">
-            <StackPanel>                
-                <TextBlock Foreground="Black" TextWrapping="Wrap" Text="{Binding Content}"/>
-                <Image  x:Name="ThumbImage" Source="{Binding FullImageURL}" HorizontalAlignment="Center" Stretch="Uniform"  Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
-                <c4fToolkit:ChatBubble Background="#FFFFD8D8"  ChatBubbleDirection="UpperLeft" Visibility="{Binding IsForwardItemExists}" Margin="0,4,0,0" Padding="8,4">
+                <StackPanel>
+                    <TextBlock Foreground="Black" TextWrapping="Wrap" Text="{Binding Content}"/>
+                    <Image  x:Name="ThumbImage" Source="{Binding FullImageURL}" HorizontalAlignment="Center" Stretch="Uniform"  Visibility="{Binding IsImageExists}" Margin="0,0,0,0" VerticalAlignment="Center"/>
+                    <c4fToolkit:ChatBubble Background="#FFFFD8D8"  ChatBubbleDirection="UpperLeft" Visibility="{Binding IsForwardItemExists}" Margin="0,4,0,0" Padding="8,4">
+                      
+                        <StackPanel>
+                            <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,5" Foreground="#FF4F55D1" FontSize="22"/>
+                            <TextBlock x:Name="RetweetStatusBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Content}" Foreground="#FF2B2B24" FontSize="18"/>
 
-
-                    <!--<Border x:Name="RetweetBorder"  Margin="0,4,0,0" Padding="8,4" Visibility="{Binding IsForwardItemExists}" CornerRadius="6" Background="#63BD787A" BorderThickness="0.8" BorderBrush="#FF342C2C">-->
-                    <StackPanel>
-                        <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,5" Foreground="#FF4F55D1" FontSize="22"/>
-                        <TextBlock x:Name="RetweetStatusBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Content}" Foreground="#FF2B2B24" FontSize="18"/>
-                        
                             <Image x:Name="RetweetThumbImage" 
                                    Margin="0,10,0,0" 
                                    Stretch="Uniform" 
@@ -54,19 +52,41 @@
                                    HorizontalAlignment="Center" 
                                    VerticalAlignment="Center" 
                                    />
-                                               
-                    </StackPanel>
-                    <!--</Border>-->
-                </c4fToolkit:ChatBubble>
-                <TextBlock Foreground="Gray" Margin="0,10,0,0"  x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Left">
+                        </StackPanel>
+                       
+                    </c4fToolkit:ChatBubble>
+                    
+                    <TextBlock Foreground="Gray" Margin="0,10,0,0"  x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Left" />
 
-                </TextBlock>
-            </StackPanel>
+                    <!--<ListBox x:Name="listComments" ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding Comments}" FlowDirection="LeftToRight">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid>
+                                        <Image VerticalAlignment="Bottom"  Source="{Binding IconURL}" Width="75" Height="75"/>
+                                    </Grid>
+                                    
+                                    <c4fToolkit:ChatBubble  Grid.Column="1"  Margin="10,0,0,0" Background="#FFFFD8D8"  ChatBubbleDirection="LowerLeft"   Padding="8,4">
+                                        <StackPanel>
+                                            <TextBlock Foreground="#FF4F55D1" FontSize="22" TextWrapping="Wrap"  Text="{Binding Title}" />
+                                            <TextBlock Foreground="Black" FontSize="18" TextWrapping="Wrap" Text="{Binding Content}" />
+                                            <TextBlock Foreground="Gray" FontSize="15"  Text="{Binding Time}" />
+                                        </StackPanel>
+                                    </c4fToolkit:ChatBubble>                                    
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>-->
+                </StackPanel>
             </ScrollViewer>
         </Grid>
 
     </Grid>
- 
+
     <!--Sample code showing usage of ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">

@@ -20,14 +20,19 @@
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot"  Background="White">
+    <Grid x:Name="LayoutRoot" >
+
+        <Grid.Background>
+            <ImageBrush ImageSource="../../Images/Background/cloud2.PNG" />
+        </Grid.Background>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,28">
+        <StackPanel  x:Name="TitlePanel" Grid.Row="0" Margin="12,38,0,28">
             <TextBlock Foreground="#FF4F55D1" x:Name="ApplicationTitle" Text="新浪微博" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock Foreground="#FF4F55D1" x:Name="PageTitle" Text="关注对象" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>

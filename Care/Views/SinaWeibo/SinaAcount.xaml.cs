@@ -105,7 +105,18 @@ namespace Care.Views
 
         private void SinaAcount_Loaded(object sender, RoutedEventArgs e)
         {
-            //GetFriendList();
+            RefreshRealData();
+        }
+
+        // 此处的目的是试探到底新浪微博帐号的信息有没有过期
+        // 因为即使过期了，一开始加载的数据还是从IsolatedStorage中拉取的
+        // 用户会误认为当前登陆仍然有效
+        // 绝大多数情况下这一些得到的数据和构造函数中得到的数据应该是完全一样的
+        // 之所以构造函数里那一块不删，是为了使用户加载页面时不显得卡
+        private void RefreshRealData()
+        {
+            /*因为新浪微博实际上是可以在获取信息的错误码中明确得到Token
+             过期的错误码的，所以此处先留空*/
         }
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -210,7 +221,7 @@ namespace Care.Views
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        MessageBoxResult result = MessageBox.Show("新浪微博用户尚未登陆，或登陆已过期", "提示", MessageBoxButton.OKCancel);
+                        MessageBoxResult result = MessageBox.Show("新浪微博用户尚未登陆，或登陆已过期", "提示", MessageBoxButton.OK);
                         if (result == MessageBoxResult.OK)
                         {
                             //  WeiboLogin(null, null);
@@ -264,6 +275,7 @@ namespace Care.Views
             FollowerNickName = "未关注";
             CurrentAvatar = "";
             FollowerAvatar = "";
+            App.ViewModel.IsChanged = true;
         }
 
         private void btnSetFollower_Click(object sender, RoutedEventArgs e)
