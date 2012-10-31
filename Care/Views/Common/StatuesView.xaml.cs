@@ -45,7 +45,7 @@ namespace Care.Views.Common
                 Comments tempComments = comments;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    foreach (Comment comment in comments.comments)
+                    foreach(Comment comment in comments.comments)
                     {
                         m_statusModel.Comments.Add(SinaWeiboModelConverter.ConvertCommentToCommon(comment));
                     }
