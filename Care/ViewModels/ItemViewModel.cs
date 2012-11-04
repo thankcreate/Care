@@ -30,6 +30,7 @@ namespace Care
         private string _title;
         private string _originalURL;
         private string _description;
+        private string _ownerID;
 
         public ObservableCollection<CommentViewModel> Comments { get; set; }
 
@@ -266,7 +267,23 @@ namespace Care
                 if (value != _description)
                 {
                     _title = value;
-                    NotifyPropertyChanged("_description");
+                    NotifyPropertyChanged("Description");
+                }
+            }
+        }
+
+        public string OwnerID
+        {
+            get
+            {
+                return _ownerID;
+            }
+            set
+            {
+                if (value != _ownerID)
+                {
+                    _ownerID = value;
+                    NotifyPropertyChanged("OwnerID");
                 }
             }
         }

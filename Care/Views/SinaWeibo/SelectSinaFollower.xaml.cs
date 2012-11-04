@@ -20,6 +20,7 @@ using Care.Tool;
 using System.Collections;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using System.ComponentModel;
 
 namespace Care
 {

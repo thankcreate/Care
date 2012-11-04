@@ -13,10 +13,11 @@ using Microsoft.Phone.Controls;
 using System.ComponentModel;
 using Care.Tool;
 using System.Collections.ObjectModel;
+using System.Text;
 
 namespace Care.Views.Common
 {
-    public partial class StatuesView : PhoneApplicationPage, INotifyPropertyChanged
+    public partial class StatuesView : PhoneApplicationPage
     {
         int m_nIndex = -1;
         ItemViewModel m_statusModel;
@@ -28,30 +29,7 @@ namespace Care.Views.Common
         }
 
         private void StatuesView_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (m_statusModel == null)
-                return;
-            if (m_statusModel.Comments == null)
-                m_statusModel.Comments = new ObservableCollection<CommentViewModel>();
-            
-            m_statusModel.Comments.Clear();
-            SinaWeiboFetcher fetcher = new SinaWeiboFetcher();
-            fetcher.LoadSinaWeiboCommentByStatusID(m_statusModel.ID, (comments) =>
-            {
-                if (comments == null)
-                {
-                    return;
-                }
-                Comments tempComments = comments;
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    foreach(Comment comment in comments.comments)
-                    {
-                        m_statusModel.Comments.Add(SinaWeiboModelConverter.ConvertCommentToCommon(comment));
-                    }
-                });
-            });
-            
+        {           
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -75,6 +53,13 @@ namespace Care.Views.Common
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
+        }
+
+        private void Comment_Click(object sender, EventArgs e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("/Views/Common/CommentView.xaml?ID={0}&Type={1}", m_statusModel.ID, m_statusModel.Type);
+            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
         }
     }
 }

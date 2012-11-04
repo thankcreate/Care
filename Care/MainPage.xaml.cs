@@ -356,7 +356,7 @@ namespace Care
             // 20:发表日志 
             // 30:上传照片
             // 的新鲜事，以逗号分隔
-            param.Add(new APIParameter("type", "10"));
+            param.Add(new APIParameter("type", "10,30"));
             param.Add(new APIParameter("uid", renrenFollowID));            
             // TODO: 注意此处30条合不合适
             String strCount = PreferenceHelper.GetPreference("Renren_RecentCount");
