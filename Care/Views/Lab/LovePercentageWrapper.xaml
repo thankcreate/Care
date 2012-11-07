@@ -1,0 +1,73 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.Lab.LovePercentageWrapper"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="White"
+    shell:SystemTray.BackgroundColor="Transparent"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,25,0,10">
+            <StackPanel Orientation="Horizontal">
+                <Image Margin="5,0,0,0"  Width="30" Source="../../Images/Thumb/microscope.png" />
+                <TextBlock Margin="0,0,0,0"  Foreground="White" x:Name="ApplicationTitle" Text="奇怪的地方" Style="{StaticResource PhoneTextNormalStyle}"/>
+            </StackPanel>
+            <TextBlock Foreground="White" x:Name="PageTitle" Text="姻缘指数" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <Grid x:Name="InfoPanel" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Rectangle VerticalAlignment="top" HorizontalAlignment="Left"  RadiusX="10" RadiusY="10" Height="80" Width="80" Margin="23,0,0,0" Fill="#FFd5bdaa"  />
+                <Image Margin="28,6,0,4"  Height="70" Source="/Care;component/Images/Thumb/Cheeky.png" HorizontalAlignment="Left"  Name="defaul2" Stretch="Fill" VerticalAlignment="Top" Width="70" />
+                <Image Margin="28,6,0,4" Stretch="UniformToFill" Source="{Binding LogoSource}" Width="70" Height="70" HorizontalAlignment="left" />
+            </Grid>
+
+            <StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+                <TextBlock  VerticalAlignment="Bottom" HorizontalAlignment="Left"  Foreground="White" x:Name="txtName" Text="{Binding Name}" FontSize="30" Margin="10,0,0,0"/>
+                <TextBlock  VerticalAlignment="Bottom" HorizontalAlignment="Right"  Foreground="White" x:Name="txtName1" Text="{Binding Name1}" FontSize="30" Margin="10,0,0,0"/>
+            </StackPanel>
+
+            <Grid Grid.Column="3" Margin="0,0,20,0">
+                <Rectangle VerticalAlignment="top" HorizontalAlignment="Right"  RadiusX="10" RadiusY="10" Height="80" Width="80" Margin="0,0,0,0" Fill="#FFd5bdaa"  />
+                <Image Margin="5,6,0,4"  Height="70" Source="/Care;component/Images/Thumb/Cheeky.png" HorizontalAlignment="Left"  Name="defaul3" Stretch="Fill" VerticalAlignment="Top" Width="70" />
+                <Image Margin="5,6,0,4" Stretch="UniformToFill" Source="{Binding LogoSource1}" Width="70" Height="70" HorizontalAlignment="left" />
+            </Grid>
+        </Grid>
+        
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="2" Margin="12,0,12,0"></Grid>
+    </Grid>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Text="刷新" Click="refresh_click" />
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/share.png" Text="分享" Click="share_Click" />
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

@@ -1,0 +1,176 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Care.Views.Common.CommitView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="False">
+	<phone:PhoneApplicationPage.Resources>
+<!--x:Key="PhoneTextBox"-->
+		<Style x:Key="TextBoxStyle1" TargetType="TextBox" >
+			<Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
+			<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+			<Setter Property="Background" Value="{StaticResource PhoneTextBoxBrush}"/>
+			<Setter Property="Foreground" Value="{StaticResource PhoneTextBoxForegroundBrush}"/>
+			<Setter Property="BorderBrush" Value="{StaticResource PhoneTextBoxBrush}"/>
+			<Setter Property="SelectionBackground" Value="{StaticResource PhoneAccentBrush}"/>
+			<Setter Property="SelectionForeground" Value="{StaticResource PhoneTextBoxSelectionForegroundBrush}"/>
+			<Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
+			<Setter Property="Padding" Value="2"/>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="TextBox">
+						<Grid Background="Transparent">
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="CommonStates">
+									<VisualState x:Name="Normal"/>
+									<VisualState x:Name="MouseOver"/>
+									<VisualState x:Name="Disabled">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="EnabledBorder" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledOrReadonlyBorder" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="ReadOnly">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="EnabledBorder" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Collapsed</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledOrReadonlyBorder" Storyboard.TargetProperty="Visibility">
+												<DiscreteObjectKeyFrame KeyTime="0">
+													<DiscreteObjectKeyFrame.Value>
+														<Visibility>Visible</Visibility>
+													</DiscreteObjectKeyFrame.Value>
+												</DiscreteObjectKeyFrame>
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledOrReadonlyBorder" Storyboard.TargetProperty="Background">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxBrush}" />
+											</ObjectAnimationUsingKeyFrames>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetName="DisabledOrReadonlyContent" Storyboard.TargetProperty="Foreground">
+												<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneTextBoxReadOnlyBrush}" />
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="FocusStates">
+									<VisualStateGroup.Transitions>
+										<VisualTransition GeneratedDuration="0">
+											<Storyboard>
+												<ColorAnimation Duration="0" To="#FF0087FF" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="EnabledBorder" d:IsOptimized="True"/>
+											</Storyboard>
+										</VisualTransition>
+									</VisualStateGroup.Transitions>
+									<VisualState x:Name="Focused">
+										<Storyboard>
+											<ColorAnimation Duration="0" To="#FF0087FF" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="EnabledBorder" d:IsOptimized="True"/>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Unfocused">
+										<Storyboard>
+											<ColorAnimation Duration="0" To="Transparent" Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)" Storyboard.TargetName="DisabledOrReadonlyBorder" d:IsOptimized="True"/>
+											<ColorAnimation Duration="0" To="#FF0087FF" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)" Storyboard.TargetName="EnabledBorder" d:IsOptimized="True"/>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+								<VisualStateGroup x:Name="ValidationStates">
+									<VisualState x:Name="InvalidFocused"/>
+									<VisualState x:Name="Valid"/>
+									<VisualState x:Name="InvalidUnfocused"/>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<Border x:Name="EnabledBorder" BorderThickness="{TemplateBinding BorderThickness}" Margin="{StaticResource PhoneTouchTargetOverhang}" Background="#BFFFFFFF" BorderBrush="#BFFFFFFF" >
+								<ContentControl x:Name="ContentElement" BorderThickness="3" Padding="{TemplateBinding Padding}" 
+									HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Margin="{StaticResource PhoneTextBoxInnerMargin}" BorderBrush="#FFFF051C"/>
+							</Border>
+							<Border x:Name="DisabledOrReadonlyBorder" Visibility="Collapsed" Background="Transparent" BorderBrush="{StaticResource PhoneTextBoxEditBorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Margin="{StaticResource PhoneTouchTargetOverhang}" >
+								<TextBox x:Name="DisabledOrReadonlyContent" Text="{TemplateBinding Text}" Foreground="{StaticResource PhoneDisabledBrush}" Background="Transparent"
+									SelectionBackground="{TemplateBinding SelectionBackground}" SelectionForeground="{TemplateBinding SelectionForeground}"
+									TextWrapping="{TemplateBinding TextWrapping}" TextAlignment="{TemplateBinding TextAlignment}" IsReadOnly="True" Template="{StaticResource PhoneDisabledTextBoxTemplate}"
+									FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" FontStyle="{TemplateBinding FontStyle}" BorderBrush="#BF00FF79" />
+							</Border>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+
+	</phone:PhoneApplicationPage.Resources>
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.Background>
+            <ImageBrush ImageSource="../../Images/Background/CommitView.png"></ImageBrush>
+        </Grid.Background>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="我只在乎你" Foreground="#ff0a473e" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="发布" Foreground="#ff0a473e"  Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel>
+                <Grid x:Name="HeaderGrid" Margin="0,5,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Image x:Name="imgLogo" Source="{Binding LogoSource}" Height="40"  Margin="16,0,4,-4" RenderTransformOrigin="0.594,-0.094" />
+                    <TextBlock Margin="10,0,0,0" x:Name="TitleBlock" d:LayoutOverrides="Width, Height" Foreground="#333333"  FontWeight="Bold" FontSize="21.333" VerticalAlignment="Bottom" Grid.Column="1"/>
+                    <TextBlock x:Name="CountTitleBlock" Text="剩余字数：" Foreground="#333333" Grid.Column="2" HorizontalAlignment="Right" d:LayoutOverrides="Height" VerticalAlignment="Bottom"/>
+                    <TextBlock x:Name="CountBlock" Foreground="Black"  d:LayoutOverrides="Height" Grid.Column="3" HorizontalAlignment="Right" Margin="0,0,10,-5" FontSize="32" Text="{Binding WordCount}" Width="50" VerticalAlignment="Bottom" />
+                  
+                </Grid>
+                <TextBox 
+                    Name="txtInput"
+                    AcceptsReturn="True"
+                    FontSize="20"
+                    Height="267" MaxLength="{Binding WordMaxLength}" 
+                    TextWrapping="Wrap" 
+                    Foreground="Black" TextChanged="txtInput_Changed" Style="{StaticResource TextBoxStyle1}" />
+                <Image Name="imgPreview"  Margin="13,0,0,0"  HorizontalAlignment="Left"  Width="200" Height="200"/>
+            </StackPanel>            
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/send.png" Text="发送" Click="send_Click" />           
+           
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>
