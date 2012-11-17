@@ -95,6 +95,9 @@
     <Reference Include="System.Xml.XPath">
       <HintPath>..\..\..\Program Files (x86)\Microsoft SDKs\Silverlight\v4.0\Libraries\Client\System.Xml.XPath.dll</HintPath>
     </Reference>
+    <Reference Include="UmengClassLibrary">
+      <HintPath>dll\UmengClassLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="WeiboSdk">
       <HintPath>dll\WeiboSdk.dll</HintPath>
     </Reference>
@@ -103,17 +106,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\Renren\RenrenAddCommentResult.cs" />
     <Compile Include="DataModel\Renren\RenrenNews.cs" />
     <Compile Include="DataModel\Renren\RenrenSearchedMan.cs" />
+    <Compile Include="DataModel\Renren\RenrenShareGetCommentsResult.cs" />
+    <Compile Include="Tool\Converter\DoubanModelConverter.cs" />
     <Compile Include="Tool\ExtHelpers.cs" />
     <Compile Include="DataModel\SinaWeibo\StatusItem.cs" />
-    <Compile Include="DoubanHelper\DoubanHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tool\Fetcher\AllFetcher.cs" />
     <Compile Include="Tool\Fetcher\BaseFetcher.cs" />
+    <Compile Include="Tool\Fetcher\DoubanFetcher.cs" />
+    <Compile Include="Tool\Fetcher\RenrenFetcher.cs" />
     <Compile Include="Tool\Fetcher\SinaWeiboFetcher.cs" />
     <Compile Include="Tool\MiscTool.cs" />
     <Compile Include="Tool\PictureMap.cs" />
@@ -140,6 +146,12 @@
     </Compile>
     <Compile Include="Views\Common\StatuesView.xaml.cs">
       <DependentUpon>StatuesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Douban\DoubanAccount.xaml.cs">
+      <DependentUpon>DoubanAccount.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Douban\SelectDoubanFollower.xaml.cs">
+      <DependentUpon>SelectDoubanFollower.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Guide\GuidePage.xaml.cs">
       <DependentUpon>GuidePage.xaml</DependentUpon>
@@ -212,7 +224,7 @@
       <DependentUpon>SelectSinaFollower.xaml</DependentUpon>
     </Compile>
     <Compile Include="TiltEffect.cs" />
-    <Compile Include="Tool\Converter\FeedModelConverter.cs" />
+    <Compile Include="Tool\Converter\RSSFeedModelConverter.cs" />
     <Compile Include="Tool\JSONConvert.cs" />
     <Compile Include="Tool\OAuthBase.cs" />
     <Compile Include="Tool\Converter\SinaWeiboModelConverter.cs" />
@@ -273,6 +285,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Common\StatuesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Douban\DoubanAccount.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Douban\SelectDoubanFollower.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -414,6 +434,7 @@
     <Resource Include="Heart_Blue.png" />
     <Resource Include="Images\Background\cloud2.png" />
     <Resource Include="Images\Background\CommitView.png" />
+    <Resource Include="Images\Account\RenrenLogo_Blue.png" />
     <Content Include="Images\Bar\close.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -460,6 +481,7 @@
     <Resource Include="Images\Thumb\Cheeky.png" />
     <Content Include="Images\Thumb\CheekyTransparent.png" />
     <Resource Include="Images\Thumb\Closed Book.png" />
+    <Resource Include="Images\Thumb\douban_logo.png" />
     <Content Include="Images\Thumb\HeartTransparent.png" />
     <Resource Include="Images\Thumb\Heart_Blue.png" />
     <Resource Include="Images\Thumb\ie.png" />
@@ -467,6 +489,7 @@
     <Resource Include="Images\Thumb\Open Book.png" />
     <Resource Include="Images\Thumb\OpenBook.PNG" />
     <Resource Include="Images\Thumb\OpenBook2.PNG" />
+    <Resource Include="Images\Thumb\microscope.png" />
     <Content Include="Images\Thumb\OpenBookTransparent.PNG" />
     <Content Include="Images\Thumb\OpenBookTransparent2.PNG" />
     <Resource Include="Images\Thumb\pen.png" />
@@ -474,12 +497,19 @@
     <Resource Include="Images\Thumb\rss.png" />
     <Resource Include="Images\Thumb\weibologo.png" />
     <Resource Include="Images\Thumb\yangmi.jpg" />
+    <Resource Include="Images\Thumb\rotate.png" />
     <Content Include="SmartMad\SmartMad.Ads.WindowsPhone7.dll" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataModel\RSS\" />
     <Folder Include="Resource\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DoubanSDK\DoubanSDK.csproj">
+      <Project>{26A195F8-B01E-4A36-8DDA-669C0DE9F32C}</Project>
+      <Name>DoubanSDK</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

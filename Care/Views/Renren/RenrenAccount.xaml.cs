@@ -114,23 +114,23 @@ namespace Care.Views
         private void RefreshRealData()
         {
             api.GetCurUserInfo((e1 , e) =>
+            {
+                if (e.Error != null)
                 {
-                    if (e.Error != null)
-                    {
-                        CurrentNickName = "未登陆";
-                        CurrentAvatar = "";                       
-                    }
-                    else
-                    {
-                        UserDetails user = new UserDetails();
-                        user = e.Result;
-                        CurrentNickName = user.name;
-                        CurrentAvatar = user.headurl;
-                        PreferenceHelper.SetPreference("Renren_Avatar", user.headurl);
-                        PreferenceHelper.SetPreference("Renren_NickName", user.name);
-                        PreferenceHelper.SetPreference("Renren_ID", user.uid.ToString());
-                    }
-                });
+                    CurrentNickName = "未登陆";
+                    CurrentAvatar = "";                    
+                }
+                else
+                {
+                    UserDetails user = new UserDetails();
+                    user = e.Result;
+                    CurrentNickName = user.name;
+                    CurrentAvatar = user.headurl;
+                    PreferenceHelper.SetPreference("Renren_Avatar", user.headurl);
+                    PreferenceHelper.SetPreference("Renren_NickName", user.name);
+                    PreferenceHelper.SetPreference("Renren_ID", user.uid.ToString());
+                }
+            });
         }
 
 
@@ -143,7 +143,19 @@ namespace Care.Views
         // 点击登陆
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            List<string> scope = new List<string> { "publish_feed", "publish_blog", "read_user_album", "create_album", "photo_upload" };
+            List<string> scope = new List<string> { 
+                "publish_feed",
+                "publish_blog", 
+                "publish_share",
+                "read_user_album", 
+                "read_user_status",
+                "read_user_photo",
+                "read_user_comment",
+                "read_user_status",
+                "publish_comment",
+                "read_user_share",                
+                "create_album", 
+                "photo_upload" };
             api.Login(this,scope, renren_LoginCompletedHandler);
         }
 
@@ -215,7 +227,7 @@ namespace Care.Views
 
         private void Fail(object sender, ExceptionRoutedEventArgs e)
         {
-            int a = 1;
+            //int a = 1;
         }
     }
 }

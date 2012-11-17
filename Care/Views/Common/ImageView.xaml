@@ -24,7 +24,10 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,65">
-            <Image Name="img"  Source="{Binding FullUrl}" Tap="Image_Tap" />
+            <ScrollViewer IsHitTestVisible="True">
+                <Image Name="img"  Source="{Binding FullUrl}" Tap="Image_Tap" />
+            </ScrollViewer>
+            
             <StackPanel x:Name="innerTextControl"  Opacity="0.8"  Background="Gray"  VerticalAlignment="Bottom">
                 <TextBlock Padding="10,10,10,10" FontSize="20"  TextWrapping="Wrap"  Foreground="White"  Text="{Binding Content}"  Height="auto" />
                 <TextBlock Padding="10,0,10,10" FontSize="18" TextWrapping="Wrap" TextAlignment="Right"  Foreground="White"  Text="{Binding TypeString}"  Height="auto" />
@@ -35,9 +38,11 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="0.9" x:Name="bar"  IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/previous.png" Text="上一页" Click="Previos_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/download.png" Text="保存" Click="ApplicationBarIconButton_Click" />
-            
-            
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/next.png" Text="下一页" Click="Next_Click" />
+
+
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

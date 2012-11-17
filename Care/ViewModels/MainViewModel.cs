@@ -25,11 +25,13 @@ namespace Care
             this.SinaWeiboItems = new List<ItemViewModel>();
             this.RssItems = new List<ItemViewModel>();
             this.RenrenItems = new List<ItemViewModel>();
+            this.DoubanItems = new List<ItemViewModel>();
 
             this.PictureItems = new ObservableCollection<PictureItem>();
             this.PictureItems2 = new ObservableCollection<PictureItem>();
             this.ListPictureItems = new List<PictureItem>();
             this.SinaWeiboPicItems = new List<PictureItem>();
+            this.RenrenPicItems = new List<PictureItem>();
             this.RssPicItems = new List<PictureItem>();          
 
             this.ItemsNeedRefresh = 2;
@@ -44,6 +46,7 @@ namespace Care
         public List<ItemViewModel> SinaWeiboItems { get; private set; }
         public List<ItemViewModel> RssItems { get; private set; }
         public List<ItemViewModel> RenrenItems { get; private set; }
+        public List<ItemViewModel> DoubanItems { get; private set; }
         public int ItemsNeedRefresh;
         public User SinaWeiboAccount;
         public string SinaWeiboCareID;
@@ -56,6 +59,7 @@ namespace Care
         public ObservableCollection<PictureItem> PictureItems { get; private set; }
         public List<PictureItem> ListPictureItems { get; private set; }
         public List<PictureItem> SinaWeiboPicItems { get; private set; }
+        public List<PictureItem> RenrenPicItems { get; private set; }
         public List<PictureItem> RssPicItems { get; private set; }
 
         // Setting
@@ -157,9 +161,9 @@ namespace Care
         /// </summary>
         public void LoadData()
         {
-            // Sample data; replace with real data
-            this.Items.Add(new ItemViewModel() { Title = "runtime one", Content = "Maecenas praesent accumsan bibendum"});
-            this.Items.Add(new ItemViewModel() { Title = "runtime two", Content = "Dictumst eleifend facilisi faucibus"});
+            //// Sample data; replace with real data
+            //this.Items.Add(new ItemViewModel() { Title = "runtime one", Content = "Maecenas praesent accumsan bibendum"});
+            //this.Items.Add(new ItemViewModel() { Title = "runtime two", Content = "Dictumst eleifend facilisi faucibus"});
             //this.Friends.Add(new User() { name = "xiechuang", profile_image_url = "love wxh" });
             //this.Friends.Add(new User() { name = "wuxihui", profile_image_url = "don't love tron T_T" });
            this.IsDataLoaded = true;

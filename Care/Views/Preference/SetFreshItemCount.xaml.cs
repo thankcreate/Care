@@ -61,11 +61,10 @@ namespace Care.Views.Preference
             this.DataContext = this;
             InitializeComponent();
             sinaPicker.ItemsSource = new List<String>(source);
-            renrenPicker.ItemsSource = new List<String>(source);   
+            renrenPicker.ItemsSource = new List<String>(source);
+            doubanPicker.ItemsSource = new List<String>(source);   
             this.Loaded += new RoutedEventHandler(Page_Loaded);
         }
-
-
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
@@ -104,9 +103,7 @@ namespace Care.Views.Preference
         // TODO: 其实应该加上限制，比如新浪好像最多一次50条
         // 最好是换成下拉列表控件
         private void Confirm_Click(object sender, EventArgs e)
-        {
-            //PreferenceHelper.SetPreference("SinaWeibo_RecentCount", txtSinaWeiboCount.Text);
-            //PreferenceHelper.SetPreference("Renren_RecentCount", txtRenrenCount.Text);
+        {       
             NavigationService.GoBack();
         }
 
@@ -143,5 +140,17 @@ namespace Care.Views.Preference
                 PreferenceHelper.SetPreference("Renren_RecentCount", recentCount);
             }            
         }
+
+        private void DoubanSelection_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            int index = doubanPicker.SelectedIndex;
+            String doubanCount = IndexToValue(index);
+            // Selection_Changed会比Init发生得早，若此时SerPreference
+            // Init过程中得到的那个Preference就被覆盖了
+            if (m_bInitFinished)
+            {
+                PreferenceHelper.SetPreference("Douban_RecentCount", doubanCount);
+            }
+        }        
     }
 }

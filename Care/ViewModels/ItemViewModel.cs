@@ -18,6 +18,7 @@ namespace Care
     {
 
         private string _iconURL;
+        private string _largeIconURL;
         private string _imageURL;
         private string _midImageURL;
         private string _fullImageURL;
@@ -31,10 +32,15 @@ namespace Care
         private string _originalURL;
         private string _description;
         private string _ownerID;
+        private string _commentCount;
+        private string _sharedCount;
 
         public ObservableCollection<CommentViewModel> Comments { get; set; }
 
         public string ID { get; set; }
+
+        // 这是只针对人人的，因为人人的新鲜事分很多类型
+        public string RenrenFeedType { get; set; }
 
         public ItemViewModel ForwardItem{ get; set; }
 
@@ -78,6 +84,24 @@ namespace Care
             }
         }
 
+        public string LargeIconURL
+        {
+            get
+            {
+                if(String.IsNullOrEmpty(_largeIconURL))
+                    return _iconURL;
+                return _largeIconURL;
+            }
+            set
+            {
+                if (value != _largeIconURL)
+                {
+                    _largeIconURL = value;
+                    NotifyPropertyChanged("LargeIconURL");
+                }
+            }
+        }        
+
         public string ImageURL
         {
             get
@@ -98,6 +122,8 @@ namespace Care
         {
             get
             {
+                if (String.IsNullOrEmpty(_midImageURL))
+                    return ImageURL;
                 return _midImageURL;
             }
             set
@@ -114,6 +140,8 @@ namespace Care
         {
             get
             {
+                if (String.IsNullOrEmpty(_fullImageURL))
+                    return MidImageURL;
                 return _fullImageURL;
             }
             set
@@ -284,6 +312,38 @@ namespace Care
                 {
                     _ownerID = value;
                     NotifyPropertyChanged("OwnerID");
+                }
+            }
+        }
+
+        public string CommentCount
+        {
+            get
+            {
+                return _commentCount;
+            }
+            set
+            {
+                if (value != _commentCount)
+                {
+                    _commentCount = value;
+                    NotifyPropertyChanged("CommentCount");
+                }
+            }
+        }
+
+        public string SharedCount
+        {
+            get
+            {
+                return _sharedCount;
+            }
+            set
+            {
+                if (value != _sharedCount)
+                {
+                    _sharedCount = value;
+                    NotifyPropertyChanged("SharedCount");
                 }
             }
         }

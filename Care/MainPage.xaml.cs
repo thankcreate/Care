@@ -24,14 +24,13 @@ using System.ServiceModel.Syndication;
 using Care.Views;
 using Care.Tool;
 using RenrenSDKLibrary;
+using DoubanSDK;
 
 namespace Care
 {
 
     public partial class MainPage : PhoneApplicationPage
-    {
-        
-        DoubanHelper m_doubanHelper;
+    {   
         ProgressIndicatorHelper m_progressIndicatorHelper;
         bool m_bIsNavigateFromSelectPage;
         string m_strShowType = "";
@@ -49,8 +48,7 @@ namespace Care
             
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
-            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
-            m_doubanHelper = new DoubanHelper();
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);            
             InitSinaWeiboInfo();
         }
 
@@ -75,10 +73,6 @@ namespace Care
 
         private void InitSinaWeiboInfo()
         {
-            SdkData.AppKey = "466921770";
-            SdkData.AppSecret = "548cb1a27cf896d304a9704e2be0e62e";
-            SdkData.RedirectUri = "http://thankcreate.github.com/Care";
-
             IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
             if (settings.Contains("SinaWeibo_Token"))
             {
@@ -130,65 +124,7 @@ namespace Care
             base.OnNavigatedTo(e);
         }
 
-        private void WeiboLogin(object sender, RoutedEventArgs e)
-        {
-            AuthenticationView.OAuth2VerifyCompleted = (e1, e2, e3) => LoginVerifyBack(e1, e2, e3);
-            AuthenticationView.OBrowserCancelled = new EventHandler(cancleEvent);
-
-            // show the login page
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                NavigationService.Navigate(new Uri("/WeiboSdk;component/PageViews/AuthenticationView.xaml"
-                    , UriKind.Relative));
-            });
-        }
-
-        private void LoginVerifyBack(bool isSucess, SdkAuthError errCode, SdkAuth2Res response)
-        {
-            if (errCode.errCode == SdkErrCode.SUCCESS)
-            {
-                if (null != response)
-                {
-                    App.SinaWeibo_AccessToken = response.accesssToken;
-                    App.SinaWeibo_RefleshToken = response.refleshToken;
-                }
-
-                IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
-                try
-                {
-                    settings.Add("SinaWeibo_Token", response.accesssToken);
-                }
-                catch (ArgumentException ex)
-                {
-                    settings["SinaWeibo_Token"] = response.accesssToken;
-                }
-                settings.Save();
-
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MainPanorama.DefaultItem = MainPanorama.Items[0];
-                    refreshMainViewModel();
-                    NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
-
-                });
-            }
-            else if (errCode.errCode == SdkErrCode.NET_UNUSUAL)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("检查网络");
-                });
-            }
-            else if (errCode.errCode == SdkErrCode.SERVER_ERR)
-            {
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    MessageBox.Show("服务器返回错误，错误代码:" + errCode.specificCode);
-                });
-            }
-            else
-                Debug.WriteLine("Other Err.");
-        }
+      
 
         private void cancleEvent(object sender, EventArgs e)
         {
@@ -199,7 +135,9 @@ namespace Care
         }
         private void Refresh_Click(object sender, EventArgs e)
         {
-            refreshMainViewModel();
+            // 目前对Refresh的设定是直接刷新所有源
+            // 不理会过滤器发过来的东西
+            refreshNewsPage();
         }
 
         private void Filt_Click(object sender, EventArgs e)
@@ -257,6 +195,10 @@ namespace Care
             {
                 App.ViewModel.ListItems.AddRange(App.ViewModel.RenrenItems);
             }
+            else if (m_strDataSource == SelectOnly.DATASOURCE_DOUBAN)
+            {
+                App.ViewModel.ListItems.AddRange(App.ViewModel.DoubanItems);
+            }
             // switch end
 
             App.ViewModel.ListItems.Sort(
@@ -278,6 +220,10 @@ namespace Care
             if (m_strDataSource == SelectOnly.DATASOURCE_SINAWEIBO)
             {
                 App.ViewModel.ListPictureItems.AddRange(App.ViewModel.SinaWeiboPicItems);
+            }
+            else if (m_strDataSource == SelectOnly.DATASOURCE_RENREN)
+            {
+                App.ViewModel.ListPictureItems.AddRange(App.ViewModel.RenrenPicItems);
             }
             else if (m_strDataSource == SelectOnly.DATASOURCE_RSS)
             {
@@ -312,6 +258,7 @@ namespace Care
             m_progressIndicatorHelper.PushTask("Weibo");
             m_progressIndicatorHelper.PushTask("Rss");
             m_progressIndicatorHelper.PushTask("Renren");
+            m_progressIndicatorHelper.PushTask("Douban");
             
             App.ViewModel.Items.Clear();
             // 1.Weibo
@@ -320,17 +267,88 @@ namespace Care
             refreshModelRssFeed();
             // 3.Renren
             refreshModelRenren();
-
-            //m_doubanHelper.getRequestToken();
-
+            // 4:Douban
+            refreshModelDouban();
 
             App.ViewModel.IsChanged = false;
+        }
+
+        private void refreshModelDouban()
+        {
+            App.ViewModel.DoubanItems.Clear();
+
+            // 如果检测到过期，则直接调用API的RefreshToken，重新来一次
+            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Douban_Token"))
+                && App.DoubanAPI.IsAccessTokenOutOfDate())
+            {
+                App.DoubanAPI.RefreshToken((bool isSucess, DoubanSdkAuthError errCode, DoubanSdkAuth2Res response) =>
+                {
+                    if (errCode.errCode == DoubanSdkErrCode.SUCCESS)
+                    {
+                        PreferenceHelper.SetPreference("Douban_Token", response.accesssToken);
+                        PreferenceHelper.SavePreference();
+                        refreshModelDouban();
+                        return;
+                    }
+                });                
+            }
+            else
+            {
+                String doubanFollowID = PreferenceHelper.GetPreference("Douban_FollowerID");
+                if (String.IsNullOrEmpty(doubanFollowID))
+                {
+                    m_progressIndicatorHelper.PopTask("Renren");
+                    return;
+                }
+                String strCount = PreferenceHelper.GetPreference("Douban_RecentCount");
+                if (string.IsNullOrEmpty(strCount))
+                {
+                    strCount = "30";
+                }
+
+                App.DoubanAPI.GetUserTimeLine(doubanFollowID, int.Parse(strCount), DoubanFeedGetCallback);
+            }           
+        }
+
+        private void DoubanFeedGetCallback(GetUserTimeLineEventArgs args)
+        {
+            if (args.errorCode == DoubanSdkErrCode.SUCCESS && args.statues != null)
+            {                
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    foreach (DoubanSDK.Statuses statues in args.statues)
+                    {
+                        ItemViewModel model = DoubanModelConverter.ConvertDoubanStatuesToCommon(statues);
+                        if (model != null)
+                        {
+                            App.ViewModel.DoubanItems.Add(model);
+                        }      
+                    }
+                    m_progressIndicatorHelper.PopTask("Douban");
+                });
+            }
+            else
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    if (args.specificCode == "106")
+                    {
+                        MessageBox.Show("豆瓣授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                    }
+                    else
+                    {
+                        MessageBox.Show("豆瓣授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                    }
+                    m_progressIndicatorHelper.PopTask("Douban");
+                });
+            }
         }
 
         private void refreshModelRenren()
         {
             App.ViewModel.RenrenItems.Clear();
-            // TODO: 如果有RenrenPicItems也要Clear，目前还没有
+            App.ViewModel.RenrenPicItems.Clear();
+            
             if (!App.RenrenAPI.IsAccessTokenValid())
             {
                 // 有值说明之前登陆过，须提示过期
@@ -353,12 +371,12 @@ namespace Care
             param.Add(new APIParameter("method", "feed.get"));
             // 当前只获取     
             // 10:更新状态
-            // 20:发表日志 
+            // 20:发表日志,先不做了，太麻烦 
             // 30:上传照片
+            // 32:分享照片
             // 的新鲜事，以逗号分隔
-            param.Add(new APIParameter("type", "10,30"));
-            param.Add(new APIParameter("uid", renrenFollowID));            
-            // TODO: 注意此处30条合不合适
+            param.Add(new APIParameter("type", "10,30,32"));
+            param.Add(new APIParameter("uid", renrenFollowID));                        
             String strCount = PreferenceHelper.GetPreference("Renren_RecentCount");
             if (string.IsNullOrEmpty(strCount))
             {
@@ -377,8 +395,15 @@ namespace Care
                 App.ViewModel.RenrenItems.Clear();
                 List<RenrenNews> searchResult = serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(e.ResultJsonString))) as List<RenrenNews>;
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
-                {
-                    searchResult.ForEach(p => App.ViewModel.RenrenItems.Add(RenrenModelConverter.ConvertRenrenNewsToCommon(p)));
+                {                   
+                    searchResult.ForEach(p =>
+                    {
+                        ItemViewModel model = RenrenModelConverter.ConvertRenrenNewsToCommon(p);
+                        if (model != null)
+                        {
+                            App.ViewModel.RenrenItems.Add(model);
+                        }                        
+                    });                                       
                     m_progressIndicatorHelper.PopTask("Renren");
                 });   
             }
@@ -399,124 +424,121 @@ namespace Care
         // Weibo logic
         private SdkCmdBase cmdBase;
         private SdkNetEngine netEngine;
-
-        private void refreshMySinaAccount()
-        {
-            // Define a new net engine
-            netEngine = new SdkNetEngine();
-
-            // Define a new command base
-            cmdBase = new SdkCmdBase
-            {
-                acessToken = App.SinaWeibo_AccessToken,
-            };
-            RestRequest request = new RestRequest();
-            request.Method = WebMethod.Get;
-
-            request.Path = "/account/get_uid.json";
-            request.AddParameter("access_token", App.SinaWeibo_AccessToken);
-            netEngine.SendRequest(request, cmdBase, (SdkResponse e1) =>
-            {
-                if (e1.errCode == SdkErrCode.SUCCESS)
-                {
-                    try
-                    {
-                        JSONObject json = JSONConvert.DeserializeObject(e1.content);
-                        string uid = json["uid"] as string;
-                        App.ViewModel.SinaWeiboAccount.id = uid;
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.ToString());
-                        int a = 1;
-                    }
-                }
-                else
-                {
-                }
-            });
-        }
-
+        
         private void chooseSinaWeiboFriend(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/SinaWeibo/SelectSinaFollower.xaml", UriKind.Relative));
         }
         private void refreshModelSinaWeibo()
         {
+            App.ViewModel.SinaWeiboPicItems.Clear();
+            App.ViewModel.SinaWeiboItems.Clear();
             if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_ID")))
             {
                 m_progressIndicatorHelper.PopTask("Sina");
                 return;
-            }
-            refreshMySinaAccount();
-            App.ViewModel.SinaWeiboPicItems.Clear();
-            App.ViewModel.SinaWeiboItems.Clear();
+            }            
             LoadSinaWeiboContent();
         }
 
         private void LoadSinaWeiboContent()
         {
-            if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_FollowerID")))
-            {                
-                MessageBox.Show("尚未设置新浪微博关注对象");               
-                m_progressIndicatorHelper.PopTask();
-                return;
-            }
-            // Define a new net engine
-            netEngine = new SdkNetEngine();
-
-            // Define a new command base
-            String strCount = PreferenceHelper.GetPreference("SinaWeibo_RecentCount");
-            if (string.IsNullOrEmpty(strCount))
+            try
             {
-                strCount = "30";
-            }
-            String careID = PreferenceHelper.GetPreference("SinaWeibo_FollowerID");
-            cmdBase = new cdmUserTimeline
-            {
-                acessToken = App.SinaWeibo_AccessToken,
-                userId = careID,
-                count = strCount
-            };
-            // Request server, the last parameter is set as default (".xml")
-            netEngine.RequestCmd(SdkRequestType.USER_TIMELINE, cmdBase,
-                // Requeset callback
-                delegate(SdkRequestType requestType, SdkResponse response)
+                if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_FollowerID")))
                 {
-                    if (response.errCode == SdkErrCode.SUCCESS)
+                    MessageBox.Show("尚未设置新浪微博关注对象");
+                    m_progressIndicatorHelper.PopTask();
+                    return;
+                }
+                // Define a new net engine
+                netEngine = new SdkNetEngine();
+
+                // Define a new command base
+                String strCount = PreferenceHelper.GetPreference("SinaWeibo_RecentCount");
+                if (string.IsNullOrEmpty(strCount))
+                {
+                    strCount = "30";
+                }
+                String careID = PreferenceHelper.GetPreference("SinaWeibo_FollowerID");
+                cmdBase = new cdmUserTimeline
+                {
+                    acessToken = App.SinaWeibo_AccessToken,
+                    userId = careID,
+                    count = strCount
+                };
+                // Request server, the last parameter is set as default (".xml")
+                netEngine.RequestCmd(SdkRequestType.USER_TIMELINE, cmdBase,
+                    // Requeset callback
+                    LoadSinaWeiboContentComplete);
+            }
+            catch (System.Exception ex)
+            {
+                UmengSDK.UmengAnalytics.reportError(ex);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("新浪微博加载过程中发生未知错误", "悲剧了>_<", MessageBoxButton.OK);
+                    m_progressIndicatorHelper.PopTask();
+                });
+            }         
+        }
+
+        private void LoadSinaWeiboContentComplete(SdkRequestType requestType, SdkResponse response)
+        {
+            try
+            {
+                if (response.errCode == SdkErrCode.SUCCESS)
+                {
+                    WStatuses statuses = null;
+                    DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WStatuses));
+                    statuses = ser.ReadObject(response.stream) as WStatuses;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
-                        WStatuses statuses = null;
-                        DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(WStatuses));
-                        statuses = ser.ReadObject(response.stream) as WStatuses;
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        if (statuses.statuses != null)
                         {
                             foreach (WStatus status in statuses.statuses)
                             {
-                                App.ViewModel.SinaWeiboItems.Add(SinaWeiboModelConverter.ConvertItemToCommon(status));
+                                ItemViewModel model = SinaWeiboModelConverter.ConvertItemToCommon(status);
+                                if (model != null)
+                                {
+                                    App.ViewModel.SinaWeiboItems.Add(model);
+                                }
                             }
-                            m_progressIndicatorHelper.PopTask();
                         }
-                        );
+                        m_progressIndicatorHelper.PopTask();
                     }
-                    // 失败
-                    else
-                    {                          
-                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    );
+                }
+                // 失败
+                else
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        // 21327 expired_token Token 过期
+                        if (response.specificCode == "21327")
                         {
-                            // 21327 expired_token Token 过期
-                            if (response.specificCode == "21327")
-                            {
-                                MessageBox.Show("新浪微博帐号已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
-                                // 清掉保存的当前帐号信息
-                                // 但是关注人信息还保留着
-                                PreferenceHelper.RemoveSinaWeiboLoginAccountPreference();
-                            } 
-                            
-                            m_progressIndicatorHelper.PopTask();
-                        });
-                    }
+                            MessageBox.Show("新浪微博帐号已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                            // 清掉保存的当前帐号信息
+                            // 但是关注人信息还保留着
+                            PreferenceHelper.RemoveSinaWeiboLoginAccountPreference();
+                        }
+
+                        m_progressIndicatorHelper.PopTask();
+                    });
+                }
+            }
+            catch (System.Exception ex)
+            {
+                UmengSDK.UmengAnalytics.reportError(ex);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("新浪微博加载过程中发生未知错误", "悲剧了>_<", MessageBoxButton.OK);
+                    m_progressIndicatorHelper.PopTask();
                 });
+            }
         }
+
+
         private void refreshModelRssFeed()
         {
             App.ViewModel.RssItems.Clear();
@@ -529,15 +551,16 @@ namespace Care
             WebClient client = new WebClient();
             client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
             client.DownloadStringAsync(new Uri(url));
-
         }
 
         private void client_DownloadStringCompleted(object sender, System.Net.DownloadStringCompletedEventArgs e)
         {
             XmlReader reader;
+            SyndicationFeed feed;
             try
             {
                 reader = XmlReader.Create(new StringReader(e.Result));
+                feed = SyndicationFeed.Load(reader);
             }
             catch (System.Exception ex)
             {
@@ -546,18 +569,20 @@ namespace Care
                     m_progressIndicatorHelper.PopTask("Rss");
                 });
                 return;
-            }
-           
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
+            }           
+            
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {                
                 foreach (SyndicationItem item in feed.Items)
                 {
-                    App.ViewModel.RssItems.Add(FeedModelConverter.ConvertFeedToCommon(item));
+                    ItemViewModel model = RSSFeedModelConverter.ConvertFeedToCommon(item);
+                    if (model != null)
+                    {
+                        App.ViewModel.RssItems.Add(model);
+                    }                    
                 }
                 m_progressIndicatorHelper.PopTask("Rss");
-            }
-            );
+            });
         }
 
 
@@ -591,6 +616,10 @@ namespace Care
                     NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
                 if (item.Type == EntryType.Renren)
+                {
+                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
+                }
+                if (item.Type == EntryType.Douban)
                 {
                     NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
                 }
@@ -676,10 +705,8 @@ namespace Care
         }
 
         private void DoubanAcount_Click(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-            // TODO:TEST
-            // NavigationService.Navigate(new Uri("/Views/Common/CommitView.xaml", UriKind.Relative));
-            MessageBox.Show("由于豆瓣API实在太烂，UP主仍在开发中的说~~~~", "温馨提示", MessageBoxButton.OK);
+        {            
+            NavigationService.Navigate(new Uri("/Views/Douban/DoubanAccount.xaml", UriKind.Relative));         
         }
 
         private void PicList_SelectionChanged(object sender, SelectionChangedEventArgs e)

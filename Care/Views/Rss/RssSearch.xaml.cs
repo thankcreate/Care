@@ -70,8 +70,19 @@ namespace Care.Views.Rss
 
         private void search_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            String html = e.Result;
-            HandleHtml(html);           
+            try
+            {
+                String html = e.Result;
+                HandleHtml(html);       
+            }
+            catch (System.Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    MessageBox.Show("网络无法连接，请检查当前网络状态。");
+                    NavigationService.Navigate(new Uri("/Views/Rss/RssAcount.xaml", UriKind.Relative));
+                });
+            }    
         }
 
         private void HandleHtml(string html)

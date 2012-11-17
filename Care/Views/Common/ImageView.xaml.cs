@@ -34,27 +34,11 @@ namespace Care.Views.Common
             // horizonChange < 0 表示手向左滑
             if (horizonChange < -100)
             {
-                if (m_nIndex == (App.ViewModel.PictureItems.Count - 1))
-                {
-                    MessageBox.Show("已经是最后一页的说~");
-                    return;
-                }
-                else
-                {
-                    this.DataContext = App.ViewModel.PictureItems[++m_nIndex];
-                }
+                DoGoNext();
             }
             else if (horizonChange > 100)
             {
-                if (m_nIndex < 1)
-                {
-                    MessageBox.Show("已经是第一页了的说~");
-                    return;
-                }
-                else
-                {
-                    this.DataContext = App.ViewModel.PictureItems[--m_nIndex];
-                }
+                DoGoPrevios();
             }
             
         }
@@ -114,6 +98,50 @@ namespace Care.Views.Common
                 }
             };
             client.OpenReadAsync(new Uri(url, UriKind.Absolute));
+        }
+
+        private void DoGoPrevios()
+        {
+            if (m_nIndex < 1)
+            {
+                MessageBox.Show("已经是第一页了的说~");
+                return;
+            }
+            else
+            {
+                this.DataContext = App.ViewModel.PictureItems[--m_nIndex];
+            }
+        }
+
+        private void DoGoNext()
+        {
+            if (m_nIndex == (App.ViewModel.PictureItems.Count - 1))
+            {
+                MessageBox.Show("已经是最后一页的说~");
+                return;
+            }
+            else
+            {
+                this.DataContext = App.ViewModel.PictureItems[++m_nIndex];
+            }
+        }
+
+        private void Previos_Click(object sender, EventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                DoGoPrevios();
+            });
+        }
+
+
+
+        private void Next_Click(object sender, EventArgs e)
+        {
+            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            {
+                DoGoNext();
+            });
         }
     }
 }

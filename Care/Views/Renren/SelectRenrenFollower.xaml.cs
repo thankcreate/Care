@@ -84,6 +84,8 @@ namespace Care.Views
                         man.tinyurl = friend.tinyurl;
                         SearchResult.Add(man);
                     }
+                    ScrollViewer v = VisualTreeHelper.GetChild(this.ResultListBox, 0) as ScrollViewer;
+                    v.ScrollToVerticalOffset(0); 
                 });
             }
         }
@@ -118,6 +120,7 @@ namespace Care.Views
                 foreach (RenrenSearchedMan friend in searchResult)
                 {
                     //App.ViewModel.Friends.Add(friend);
+                    
                     SearchResult.Add(friend);
                 }
                 ScrollViewer v = VisualTreeHelper.GetChild(this.ResultListBox, 0) as ScrollViewer;
@@ -139,7 +142,16 @@ namespace Care.Views
             {
                 PreferenceHelper.SetPreference("Renren_FollowerID", item.id);
                 PreferenceHelper.SetPreference("Renren_FollowerNickName", item.name);
+                // 这个头像太不清晰了，要重新摘取一个高清无码大图
                 PreferenceHelper.SetPreference("Renren_FollowerAvatar", item.tinyurl);
+                api.GetUserInfo(item.id, null, (send, arg) =>
+                {
+                    UserList userList = arg.Result;
+                    if (userList == null || userList.User_List == null || userList.User_List.Count == 0)
+                        return;
+                    UserDetails user = userList.User_List[0];
+                    PreferenceHelper.SetPreference("Renren_FollowerAvatar2", user.headurl);
+                });
                 PreferenceHelper.SavePreference();
 
                 App.ViewModel.IsChanged = true;

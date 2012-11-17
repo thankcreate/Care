@@ -47,14 +47,19 @@ namespace Care.Tool
         {
             if(key == "SinaWeibo_FollowerAvatar" ||
                 key == "SinaWeibo_FollowerAvatar2"||
-                key == "Renren_FollowerAvatar"  ||
                 key == "SinaWeibo_FollowerNickName" ||
-                key == "Renren_FollowerNickName" )
+                key == "Renren_FollowerNickName" ||
+                key == "Renren_FollowerAvatar"  ||
+                key == "Renren_FollowerAvatar2" ||
+                key == "Douban_FollowerNickName" ||
+                key == "Douban_FollowerAvatar"  ||
+                key == "Douban_FollowerAvatar2"
+                 )
             {
                 if (PreferenceHelper.GetPreference("Global_TileMode") != "1")
                 {
                     String herName = MiscTool.GetHerName();
-                    String herIcon = MiscTool.GetHerIconUrl();
+                    String herIcon = MiscTool.GetHerIconUrlInDesktopTile();
                     Uri herUri;
                     if (string.IsNullOrEmpty(herIcon))
                     {
@@ -93,6 +98,7 @@ namespace Care.Tool
             {
                 settings.Remove(key);
             }
+            Filt(key, null);
         }
 
         public static void SavePreference()
@@ -108,7 +114,8 @@ namespace Care.Tool
             RemovePreference("SinaWeibo_FollowerNickName");
             RemovePreference("SinaWeibo_Token");
             RemovePreference("SinaWeibo_Avatar");
-            RemovePreference("SinaWeibo_FollowerAvatar"); 
+            RemovePreference("SinaWeibo_FollowerAvatar");
+            RemovePreference("SinaWeibo_FollowerAvatar2"); 
         }
 
         public static void RemoveSinaWeiboLoginAccountPreference()
@@ -117,7 +124,6 @@ namespace Care.Tool
             RemovePreference("SinaWeibo_ID");
             RemovePreference("SinaWeibo_Token");
             RemovePreference("SinaWeibo_Avatar");
-
         }
 
         public static void RemoveRenrenPreference()
@@ -129,6 +135,7 @@ namespace Care.Tool
             RemovePreference("Renren_Token");
             RemovePreference("Renren_Avatar");
             RemovePreference("Renren_FollowerAvatar");
+            RemovePreference("Renren_FollowerAvatar2");
         }
 
 
@@ -149,6 +156,18 @@ namespace Care.Tool
         {
             RemovePreference("RSS_FollowerPath");
             RemovePreference("RSS_FollowerSite");
+        }
+
+        public static void RemoveDoubanPreference()
+        {
+            RemovePreference("Douban_NickName");
+            RemovePreference("Douban_ID");
+            RemovePreference("Douban_FollowerID");
+            RemovePreference("Douban_FollowerNickName");
+            RemovePreference("Douban_Token");
+            RemovePreference("Douban_Avatar");
+            RemovePreference("Douban_FollowerAvatar");
+            RemovePreference("Douban_FollowerAvatar2");
         }
     }
 }

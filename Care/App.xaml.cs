@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RenrenSDKLibrary;
+using WeiboSdk;
+using DoubanSDK;
 using Care.Tool;
 using SmartMad.Ads.WindowsPhone7.WPF;
 
@@ -25,6 +27,7 @@ namespace Care
         public static int Test3 = 0;
         private static MainViewModel viewModel = null;
         public static RenrenAPI RenrenAPI;
+        public static DoubanAPI DoubanAPI;
         public static bool NeedChangeStartPage = true;
         /// <summary>
         /// A static ViewModel used by the views to bind against.
@@ -80,12 +83,27 @@ namespace Care
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
+                     
+            SinaWeiboInit();
             RenrenAPIInit();
+            DoubanInit();
             // 启动页相关
             RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
             // 广告参数设置
             AdView.SetApplicationID("fc955e087f89a189");
+
+
+            String test = PreferenceHelper.GetPreference("FirstTimeAfterUpdateTo1.1");
+            if (String.IsNullOrEmpty(test))
+            {
+                PreferenceHelper.RemoveSinaWeiboPreference();
+                PreferenceHelper.RemoveRenrenPreference();
+                RenrenAPI.LogOut();
+                PreferenceHelper.RemoveDoubanPreference();
+                DoubanAPI.LogOut();
+                PreferenceHelper.SetPreference("FirstTimeAfterUpdateTo1.1", "whatever");
+                PreferenceHelper.SavePreference();
+            }   
 
         }
 
@@ -117,22 +135,46 @@ namespace Care
             });
         }
 
+        private void SinaWeiboInit()
+        {
+            SdkData.AppKey = "466921770";
+            SdkData.AppSecret = "548cb1a27cf896d304a9704e2be0e62e";
+            SdkData.RedirectUri = "http://thankcreate.github.com/Care";
+        }
+
         private void RenrenAPIInit()
         {            
             // 三个参数分别是：应用ID， API Key, Secret Key
             RenrenAPI = new RenrenAPI("214071", "0b434803c2c7435691bd398eaf44d4fc", "172d2ba967924bc9b457983e1dba1127");
         }
 
+        private void DoubanInit()
+        {
+            DoubanAPI = new DoubanAPI();
+            DoubanSdkData.AppKey = "01ac4907dbc3c4590504db17934b4d0b";
+            DoubanSdkData.RedirectUri = "http://thankcreate.github.com/Care/";
+            DoubanSdkData.AppSecret = "3a781c654ea41560";
+            DoubanSdkData.Scope = "shuo_basic_r,shuo_basic_w,douban_basic_common";
+        }
+
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            #if DEBUG
+                UmengSDK.UmengAnalytics.setDebug(true);
+                // caution : Don't change the default session continue interval unless you have known the rule !
+                UmengSDK.UmengAnalytics.setSessionContinueInterval(TimeSpan.FromMilliseconds(5000));
+            #endif
+
+            UmengSDK.UmengAnalytics.onLaunching("50a76c2b5270156d3d0000f3");
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            UmengSDK.UmengAnalytics.onActivated("50a76c2b5270156d3d0000f3");
             // Ensure that application state is restored appropriately
             if (!App.ViewModel.IsDataLoaded)
             {
@@ -170,6 +212,7 @@ namespace Care
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            UmengSDK.UmengAnalytics.reportError(e.ExceptionObject);
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger

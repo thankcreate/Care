@@ -110,7 +110,7 @@
                         <StackPanel>
                             <TextBlock x:Name="RetweetUserBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Title}" Margin="0,0,0,5" Foreground="#FF4F55D1" FontSize="22"/>
                             <TextBlock x:Name="RetweetStatusBlock" TextWrapping="Wrap" Text="{Binding ForwardItem.Content}" Foreground="#FF2B2B24" FontSize="18"/>
-                            <Border x:Name="ForwardProfileBorder" Visibility="{Binding ForwardItem.IsImageExists}" BorderThickness="2" Width="122" Height="122" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,3" Background="White">
+                            <Border x:Name="ForwardProfileBorder" Visibility="{Binding ForwardItem.IsImageExists}" BorderThickness="2" Width="124" Height="124" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,3" Background="White">
                                 <Border.BorderBrush>
                                     <SolidColorBrush Color="#FF323B32" Opacity="0.5" />
                                 </Border.BorderBrush>
@@ -326,8 +326,8 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1">
-            <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Click="Refresh_Click" Text="刷新"/>
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/list.png" Click="Filt_Click" Text="过滤"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Click="Refresh_Click" Text="刷新"/>            
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/microscope.png" Click="Microscope_Click" Text="奇怪的地方"/>
             <!--<shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
             <shell:ApplicationBar.MenuItems>
@@ -426,7 +426,7 @@
                             <myTilt:TiltableControl Tap="About_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtAbout" Text="关于"  />
-                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.0"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.1"  />
                                 </StackPanel>
                             </myTilt:TiltableControl>
                         </StackPanel>
@@ -450,7 +450,7 @@
                         <Image x:Name="DoubanAccount" Width="180" Height="180" Source="/Care;component/Images/Account/Douban.png" Margin="16,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="DoubanAcount_Click" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image x:Name="RenrenAccount" Width="180" Height="180" Source="/Care;component/Images/Account/RenrenLogo_Gray.png" Margin="216,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="RenrenAcount_Click"  />
+                        <Image x:Name="RenrenAccount" Width="180" Height="180" Source="/Care;component/Images/Account/RenrenLogo_Blue.png" Margin="216,208,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Tap="RenrenAcount_Click"  />
                     </myTilt:TiltableControl>
                     
                 </Grid>

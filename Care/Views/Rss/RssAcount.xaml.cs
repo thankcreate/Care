@@ -21,7 +21,6 @@ namespace Care.Views
 {
     public partial class RssAcount : PhoneApplicationPage, INotifyPropertyChanged
     {
-
         public String _FollowerSiteName;
         public String FollowerSiteName
         {
@@ -101,13 +100,7 @@ namespace Care.Views
         }
 
         private void UpdatePath_Click(object sender, RoutedEventArgs e)
-        {
-            // TODO: 改掉这个写死的URL
-            //string url = "http://blog.sina.com.cn/rss/1713845420.xml";
-            //PreferenceHelper.SetPreference("RSS_FollowerPath", url); 
-            //WebClient client = new WebClient();
-            //client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
-            //client.DownloadStringAsync(new Uri(url));
+        {            
             String text = textSitePath.Text;
             if (text.StartsWith("http"))
             {
@@ -136,16 +129,31 @@ namespace Care.Views
 
         private void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
-            XmlReader reader = XmlReader.Create(new StringReader(e.Result));
-            SyndicationFeed feed = SyndicationFeed.Load(reader);
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            try
             {
-                App.ViewModel.RssItems.Clear();
-                FollowerSiteName = feed.Title.Text;  
-                PreferenceHelper.SetPreference("RSS_FollowerSite", FollowerSiteName);
-                App.ViewModel.IsChanged = true;
-            }            
-            );
+                XmlReader reader = XmlReader.Create(new StringReader(e.Result));
+                SyndicationFeed feed = SyndicationFeed.Load(reader);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    App.ViewModel.RssItems.Clear();
+                    FollowerSiteName = feed.Title.Text;
+                    PreferenceHelper.SetPreference("RSS_FollowerSite", FollowerSiteName);
+                    App.ViewModel.IsChanged = true;
+                    MessageBox.Show("关注成功");
+                }
+           );
+            }
+            catch (System.Exception ex)
+            {                
+                MessageBox.Show("关注站点失败，如果直接输入地址，请输入rss地址\n即类似于www.xxx.com/feed，而不是直接输入www.xxx.com",
+                "失败", MessageBoxButton.OK);
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    FollowerSitePath = "未设置";
+                    FollowerSiteName = "未关注";
+                    PreferenceHelper.RemoveRssPreference();
+                });
+            }
         }
 
         private void StopFeed_Click(object sender, RoutedEventArgs e)

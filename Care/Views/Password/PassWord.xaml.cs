@@ -62,7 +62,12 @@ namespace Care.Views
 
         private void buttonBack_Click(object sender, RoutedEventArgs e)
         {
-            int length = InputPassWord.Length;
+            int length = 0;
+            if (!String.IsNullOrEmpty(InputPassWord))
+            {
+                length  = InputPassWord.Length;
+            }
+            
             if(length > 0)
             {
                 InputPassWord = InputPassWord.Substring(0, InputPassWord.Length - 1);

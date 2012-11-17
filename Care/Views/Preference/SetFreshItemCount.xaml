@@ -111,6 +111,7 @@
                 <TextBox Text="{Binding Renren_RecentCount}" Name="txtRenrenCount" InputScope="TelephoneNumber" />-->
                 <toolkit:ListPicker Header="获取最近新浪微博数目:"  Name="sinaPicker" Width="414" Style="{StaticResource ListPickerStyle1}" SelectionChanged="SinaSelection_Changed" />
                 <toolkit:ListPicker Header="获取最近人人新鲜事数目:"  Name="renrenPicker" Width="414" Style="{StaticResource ListPickerStyle1}" SelectionChanged="RenrenSelection_Changed" />
+                <toolkit:ListPicker Header="获取最近豆瓣友邻广播数目:"  Name="doubanPicker" Width="414" Style="{StaticResource ListPickerStyle1}" SelectionChanged="DoubanSelection_Changed" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -13,22 +13,29 @@ namespace Care
 {
     public class RenrenNews
     {
+        public static String FeedTypeStatus = "10";
+        public static String FeedTypeUploadPhoto = "30";
+        public static String FeedTypeSharePhoto = "32";
+
         public class Attachment
         {
-            public static String TypePhoto = "photo";
-            public static String TypeAlbum = "album";
-            public static String TypeLink = "link";
-            public static String TypeVideo = "video";
-            public static String TypeAudio = "audio";
-            public static String TypeStatus = "status";
+            public static String AttachTypePhoto = "photo";
+            public static String AttachTypeAlbum = "album";
+            public static String AttachTypeLink = "link";
+            public static String AttachTypeVideo = "video";
+            public static String AttachTypeAudio = "audio";
+            public static String AttachTypeStatus = "status";
 
             public string href { get; set; }
-            public string media_type { get; set; }
-            //public string scr { get; set; }
+            public string media_type { get; set; }            
             public string media_id { get; set; }
             public string owner_id { get; set; }
             public string owner_name { get; set; }
             public string content { get; set; }
+            // 小图
+            public string src { get; set; }
+            // 大图
+            public string raw_src { get; set; }
         }
 
         public class Likes
@@ -46,6 +53,10 @@ namespace Care
                 public string uid { get; set; }
                 public string name { get; set; }
                 public string headurl { get; set; }
+                // what the fuck is renren doing ??????
+                // 有的地方用headurl，有的地方用tinyurl，这都统一不了
+                // 你做个毛的开放平台啊！
+                public string tinyurl { get; set; }
                 public string time { get; set; }
                 public string comment_id { get; set; }
                 public string text { get; set; }
@@ -61,7 +72,7 @@ namespace Care
         public string update_time { get; set; }
         public string actor_id { get; set; }
 
-        // 实际上可以看原是转发内容的前面那一段儿
+        // 实际上可以看成是转发内容的前面那一段儿
         public string prefix { get; set; }  
 
         public string name { get; set; }

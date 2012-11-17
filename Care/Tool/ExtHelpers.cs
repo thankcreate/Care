@@ -61,6 +61,18 @@ namespace Care
             return off;
         }
 
+        public static DateTimeOffset GetDoubanTimeFullObject(string doubanFormat)
+        {
+            // 豆瓣的裸格式是这样的
+            // 2012-10-03 11:25:26
+            doubanFormat += " +08:00";
+            DateTime dt = DateTime.ParseExact(doubanFormat, "yyyy-MM-dd HH:mm:ff zzz", cInfo);
+            DateTimeOffset off = new DateTimeOffset(dt);
+            return off;
+            // 嗯嗯，与上面那位老兄长得一模一样似乎也没关系的样子呢 ^_^
+        }
+
+
         public static string TimeObjectToString(DateTimeOffset offset)
         {
             return offset.LocalDateTime.ToString("yy/MM/dd HH:mm:ff");                

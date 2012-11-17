@@ -41,13 +41,30 @@ namespace Care.Views.Preference
 
         private void Mark_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            EmailComposeTask emailcomposer = new EmailComposeTask();
-            emailcomposer.To = "thankcreate@gmail.com";
-            emailcomposer.Subject = "论改进一下的必要性";
-            emailcomposer.Body = "请喷得温柔些哦  ^_^  ~~";
-            emailcomposer.Show();
+            try
+            {
+                MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+                marketplaceReviewTask.Show();
+            }
+            catch (System.Exception ex)
+            {
+            }
         }
 
+        private void Refresh_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            try
+            {
+                MarketplaceDetailTask marketplaceDetailTask = new MarketplaceDetailTask();
 
+                marketplaceDetailTask.ContentIdentifier = "380eeee6-2040-4a3a-bae2-0f09939aea77";
+                marketplaceDetailTask.ContentType = MarketplaceContentType.Applications;
+
+                marketplaceDetailTask.Show();
+            }
+            catch (System.Exception ex)
+            {
+            }
+        } 
     }
 }

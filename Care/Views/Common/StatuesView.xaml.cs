@@ -57,9 +57,11 @@ namespace Care.Views.Common
 
         private void Comment_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("/Views/Common/CommentView.xaml?ID={0}&Type={1}", m_statusModel.ID, m_statusModel.Type);
-            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
+            StringBuilder sb = new StringBuilder();                        
+            // 因为人人很BT，权限问题比较多，所以要带上FeedType和OwnerID
+            sb.AppendFormat("/Views/Common/CommentView.xaml?ID={0}&Type={1}&RenrenFeedType={2}&RenrenOwnerID={3}"
+                , m_statusModel.ID, m_statusModel.Type, m_statusModel.RenrenFeedType, m_statusModel.OwnerID);
+            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));            
         }
     }
 }

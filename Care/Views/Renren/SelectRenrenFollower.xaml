@@ -84,16 +84,11 @@
 
     </Grid>
  
-<phone:PhoneApplicationPage.ApplicationBar>
+    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1">
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/previous.png" Text="上一页" Click="Previos_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/Help.png" Text="如何指定" Click="Help_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/next.png" Text="下一页" Click="Next_Click" />
-            <!--<shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>-->
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

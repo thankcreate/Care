@@ -15,18 +15,25 @@ namespace Care
     {
         public static ItemViewModel ConvertFeedToCommon(SyndicationItem feedItem)
         {
-            ItemViewModel model = new ItemViewModel();
-            model.Title = feedItem.Title.Text;
-            model.TimeObject = feedItem.PublishDate;
-            model.RssSummary = feedItem.Summary.Text;
-            model.IconURL = "/Care;component/Images/RSS feeds.png";
-            
-            model.Type = EntryType.Feed;
-            if( feedItem.Links.Count != 0)
+            try
             {
-                model.OriginalURL = feedItem.Links[0].Uri.ToString();
+                ItemViewModel model = new ItemViewModel();
+                model.Title = feedItem.Title.Text;
+                model.TimeObject = feedItem.PublishDate;
+                model.RssSummary = feedItem.Summary.Text;
+                model.IconURL = "/Care;component/Images/RSS feeds.png";
+
+                model.Type = EntryType.Feed;
+                if (feedItem.Links.Count != 0)
+                {
+                    model.OriginalURL = feedItem.Links[0].Uri.ToString();
+                }
+                return model;
             }
-            return model;
+            catch (System.Exception ex)
+            {
+                return null;
+            }          
         }
     }
 }

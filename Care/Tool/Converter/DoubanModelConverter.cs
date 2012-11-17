@@ -17,47 +17,61 @@ namespace Care.Tool
     {
         public static CommentViewModel ConvertCommentToCommon(DoubanSDK.Comment comment)
         {
-            if (comment == null)
-                return null;
-            CommentViewModel commentViewModel = new CommentViewModel();
-            commentViewModel.Title = comment.user.screen_name;
-            commentViewModel.IconURL = MiscTool.MakeFriendlyImageURL(comment.user.small_avatar);
-            commentViewModel.Content = comment.text;
-            commentViewModel.ID = comment.id;
-            commentViewModel.TimeObject = ExtHelpers.GetRenrenTimeFullObject(comment.created_at);
-            return commentViewModel;
+            try
+            {
+                if (comment == null)
+                    return null;
+                CommentViewModel commentViewModel = new CommentViewModel();
+                commentViewModel.Title = comment.user.screen_name;
+                commentViewModel.IconURL = MiscTool.MakeFriendlyImageURL(comment.user.small_avatar);
+                commentViewModel.Content = comment.text;
+                commentViewModel.ID = comment.id;
+                commentViewModel.TimeObject = ExtHelpers.GetRenrenTimeFullObject(comment.created_at);
+                return commentViewModel;
+            }
+            catch (System.Exception ex)
+            {
+                return null;	
+            }          
         }
 
         public static ItemViewModel ConvertDoubanStatuesToCommon(Statuses statues)
         {
-            if (statues.type == "collect_book") // 不硬编码不舒服斯基
+            try
             {
-                return ConvertBookStatus(statues);
-            }
-            else if (statues.type == "collect_movie")
-            {
-                return ConvertMovieStatus(statues);
-            }
-            else if (statues.type == "collect_music")
-            {
-                return ConvertMusicStatus(statues);
-            }
-            else if (statues.title.Contains("关注")  // 新关注了某个人
-                || statues.title.Contains("加入")    // 加入小组
-                || statues.title.Contains("活动")    // 对某活动感兴趣
-                || statues.title.Contains("歌曲")    // 某2添加了某歌曲
-                || statues.title.Contains("试读")    // 正在试读
-                || statues.title.Contains("豆瓣阅读")    // 豆瓣阅读
-                || statues.title.Contains("使用"))   // 开始使用
-            {
+                if (statues.type == "collect_book") // 不硬编码不舒服斯基
+                {
+                    return ConvertBookStatus(statues);
+                }
+                else if (statues.type == "collect_movie")
+                {
+                    return ConvertMovieStatus(statues);
+                }
+                else if (statues.type == "collect_music")
+                {
+                    return ConvertMusicStatus(statues);
+                }
+                else if (statues.title.Contains("关注")  // 新关注了某个人
+                    || statues.title.Contains("加入")    // 加入小组
+                    || statues.title.Contains("活动")    // 对某活动感兴趣
+                    || statues.title.Contains("歌曲")    // 某2添加了某歌曲
+                    || statues.title.Contains("试读")    // 正在试读
+                    || statues.title.Contains("豆瓣阅读")    // 豆瓣阅读
+                    || statues.title.Contains("使用"))   // 开始使用
+                {
+                    return null;
+                }
+                else
+                {
+                    return ConvertTextStatus(statues);
+                }
+                // should never got here
                 return null;
             }
-            else
+            catch (System.Exception ex)
             {
-                return ConvertTextStatus(statues);
-            }
-            // should never got here
-            return null;
+                return null;
+            }        
         }
 
         public static ItemViewModel ConvertMusicStatus(Statuses statues)

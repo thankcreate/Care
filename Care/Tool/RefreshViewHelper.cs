@@ -21,6 +21,7 @@ namespace Care.Tool
                 App.ViewModel.ListItems.AddRange(App.ViewModel.SinaWeiboItems);
                 App.ViewModel.ListItems.AddRange(App.ViewModel.RssItems);
                 App.ViewModel.ListItems.AddRange(App.ViewModel.RenrenItems);
+                App.ViewModel.ListItems.AddRange(App.ViewModel.DoubanItems);
                 App.ViewModel.ListItems.Sort(
                     delegate(ItemViewModel a, ItemViewModel b)
                     {
@@ -48,6 +49,7 @@ namespace Care.Tool
             {
                 App.ViewModel.ListPictureItems.Clear();
                 App.ViewModel.ListPictureItems.AddRange(App.ViewModel.SinaWeiboPicItems);
+                App.ViewModel.ListPictureItems.AddRange(App.ViewModel.RenrenPicItems);
                 App.ViewModel.ListPictureItems.Sort(
                     delegate(PictureItem a, PictureItem b)
                     {

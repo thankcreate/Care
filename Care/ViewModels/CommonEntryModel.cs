@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 namespace Care
 {
     public enum EntryType{
+        NotSet,
         SinaWeibo,
         Feed,
         Renren,
