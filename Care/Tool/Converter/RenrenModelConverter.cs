@@ -24,8 +24,10 @@ namespace Care.Tool
                 commentViewModel.Title = comment.name;
                 // 人人的评论头像有可能来自headurl，也可能来自tinyurl，都要试一下
                 commentViewModel.IconURL = string.IsNullOrEmpty(comment.headurl) ? comment.tinyurl : comment.headurl;
-                commentViewModel.Content = comment.text;
+                commentViewModel.Content = MiscTool.RemoveHtmlTag(comment.text);
                 commentViewModel.ID = comment.comment_id;
+                commentViewModel.UID = comment.uid;
+                commentViewModel.Type = EntryType.Renren;
                 commentViewModel.TimeObject = ExtHelpers.GetRenrenTimeFullObject(comment.time);
                 return commentViewModel;
             }
@@ -34,6 +36,29 @@ namespace Care.Tool
                 return null;
             }
           
+        }
+
+        // 分享的评论格式不一样，所以要再单独写个转换类
+        public static CommentViewModel ConvertShareCommentToCommon(RenrenShareGetCommentsResult.Comment comment)
+        {
+            try
+            {
+                CommentViewModel model = new CommentViewModel();
+                if (model == null)
+                    return null;
+                model.Title = comment.name;
+                model.IconURL = comment.headurl;
+                model.Content = MiscTool.RemoveHtmlTag(comment.content);
+                model.ID = comment.id;
+                model.TimeObject = ExtHelpers.GetRenrenTimeFullObject(comment.time);
+                model.Type = EntryType.Renren;
+                return model;
+            }
+            catch (System.Exception ex)
+            {
+                return null;
+            }
+            
         }
 
         public static ItemViewModel ConvertRenrenNewsToCommon(RenrenNews news)
@@ -73,7 +98,7 @@ namespace Care.Tool
             model.IconURL = news.headurl;
             model.LargeIconURL = PreferenceHelper.GetPreference("Renren_FollowerAvatar2");
             model.Title = news.name;
-            model.Content = news.prefix;
+            model.Content = MiscTool.RemoveHtmlTag(news.prefix);
             model.TimeObject = ExtHelpers.GetRenrenTimeFullObject(news.update_time);
             model.Type = EntryType.Renren;
             model.ID = news.source_id;
@@ -92,7 +117,7 @@ namespace Care.Tool
                         model.ForwardItem = new ItemViewModel();
                         ItemViewModel forwardItem = model.ForwardItem;
                         forwardItem.Title = attach.owner_name;
-                        forwardItem.Content = attach.content;
+                        forwardItem.Content = MiscTool.RemoveHtmlTag(attach.content);
                         break;
                     }
                 }
@@ -123,7 +148,7 @@ namespace Care.Tool
                 // 原创图片上传
                 if (attach.media_type == RenrenNews.Attachment.AttachTypePhoto)
                 {
-                    model.Content = attach.content;
+                    model.Content = MiscTool.RemoveHtmlTag(attach.content);
                     model.ImageURL = MiscTool.MakeFriendlyImageURL(attach.src);
                     model.MidImageURL = MiscTool.MakeFriendlyImageURL(attach.raw_src);
                     model.FullImageURL = MiscTool.MakeFriendlyImageURL(attach.raw_src);
@@ -137,7 +162,7 @@ namespace Care.Tool
                     picItem.Id = attach.media_id;
                     picItem.Type = EntryType.Renren;
                     picItem.Title = news.name;
-                    picItem.Content = attach.content;
+                    picItem.Content = MiscTool.RemoveHtmlTag(attach.content);
                     picItem.TimeObject =  ExtHelpers.GetRenrenTimeFullObject(news.update_time);
                     
                     // 之所以这里还要检测，是因为有gif图的情况需要过滤掉                    
@@ -178,7 +203,7 @@ namespace Care.Tool
                     model.ForwardItem = new ItemViewModel();
                     ItemViewModel forwardItem = model.ForwardItem;
                     forwardItem.Title = attach.owner_name;
-                    forwardItem.Content = news.description;
+                    forwardItem.Content = MiscTool.RemoveHtmlTag(news.description);
 
                     forwardItem.ImageURL = MiscTool.MakeFriendlyImageURL(attach.src);
                     forwardItem.MidImageURL = MiscTool.MakeFriendlyImageURL(attach.raw_src);
@@ -192,7 +217,7 @@ namespace Care.Tool
                     picItem.Id = attach.media_id;
                     picItem.Type = EntryType.Renren;
                     picItem.Title = news.name;
-                    picItem.Content = news.message;
+                    picItem.Content = MiscTool.RemoveHtmlTag(news.message);
                     picItem.TimeObject = ExtHelpers.GetRenrenTimeFullObject(news.update_time);
 
                     // 之所以这里还要检测，是因为有gif图的情况需要过滤掉

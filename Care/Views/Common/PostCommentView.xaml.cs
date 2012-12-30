@@ -81,8 +81,24 @@ namespace Care.Views.Common
                 m_id = queryString["ID"];
                 m_type = (EntryType)Enum.Parse(typeof(EntryType), queryString["Type"], true);
             }
-            m_renrenFeedType = queryString["RenrenFeedType"];
-            m_renrenOwnerID = queryString["RenrenOwnerID"];
+            if (queryString.ContainsKey("RenrenFeedType"))
+            {
+                m_renrenFeedType = queryString["RenrenFeedType"];
+            }
+            if (queryString.ContainsKey("RenrenOwnerID"))
+            {
+                m_renrenOwnerID = queryString["RenrenOwnerID"];
+            }
+
+            String content = null;
+            if (queryString.ContainsKey("Content"))
+            {
+                content = queryString["Content"];
+                if (!String.IsNullOrEmpty(content))
+                {
+                    StatusMessageBox.Text = content;
+                }      
+            }                 
             ChangeUIByInputType();
         }
 
@@ -92,21 +108,21 @@ namespace Care.Views.Common
             {
                 m_maxLenth = 140;
                 WordMaxLength = "140";
-                WordCount = "140";
+                WordCount = (140 - StatusMessageBox.Text.Length).ToString();
                 LogoSource = "../../Images/Thumb/weibologo.png";
             }
             else if (m_type == EntryType.Renren)
             {
-                m_maxLenth = 280;
-                WordMaxLength = "280";
-                WordCount = "280";
+                m_maxLenth = 140;
+                WordMaxLength = "140";
+                WordCount = (140 - StatusMessageBox.Text.Length).ToString();
                 LogoSource = "../../Images/Thumb/renren_logo.png";
             }
             else if (m_type == EntryType.Douban)
             {
                 m_maxLenth = 140;
                 WordMaxLength = "140";
-                WordCount = "140";
+                WordCount = (140 - StatusMessageBox.Text.Length).ToString();
                 LogoSource = "../../Images/Thumb/douban_logo.png";
             }
         }

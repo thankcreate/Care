@@ -206,8 +206,7 @@ namespace Care.Views
                     try
                     {
                         JSONObject json = JSONConvert.DeserializeObject(e1.content);
-                        string uid = json["uid"] as string;
-                        App.ViewModel.SinaWeiboAccount.id = uid;
+                        string uid = json["uid"] as string;                        
                         PreferenceHelper.SetPreference("SinaWeibo_ID", uid);                        
                         refreshMySinaAccountInfo();
                     }
@@ -246,15 +245,17 @@ namespace Care.Views
             request.Method = WebMethod.Get;
 
             request.Path = "/users/show.json";
+            String myID = PreferenceHelper.GetPreference("SinaWeibo_ID");
             request.AddParameter("access_token", App.SinaWeibo_AccessToken);
-            request.AddParameter("uid", App.ViewModel.SinaWeiboAccount.id);
+            request.AddParameter("uid", myID);
             netEngine.SendRequest(request, cmdBase, (SdkResponse e1) =>
             {
                 if (e1.errCode == SdkErrCode.SUCCESS)
                 {
                     User user = null;
                     DataContractJsonSerializer ser = new DataContractJsonSerializer(typeof(User));
-                    user = ser.ReadObject(e1.stream) as User;                    
+                    user = ser.ReadObject(e1.stream) as User;                 
+					// TODO NULL detect
                     PreferenceHelper.SetPreference("SinaWeibo_NickName", user.screen_name);
                     PreferenceHelper.SetPreference("SinaWeibo_Avatar", user.profile_image_url);
                     // 设置显示当前用户昵称的UI

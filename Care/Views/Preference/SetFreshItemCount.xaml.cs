@@ -78,6 +78,11 @@ namespace Care.Views.Preference
 
             int renrenIndex = ValueToIndex(PreferenceHelper.GetPreference("Renren_RecentCount"));
             renrenPicker.SelectedIndex = renrenIndex;
+
+            int doubanIndex = ValueToIndex(PreferenceHelper.GetPreference("Renren_DoubanCount"));
+            doubanPicker.SelectedIndex = doubanIndex;
+
+
             m_bInitFinished = true;
         }
 

@@ -127,6 +127,7 @@
     <Compile Include="Tool\RefreshViewHelper.cs" />
     <Compile Include="Tool\Converter\RenrenModelConverter.cs" />
     <Compile Include="Tool\TaskHelper.cs" />
+    <Compile Include="ViewModels\ChatItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\RssSiteItem.cs" />
     <Compile Include="Views\Common\CommentView.xaml.cs">
@@ -164,6 +165,9 @@
     </Compile>
     <Compile Include="Views\Lab\CharactorAnalysisWrapper.xaml.cs">
       <DependentUpon>CharactorAnalysisWrapper.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Lab\LabMainPage.xaml.cs">
       <DependentUpon>LabMainPage.xaml</DependentUpon>
@@ -309,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Lab\CharactorAnalysisWrapper.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\Chat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -479,6 +487,7 @@
     <Resource Include="Images\Lab\PieChart.png" />
     <Resource Include="Images\Lab\Spy.png" />
     <Resource Include="Images\Thumb\Cheeky.png" />
+    <Resource Include="Images\Lab\Chat.png" />
     <Content Include="Images\Thumb\CheekyTransparent.png" />
     <Resource Include="Images\Thumb\Closed Book.png" />
     <Resource Include="Images\Thumb\douban_logo.png" />
@@ -498,6 +507,7 @@
     <Resource Include="Images\Thumb\weibologo.png" />
     <Resource Include="Images\Thumb\yangmi.jpg" />
     <Resource Include="Images\Thumb\rotate.png" />
+    <Resource Include="Images\Thumb\WriteCommentBack.png" />
     <Content Include="SmartMad\SmartMad.Ads.WindowsPhone7.dll" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>

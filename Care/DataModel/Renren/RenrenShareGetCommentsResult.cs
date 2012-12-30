@@ -23,18 +23,7 @@ namespace Care
             public string name { get; set; }
             public string headurl { get; set; }            
             public string time { get; set; }            
-            public string content { get; set; }
-
-            public CommentViewModel ToCommentViewModel()
-            {
-                CommentViewModel model = new CommentViewModel();
-                model.Title = this.name;                
-                model.IconURL = this.headurl;
-                model.Content = this.content;
-                model.ID = this.id;
-                model.TimeObject = ExtHelpers.GetRenrenTimeFullObject(this.time);
-                return model;
-            }
+            public string content { get; set; }           
         }
 
         public string total { get; set; }

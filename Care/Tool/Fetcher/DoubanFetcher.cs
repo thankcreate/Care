@@ -76,7 +76,8 @@ namespace Care.Tool
                         foreach (DoubanSDK.Comment comment in args.comments)
                         {
                             // 去掉关注对象自己
-                            if (comment.user.id != PreferenceHelper.GetPreference("Douban_FollowerID"))
+                            if (comment.user.id != PreferenceHelper.GetPreference("Douban_FollowerID")
+                                && comment.user.id != PreferenceHelper.GetPreference("Douban_ID"))
                             {
                                 CommentMan man = new CommentMan
                                 {

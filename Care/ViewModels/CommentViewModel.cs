@@ -27,6 +27,8 @@ namespace Care
         private string _content;
         private string _title;
         private string _id;
+        private string _uid;
+        private string _doubanUID;
         private EntryType _type;
 
         public EntryType Type
@@ -72,6 +74,38 @@ namespace Care
                 {
                     _id = value;
                     NotifyPropertyChanged("ID");
+                }
+            }
+        }
+
+        public string UID
+        {
+            get
+            {
+                return _uid;
+            }
+            set
+            {
+                if (value != _uid)
+                {
+                    _uid = value;
+                    NotifyPropertyChanged("UID");
+                }
+            }
+        }
+
+        public string DoubanUID
+        {
+            get
+            {
+                return _doubanUID;
+            }
+            set
+            {
+                if (value != _doubanUID)
+                {
+                    _doubanUID = value;
+                    NotifyPropertyChanged("DoubanUID");
                 }
             }
         }

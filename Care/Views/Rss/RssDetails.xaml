@@ -25,8 +25,8 @@
         </Grid.Background>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid>
-            <Image Source="../../Images/Thumb/rss.png"  Height="71" HorizontalAlignment="Left" Margin="382,120,0,0" Name="headIcon" Stretch="Fill" VerticalAlignment="Top" Width="70" />
+        <Grid x:Name="headerGrid"  Height="190">
+            <Image Source="../../Images/Thumb/rss.png"  Height="71" HorizontalAlignment="Left" Margin="382,0,0,0" Name="headIcon" Stretch="Fill" VerticalAlignment="Bottom" Width="70" />
         </Grid>
 
         <!--ContentPanel - place additional content here-->

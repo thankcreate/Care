@@ -210,7 +210,7 @@ namespace Care.Views.Lab
             else if (nameTop3.Length == 2)
             {
                 name1 = nameTop3[0];
-                name2 = nameTop3[1];
+                name2 = nameTop3[1];                
 
                 id1 = m_mapNameToID[name1];
                 id2 = m_mapNameToID[name2];

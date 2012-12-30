@@ -36,7 +36,7 @@ namespace DoubanSDK
 
             public String description { get; set; }
             public String title { get; set; }
-            public List<Attachment> media { get; set; }
+            public List<Media> media { get; set; }
             public String expaned_href { get; set; }
             public String caption { get; set; }
             public String href { get; set; }

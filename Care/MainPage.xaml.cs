@@ -145,6 +145,13 @@ namespace Care
             NavigationService.Navigate(new Uri("/Views/SelectOnly.xaml", UriKind.Relative));
         }
 
+        private void SendStatus_Click(object sender, EventArgs e)
+        {            
+            NavigationService.Navigate(new Uri("/Views/Common/CommitSelectPage.xaml", UriKind.Relative));
+        }
+
+        
+
         private void Microscope_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/Views/Lab/LabPage.xaml", UriKind.Relative));
@@ -260,7 +267,7 @@ namespace Care
             m_progressIndicatorHelper.PushTask("Renren");
             m_progressIndicatorHelper.PushTask("Douban");
             
-            App.ViewModel.Items.Clear();
+            //App.ViewModel.Items.Clear();
             // 1.Weibo
             refreshModelSinaWeibo();
             // 2.Rss
@@ -276,6 +283,7 @@ namespace Care
         private void refreshModelDouban()
         {
             App.ViewModel.DoubanItems.Clear();
+            App.ViewModel.DoubanPicItems.Clear();
 
             // 如果检测到过期，则直接调用API的RefreshToken，重新来一次
             if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Douban_Token"))
@@ -290,6 +298,18 @@ namespace Care
                         refreshModelDouban();
                         return;
                     }
+                    else
+                    {
+
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
+                            {
+                                MessageBox.Show("豆瓣帐号已过期，请重新登陆喵~", ">_<", MessageBoxButton.OK);
+                            }
+                            m_progressIndicatorHelper.PopTask("Renren");
+                        });
+                    }
                 });                
             }
             else
@@ -297,7 +317,7 @@ namespace Care
                 String doubanFollowID = PreferenceHelper.GetPreference("Douban_FollowerID");
                 if (String.IsNullOrEmpty(doubanFollowID))
                 {
-                    m_progressIndicatorHelper.PopTask("Renren");
+                    m_progressIndicatorHelper.PopTask("Douban");
                     return;
                 }
                 String strCount = PreferenceHelper.GetPreference("Douban_RecentCount");
@@ -333,11 +353,11 @@ namespace Care
                 {
                     if (args.specificCode == "106")
                     {
-                        MessageBox.Show("豆瓣授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                        MessageBox.Show("豆瓣授权已过期，请重新登陆", ">_<", MessageBoxButton.OK);
                     }
                     else
                     {
-                        MessageBox.Show("豆瓣授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                        MessageBox.Show("豆瓣信息获取发生未知错误，请确保网络连接正常", ">_<", MessageBoxButton.OK);
                     }
                     m_progressIndicatorHelper.PopTask("Douban");
                 });
@@ -354,7 +374,7 @@ namespace Care
                 // 有值说明之前登陆过，须提示过期
                 if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
                 {
-                    MessageBox.Show("人人帐号授权已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                    MessageBox.Show("人人帐号授权已过期，请重新登陆", ">_<", MessageBoxButton.OK);
                 }
                 m_progressIndicatorHelper.PopTask("Renren");
                 return;
@@ -414,7 +434,7 @@ namespace Care
                 {
                     if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
                     {
-                        MessageBox.Show("人人信息源获取失败，可能是网络问题，也可能是帐号过期", "失败", MessageBoxButton.OK);
+                        MessageBox.Show("人人信息源获取失败，可能是网络问题，也可能是帐号过期", ">_<", MessageBoxButton.OK);
                     } 
                     m_progressIndicatorHelper.PopTask("Renren");
                 });
@@ -517,7 +537,7 @@ namespace Care
                         // 21327 expired_token Token 过期
                         if (response.specificCode == "21327")
                         {
-                            MessageBox.Show("新浪微博帐号已过期，请重新登陆", "温馨提示", MessageBoxButton.OK);
+                            MessageBox.Show("新浪微博帐号已过期，请重新登陆", ">_<", MessageBoxButton.OK);
                             // 清掉保存的当前帐号信息
                             // 但是关注人信息还保留着
                             PreferenceHelper.RemoveSinaWeiboLoginAccountPreference();

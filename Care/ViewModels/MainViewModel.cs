@@ -32,10 +32,10 @@ namespace Care
             this.ListPictureItems = new List<PictureItem>();
             this.SinaWeiboPicItems = new List<PictureItem>();
             this.RenrenPicItems = new List<PictureItem>();
-            this.RssPicItems = new List<PictureItem>();          
-
+            this.RssPicItems = new List<PictureItem>();
+            this.DoubanPicItems = new List<PictureItem>();
             this.ItemsNeedRefresh = 2;
-            this.SinaWeiboAccount = new User();
+            
             this.IsChanged = true;
         }
 
@@ -48,7 +48,7 @@ namespace Care
         public List<ItemViewModel> RenrenItems { get; private set; }
         public List<ItemViewModel> DoubanItems { get; private set; }
         public int ItemsNeedRefresh;
-        public User SinaWeiboAccount;
+
         public string SinaWeiboCareID;
 
         public bool IsChanged;
@@ -60,6 +60,7 @@ namespace Care
         public List<PictureItem> ListPictureItems { get; private set; }
         public List<PictureItem> SinaWeiboPicItems { get; private set; }
         public List<PictureItem> RenrenPicItems { get; private set; }
+        public List<PictureItem> DoubanPicItems { get; private set; }
         public List<PictureItem> RssPicItems { get; private set; }
 
         // Setting

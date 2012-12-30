@@ -26,7 +26,10 @@ namespace Care.Tool
                 commentViewModel.IconURL = MiscTool.MakeFriendlyImageURL(comment.user.small_avatar);
                 commentViewModel.Content = comment.text;
                 commentViewModel.ID = comment.id;
+                commentViewModel.UID = comment.user.id;
+                commentViewModel.DoubanUID = comment.user.uid;
                 commentViewModel.TimeObject = ExtHelpers.GetRenrenTimeFullObject(comment.created_at);
+                commentViewModel.Type = EntryType.Douban;
                 return commentViewModel;
             }
             catch (System.Exception ex)
@@ -39,6 +42,18 @@ namespace Care.Tool
         {
             try
             {
+                if (statues.title.Contains("关注")  // 新关注了某个人
+                   || statues.title.Contains("加入")    // 加入小组
+                   || statues.title.Contains("活动")    // 对某活动感兴趣
+                   || statues.title.Contains("歌曲")    // 某2添加了某歌曲
+                   || statues.title.Contains("试读")    // 正在试读
+                   || statues.title.Contains("豆瓣阅读")    // 豆瓣阅读
+                   || statues.title.Contains("使用")   // 开始使用
+                   || statues.title.Contains("日记"))   // 写了日记
+                {
+                    return null;
+                }
+
                 if (statues.type == "collect_book") // 不硬编码不舒服斯基
                 {
                     return ConvertBookStatus(statues);
@@ -51,20 +66,11 @@ namespace Care.Tool
                 {
                     return ConvertMusicStatus(statues);
                 }
-                else if (statues.title.Contains("关注")  // 新关注了某个人
-                    || statues.title.Contains("加入")    // 加入小组
-                    || statues.title.Contains("活动")    // 对某活动感兴趣
-                    || statues.title.Contains("歌曲")    // 某2添加了某歌曲
-                    || statues.title.Contains("试读")    // 正在试读
-                    || statues.title.Contains("豆瓣阅读")    // 豆瓣阅读
-                    || statues.title.Contains("使用"))   // 开始使用
-                {
-                    return null;
-                }
-                else
+                else if (statues.title == "说：" || statues.type == "text")  // 豆瓣现在抽风，纯文字状态有时候type是null
                 {
                     return ConvertTextStatus(statues);
                 }
+               
                 // should never got here
                 return null;
             }
@@ -101,6 +107,7 @@ namespace Care.Tool
             model.Comments = new ObservableCollection<CommentViewModel>();
             model.CommentCount = statues.comments_count;
             model.SharedCount = statues.reshared_count;
+            FiltPicture(statues, model);
             return model;
         }
 
@@ -131,6 +138,7 @@ namespace Care.Tool
             model.Comments = new ObservableCollection<CommentViewModel>();
             model.CommentCount = statues.comments_count;
             model.SharedCount = statues.reshared_count;
+            FiltPicture(statues, model);
             return model;
         }
 
@@ -142,13 +150,13 @@ namespace Care.Tool
             model.Title = statues.user.screen_name;
             String bookTitle = "";
             if (statues.attachments != null && statues.attachments.Count > 0)
-            {
+            {                
                 foreach (Statuses.Attachment attach in statues.attachments)
                 {
                     if (attach.type == "book")
                     {
                         bookTitle = attach.title;
-                    }
+                    }                                   
                 }
             }
             model.Content = TrimMark(statues.title) + " “" + bookTitle + "”  " + statues.text;
@@ -161,6 +169,7 @@ namespace Care.Tool
             model.Comments = new ObservableCollection<CommentViewModel>();
             model.CommentCount = statues.comments_count;
             model.SharedCount = statues.reshared_count;
+            FiltPicture(statues, model);
             return model;
         }
 
@@ -192,7 +201,7 @@ namespace Care.Tool
                 model.Content = "转播"/*你妹*/;
                 model.ForwardItem = shareModel;
             }
-
+            FiltPicture(statues, model);
             return model;
         }
 
@@ -210,6 +219,55 @@ namespace Care.Tool
                 }
             }
             return input;
+        }
+
+        public static void FiltPicture(Statuses statues, ItemViewModel model)
+        {
+            try
+            {
+                if (statues.attachments != null && statues.attachments.Count > 0)
+                {
+                    foreach (Statuses.Attachment attach in statues.attachments)
+                    {
+                        if (attach.media != null && attach.media.Count > 0)
+                        {
+                            foreach (Statuses.Attachment.Media media in attach.media)
+                            {
+                                if (media.type == "image")
+                                {
+                                    model.ImageURL = media.src;
+                                    model.MidImageURL = GenerateDoubanSrc(model.ImageURL, "median");
+                                    model.FullImageURL = GenerateDoubanSrc(model.ImageURL, "raw");
+
+                                    PictureItem picItem = new PictureItem();
+                                    picItem.Url = model.MidImageURL;
+                                    picItem.FullUrl = model.FullImageURL;
+                                    picItem.Id = model.ID;
+                                    picItem.Type = model.Type;
+                                    picItem.Title = model.Title;
+                                    picItem.Content = model.Content;
+                                    picItem.TimeObject = model.TimeObject;
+                                    App.ViewModel.DoubanPicItems.Add(picItem);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+            	
+            }
+           
+        }
+
+        public static String GenerateDoubanSrc(String input, String convertTo)
+        {
+            if (input == null)
+                return null;
+            return input.Replace("small", convertTo);
         }
 
     }

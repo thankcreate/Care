@@ -40,7 +40,8 @@ namespace Care.Tool
                             foreach (RenrenNews.Comments.Comment comment in news.comments.comment)
                             {
                                 // 要去掉自己
-                                if (comment.uid != PreferenceHelper.GetPreference("Renren_FollowerID"))
+                                if (comment.uid != PreferenceHelper.GetPreference("Renren_FollowerID")
+                                    && comment.uid != PreferenceHelper.GetPreference("Renren_ID"))
                                 {
                                     CommentMan man = new CommentMan
                                     {

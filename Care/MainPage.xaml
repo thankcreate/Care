@@ -327,7 +327,8 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1">
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/list.png" Click="Filt_Click" Text="过滤"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Click="Refresh_Click" Text="刷新"/>            
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Click="Refresh_Click" Text="刷新"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/Bar/edit.png" Text="发状态" Click="SendStatus_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/microscope.png" Click="Microscope_Click" Text="奇怪的地方"/>
             <!--<shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
             <shell:ApplicationBar.MenuItems>
@@ -426,7 +427,7 @@
                             <myTilt:TiltableControl Tap="About_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtAbout" Text="关于"  />
-                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.1"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.3.0.1218"  />
                                 </StackPanel>
                             </myTilt:TiltableControl>
                         </StackPanel>

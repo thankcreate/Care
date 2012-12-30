@@ -17,6 +17,9 @@ using WeiboSdk;
 using DoubanSDK;
 using Care.Tool;
 using SmartMad.Ads.WindowsPhone7.WPF;
+using System.IO.IsolatedStorage;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Care
 {
@@ -87,6 +90,7 @@ namespace Care
             SinaWeiboInit();
             RenrenAPIInit();
             DoubanInit();
+            LoadCache();
             // 启动页相关
             RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
             // 广告参数设置
@@ -105,6 +109,22 @@ namespace Care
                 PreferenceHelper.SavePreference();
             }   
 
+        }
+
+        private void LoadCache()
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            ObservableCollection<ItemViewModel> outItem = null;
+            if (settings.TryGetValue<ObservableCollection<ItemViewModel>>("Global_TimelineCache", out outItem))
+            {
+                if (outItem != null && outItem.Count != 0)
+                {
+                    foreach (ItemViewModel item in outItem)
+                    {
+                        App.ViewModel.Items.Add(item);
+                    }
+                }             
+            }
         }
 
         private void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)

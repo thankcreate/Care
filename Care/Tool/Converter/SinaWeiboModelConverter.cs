@@ -102,6 +102,7 @@ namespace Care
                 model.Title = comment.user.name;
                 model.IconURL = comment.user.profile_image_url;
                 model.ID = comment.id;
+                model.UID = comment.user.id;
                 model.TimeObject = string.IsNullOrEmpty(comment.created_at) ? new DateTimeOffset() : ExtHelpers.GetSinaTimeFullObject(comment.created_at);
                 model.Type = EntryType.SinaWeibo;
                 return model;

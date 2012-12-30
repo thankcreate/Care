@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Media.Imaging;
+using System.Text.RegularExpressions;
 
 namespace Care.Tool
 {
@@ -194,6 +195,20 @@ namespace Care.Tool
                     85);
                 return stream.ToArray();
             }
+        }
+
+        public static string RemoveHtmlTag(String input)
+        {
+            try
+            {
+                String withoutHtml = Regex.Replace(input, "<.+?>", string.Empty);
+                return withoutHtml;
+            }
+            catch (System.Exception ex)
+            {
+                return input;
+            }
+            
         }
     }
 }

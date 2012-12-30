@@ -20,7 +20,14 @@ namespace Care
         public RssDetails()
         {
             InitializeComponent();
+            InitHeaderHeight();
             this.Loaded += new RoutedEventHandler(RssDetails_Loaded);
+        }
+
+        private void InitHeaderHeight()
+        {
+            double perc = ((double)190) / ((double)800);
+            headerGrid.Height = (int)(Application.Current.RootVisual.RenderSize.Height * perc);
         }
 
         private void RssDetails_Loaded(object sender, RoutedEventArgs e)

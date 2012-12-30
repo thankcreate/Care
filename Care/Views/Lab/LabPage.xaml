@@ -50,7 +50,10 @@
                         <Image Source="/Care;component/Images/Lab/Spy.png" Height="170" Margin="222,214,64,243" Name="PotentialEnemy" Width="170" Tap="PotentialEnemy_ImageTap" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/Cat.png" Height="170" Margin="28,410,258,47" Name="About" Width="170" Tap="About_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/Cat.png" Height="170" Margin="28,410,258,47" Name="About" Width="170" Tap="About_ImageTap" />               
+                    </myTilt:TiltableControl>
+                    <myTilt:TiltableControl>
+                        <Image Source="/Care;component/Images/Lab/Chat.png" Height="170" Margin="222,410,64,47" Name="Chat" Width="170" Tap="Chat_ImageTap" />
                     </myTilt:TiltableControl>
                 </Grid>                
             </ScrollViewer>

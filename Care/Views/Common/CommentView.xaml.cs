@@ -29,13 +29,31 @@ namespace Care.Views.Common
         private string m_renrenOwnerID;
         private EntryType m_type = EntryType.SinaWeibo;
 
+        #region HeaderHeightProperty
+        public static readonly DependencyProperty HeaderHeightProperty =
+            DependencyProperty.Register("HeaderHeight", typeof(string), typeof(CommentView), new PropertyMetadata((string)"180"));
+
+        public string HeaderHeight
+        {
+            get { return (string)GetValue(HeaderHeightProperty); }
+            set { SetValue(HeaderHeightProperty, value); }
+        }
+        #endregion
+
         public CommentView()
         {
             this.DataContext = this;
             Comments = new ObservableCollection<CommentViewModel>();
             
-            InitializeComponent();            
+            InitializeComponent();
+            InitHeaderHeight();
             this.Loaded += new RoutedEventHandler(Page_Loaded);
+        }
+
+        private void InitHeaderHeight()
+        {
+            double perc =( (double) 180) / ( (double) 800);
+            HeaderHeight = ((int)(Application.Current.RootVisual.RenderSize.Height * perc)).ToString();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -84,14 +102,23 @@ namespace Care.Views.Common
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         Comments.Clear();
+                        List<CommentViewModel> sortList = new List<CommentViewModel>();
                         args.comments.ForEach(p =>
                         {
                             CommentViewModel model = DoubanModelConverter.ConvertCommentToCommon(p);
                             if (model != null)
                             {
-                                Comments.Add(model);
+                                sortList.Add(model);
                             }
                         });
+                        var sorted = from m in sortList orderby m.TimeObject descending select m;
+                        if (sorted != null)
+                        {
+                            foreach (CommentViewModel model in sorted)
+                            {
+                                Comments.Add(model);
+                            }
+                        }
                         AddEmptyTipCommentCleverly();
                     });
                 }
@@ -119,7 +146,8 @@ namespace Care.Views.Common
                 param.Add(new APIParameter("method", "status.getComment"));
 
                 param.Add(new APIParameter("status_id", m_id));
-                param.Add(new APIParameter("owner_id", m_renrenOwnerID));                
+                param.Add(new APIParameter("owner_id", m_renrenOwnerID));
+                param.Add(new APIParameter("order", "1"));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenCommentGetCallback, param);
             }
@@ -131,6 +159,7 @@ namespace Care.Views.Common
 
                 param.Add(new APIParameter("pid", m_id));
                 param.Add(new APIParameter("uid", m_renrenOwnerID));
+                param.Add(new APIParameter("order", "1"));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenCommentGetCallback, param);
             }
@@ -159,11 +188,20 @@ namespace Care.Views.Common
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         Comments.Clear();
+                        List<CommentViewModel> sortList = new List<CommentViewModel>();
                         foreach (RenrenShareGetCommentsResult.Comment comment in commentsResult.comments)
                         {
-                            CommentViewModel model = comment.ToCommentViewModel();
+                            CommentViewModel model = RenrenModelConverter.ConvertShareCommentToCommon(comment);
                             if (model != null)
+                                sortList.Add(model);
+                        }
+                        var sorted = from m in sortList orderby m.TimeObject descending select m;
+                        if (sorted != null)
+                        {
+                            foreach (CommentViewModel model in sorted)
+                            {
                                 Comments.Add(model);
+                            }
                         }
                         AddEmptyTipCommentCleverly();
                     });
@@ -222,7 +260,9 @@ namespace Care.Views.Common
             {
                 CommentViewModel tipComment = new CommentViewModel()
                 {
-                    Content = "尚无评论"
+                    Content = "尚无评论",
+                    Title = "呃~",
+                    Type = EntryType.NotSet                    
                 };
                 Comments.Add(tipComment);
             }
@@ -269,6 +309,43 @@ namespace Care.Views.Common
         private void Refresh_Click(object sender, EventArgs e)
         {
             RefreshComments();
+        }
+
+        private void CommentToComment_Tapped(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            FrameworkElement control = sender as FrameworkElement;
+            if (control == null)
+                return;
+            CommentViewModel model = control.DataContext as CommentViewModel;
+            if (model == null)
+                return;
+
+            String content = null;
+            EntryType type = model.Type;
+            if (type == EntryType.SinaWeibo)
+            {
+                content = String.Format("回复@{0}: ", model.Title);
+            }
+            else if (type == EntryType.Renren)
+            {
+                content = String.Format("回复{0}: ", model.Title);
+            }
+            else if (type == EntryType.Douban)
+            {
+                content = String.Format("@{0}: ", model.DoubanUID);
+            }
+            else if (type == EntryType.NotSet)
+            {
+                return;
+            }
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat("/Views/Common/PostCommentView.xaml?ID={0}&Type={1}&RenrenFeedType={2}&RenrenOwnerID={3}&Content={4}",
+                m_id,
+                m_type,
+                m_renrenFeedType,
+                m_renrenOwnerID,
+                content);
+            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
         }
     }
 }

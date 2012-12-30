@@ -10,7 +10,7 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="800" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
     xmlns:c4fToolkit="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
     shell:SystemTray.IsVisible="False">
 
@@ -25,14 +25,23 @@
         </Grid.Background>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,57,0,28">
-            <TextBlock x:Name="ApplicationTitle" Foreground="Black" Text="我只在乎你" TextAlignment="Right"  Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Foreground="Black"  Text="评论" TextAlignment="Right" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,0,0,10" Height="{Binding HeaderHeight}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock   x:Name="ApplicationTitle" VerticalAlignment="Bottom"  Foreground="Black" Text="我只在乎你" TextAlignment="Right"  Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock Grid.Row="1" x:Name="PageTitle" VerticalAlignment="Bottom" Foreground="Black"  Text="评论" TextAlignment="Right" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </Grid>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,14,12,0">
-            <ListBox x:Name="listComments"  ItemsSource="{Binding Comments}" FlowDirection="LeftToRight">
+            <ListBox Padding="0,0,0,0"  x:Name="listComments"  ItemsSource="{Binding Comments}" FlowDirection="LeftToRight">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,0,0,10">
@@ -43,9 +52,17 @@
                                 <Grid>
                                     <Image VerticalAlignment="Top"  Source="{Binding IconURL}" Width="56" Height="56"/>
                                 </Grid>
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                    <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,0" Foreground="#FF4F55D1" FontSize="22" TextWrapping="Wrap"  Text="{Binding Title}" />
-                                    <c4fToolkit:ChatBubble  Grid.Column="1"  Margin="5,3,0,0" Background="#FFFFD8D8"  ChatBubbleDirection="UpperLeft"   Padding="8,4">
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0" HorizontalAlignment="Stretch">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Bottom"  Margin="5,0,0,0" Foreground="#FF4F55D1" FontSize="22" TextWrapping="Wrap"  Text="{Binding Title}" />
+                                        <Image  Grid.Column="1" Width="30" Height="30" HorizontalAlignment="Right"  Stretch="Uniform"  Source="../../Images/Thumb/WriteCommentBack.png" Tap="CommentToComment_Tapped"></Image>
+                                    </Grid>
+                                    
+                                    <c4fToolkit:ChatBubble Width="Auto" HorizontalAlignment="Left"  Grid.Column="1"  Margin="5,3,0,0" Background="#FFFFD8D8"  ChatBubbleDirection="UpperLeft"   Padding="8,4">
                                         <StackPanel>
                                             <TextBlock Foreground="Black" FontSize="18" TextWrapping="Wrap" Text="{Binding Content}" />
                                             <TextBlock Foreground="Gray" FontSize="15"  Text="{Binding Time}" />
@@ -60,7 +77,7 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Opacity="0.7" x:Name="bar"  IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1" >
+        <shell:ApplicationBar x:Name="bar"  IsVisible="True" IsMenuEnabled="True" BackgroundColor="#FF4F55D1" >
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/edit.png" Text="写评论" Click="WriteComment_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/refresh.png" Text="刷新" Click="Refresh_Click" />
         </shell:ApplicationBar>

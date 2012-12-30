@@ -28,10 +28,13 @@ namespace Care.Views.Common
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {           
             IDictionary<string, string> queryString = this.NavigationContext.QueryString;
-            if (queryString.ContainsKey("Content") && queryString.ContainsKey("PicURL"))
+            if (queryString.ContainsKey("Content"))
             {
-                m_content = queryString["Content"];
-                m_picURL = queryString["PicURL"];                
+                m_content = queryString["Content"];             
+            }
+            if (queryString.ContainsKey("PicURL"))
+            {
+                m_picURL = queryString["PicURL"];   
             }
         }
 
@@ -74,7 +77,6 @@ namespace Care.Views.Common
             sb.Append("/Views/Common/CommitView.xaml");
             sb.Append(string.Format("?Content={0}&PicURL={1}&Type={2}", m_content, m_picURL, EntryType.Douban));
             NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
-        }
-        
+        }        
     }
 }

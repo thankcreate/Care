@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.IO.IsolatedStorage;
 
 namespace Care.Tool
 {
@@ -39,8 +40,22 @@ namespace Care.Tool
                 App.ViewModel.ListItems.ForEach(p => App.ViewModel.Items.Add(p));
                
                 RefreshPicturePage();
-               
+                SaveToCache();               
             });
+        }
+
+        public static void SaveToCache()
+        {
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (!settings.Contains("Global_TimelineCache"))
+            {
+                settings.Add("Global_TimelineCache", App.ViewModel.Items);
+            }
+            else
+            {
+                settings["Global_TimelineCache"] = App.ViewModel.Items;
+            }
+            settings.Save();
         }
 
         public static void RefreshPicturePage()
@@ -50,6 +65,7 @@ namespace Care.Tool
                 App.ViewModel.ListPictureItems.Clear();
                 App.ViewModel.ListPictureItems.AddRange(App.ViewModel.SinaWeiboPicItems);
                 App.ViewModel.ListPictureItems.AddRange(App.ViewModel.RenrenPicItems);
+                App.ViewModel.ListPictureItems.AddRange(App.ViewModel.DoubanPicItems);
                 App.ViewModel.ListPictureItems.Sort(
                     delegate(PictureItem a, PictureItem b)
                     {

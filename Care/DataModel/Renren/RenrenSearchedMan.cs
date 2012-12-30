@@ -8,9 +8,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-
+using System.Collections.Generic;
 namespace Care
 {
+    public class RenrenSearchedManResult
+    {
+        public string total { get; set; }
+        public List<RenrenSearchedMan> friends { get; set; }
+    }
+
     public class RenrenSearchedMan
     {
         public string id { get; set; }

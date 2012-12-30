@@ -66,7 +66,8 @@ namespace Care
         private void GetFriendList(int cursor)
         {
             m_progressIndicatorHelper.PushTask();
-            if (string.IsNullOrEmpty(App.ViewModel.SinaWeiboAccount.id))
+            String myID = PreferenceHelper.GetPreference("SinaWeibo_ID");
+            if (string.IsNullOrEmpty(myID))
                 return;
             // Define a new net engine
             netEngine = new SdkNetEngine();
@@ -79,7 +80,7 @@ namespace Care
             request.Method = WebMethod.Get;
             request.Path = "friendships/friends.json";
             request.AddParameter("access_token", App.SinaWeibo_AccessToken);
-            request.AddParameter("uid", App.ViewModel.SinaWeiboAccount.id);
+            request.AddParameter("uid", myID);
             if (cursor != -1)
             {
                 request.AddParameter("cursor", cursor.ToString());
@@ -169,7 +170,8 @@ namespace Care
         private void GetFriendListIterator(int cursor, FetchAllFriendsCallback callback)
         {
             m_progressIndicatorHelper.PushTask();
-            if (string.IsNullOrEmpty(App.ViewModel.SinaWeiboAccount.id))
+            String myID = PreferenceHelper.GetPreference("SinaWeibo_ID");
+            if (string.IsNullOrEmpty(myID))
             {
                 m_progressIndicatorHelper.PopTask();
                 return;
@@ -185,7 +187,7 @@ namespace Care
             request.Method = WebMethod.Get;
             request.Path = "friendships/friends.json";
             request.AddParameter("access_token", App.SinaWeibo_AccessToken);
-            request.AddParameter("uid", App.ViewModel.SinaWeiboAccount.id);
+            request.AddParameter("uid", myID);
             // curosr = -1 说明是第一次进来
             if (cursor != -1)
             {

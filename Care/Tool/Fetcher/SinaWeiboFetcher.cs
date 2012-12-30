@@ -72,7 +72,8 @@ namespace Care.Tool
                             foreach (Comment comment in comments.comments)
                             {
                                 // 要去掉她自己啊！！！！你个2货
-                                if (comment.user.id != status.user.id)
+                                if (comment.user.id != status.user.id
+                                    && comment.user.id != PreferenceHelper.GetPreference("SinaWeibo_ID"))
                                 {
                                     CommentMan man = new CommentMan
                                     {
@@ -145,7 +146,8 @@ namespace Care.Tool
 
         public void LoadSinaWeiboCommentByStatusID(String id, LoadSinaWeiboCommentsCompleteDelegate dele)
         {
-            if (string.IsNullOrEmpty(App.ViewModel.SinaWeiboAccount.id))
+            String MyID = PreferenceHelper.GetPreference("SinaWeibo_ID");
+            if (string.IsNullOrEmpty(MyID))
                 return;
             // Define a new net engine
             m_netEngine = new SdkNetEngine();
@@ -191,7 +193,8 @@ namespace Care.Tool
 
         private bool LoadSinaWeiboItems(LoadSinaWeiboStatusesCompleteDelegate complete)
         {
-            if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("SinaWeibo_FollowerID")))
+            String followerID = PreferenceHelper.GetPreference("SinaWeibo_FollowerID");
+            if (String.IsNullOrEmpty(followerID))
             {
                 return false;
             }
@@ -202,7 +205,7 @@ namespace Care.Tool
             m_cmdBase = new cdmUserTimeline
             {
                 acessToken = App.SinaWeibo_AccessToken,
-                userId = App.ViewModel.SinaWeiboCareID,
+                userId = followerID,
                 count = "40"
             };
             // Request server, the last parameter is set as default (".xml")

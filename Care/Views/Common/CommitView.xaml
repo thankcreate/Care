@@ -132,10 +132,14 @@
         </Grid.Background>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,0" Height="140">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <TextBlock x:Name="ApplicationTitle" Text="我只在乎你" Foreground="#ff0a473e" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="发布" Foreground="#ff0a473e"  Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+            <TextBlock Grid.Row="1"  x:Name="PageTitle" Text="发布" Foreground="#ff0a473e"  Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </Grid>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">

@@ -106,26 +106,34 @@ namespace Care.Views
 
         private void SearchCallback(object sender, APIRequestCompletedEventArgs e)
         {
-            JSONObject root = JSONConvert.DeserializeObject(e.ResultJsonString);
-            JSONArray frieds = root["friends"] as JSONArray;
-            String friedsJson = JSONConvert.SerializeArray(frieds);
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(List<RenrenSearchedMan>));
-            List<RenrenSearchedMan> searchResult = serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(friedsJson))) as List<RenrenSearchedMan>;
-            
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            try
             {
-                m_progressIndicatorHelper.PopTask();
-                SearchResult.Clear();
-                foreach (RenrenSearchedMan friend in searchResult)
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(RenrenSearchedManResult));
+                RenrenSearchedManResult searchResult = serializer.ReadObject(new MemoryStream(Encoding.UTF8.GetBytes(e.ResultJsonString))) as RenrenSearchedManResult;
+
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
-                    //App.ViewModel.Friends.Add(friend);
-                    
-                    SearchResult.Add(friend);
-                }
-                ScrollViewer v = VisualTreeHelper.GetChild(this.ResultListBox, 0) as ScrollViewer;
-                v.ScrollToVerticalOffset(0); 
-            });
+                    m_progressIndicatorHelper.PopTask();
+                    SearchResult.Clear();
+                    if (searchResult != null && searchResult.friends != null)
+                        foreach (RenrenSearchedMan friend in searchResult.friends)
+                        {
+                            //App.ViewModel.Friends.Add(friend);
+
+                            SearchResult.Add(friend);
+                        }
+                    ScrollViewer v = VisualTreeHelper.GetChild(this.ResultListBox, 0) as ScrollViewer;
+                    v.ScrollToVerticalOffset(0);
+                });
+            }
+            catch (System.Exception ex)
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    m_progressIndicatorHelper.PopTask();                   
+                });
+            }
+           
         }
      
 
