@@ -27,17 +27,15 @@ using System.Windows.Threading;
 namespace Care.Views.Lab
 {
   
-
     public partial class Chat : PhoneApplicationPage, INotifyPropertyChanged
     {
-
+        private String[] herSentece = { "^_^ 然后呢?", "呵呵..", "嗯嗯，这样~~" };
         public ObservableCollection<ChatItemViewModel> Items { get; private set; }
         public Chat()
         {
             InitializeComponent();
             Items = new ObservableCollection<ChatItemViewModel>();
-            this.DataContext = this;
-
+            this.DataContext = this;            
         }        
 
         #region 你还真烦啊！到处都少不了你！！！！！
@@ -120,7 +118,9 @@ namespace Care.Views.Lab
             }, 1200);
             Perform(() =>
             {
-                item2.Text = "^_^ 然后呢?";
+                Random random = new Random();
+                int index = random.Next(herSentece.Length);
+                item2.Text = herSentece[index];
             }, 1600);
         }
 

@@ -45,12 +45,12 @@
                     <Image Height="170" Source="../../Images/Thumb/Heart_Blue.png"  HorizontalAlignment="Left"  Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="170" />
                     <StackPanel Margin="10,0,0,0"  VerticalAlignment="Bottom">
                         <TextBlock FontSize="25" Foreground="Black"  Text="我只在乎你" />
-                        <TextBlock FontSize="20" Foreground="Gray"  Text="V1.3.0.1218 " />
+                        <TextBlock FontSize="20" Foreground="Gray"  Text="V1.3.1.1230 " />
                         <TextBlock FontSize="20" Foreground="Gray"  Text="© 2012 ThankCreate Studio" />
                     </StackPanel>
                 </StackPanel>               
                 <TextBlock Margin="15,5,20,10"  FontSize="20" Foreground="Gray" TextWrapping="Wrap" 
-                           Text="     由于可恶的企鹅暂不开放QQ空间API，所以QQ空间的集成短期内无法实现 了，还望大家见谅 T_T.." />
+                           Text="     由于可恶的企鹅暂不开放QQ空间API，所以QQ空间的集成短期内无法实现 了，还望大家见谅 T_T.. Lumia920新浪微博BUG已修复。" />
                 <myTilt:TiltableControl Margin="0,10,0,0"  Tap="SendMail_Tap">
                     <StackPanel Orientation="Horizontal" >
                         <Image   Source="../../Images/Thumb/mail.png"/>

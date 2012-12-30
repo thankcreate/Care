@@ -12,8 +12,7 @@
     xmlns:c4fToolkit="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
     xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="Care.MainPage"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696" 
-    d:DataContext="{d:DesignData SampleData/MainViewModelSampleData.xaml}"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"    
     SupportedOrientations="Portrait"  Orientation="Portrait"
     local:TiltEffect.IsTiltEnabled="True"
     shell:SystemTray.IsVisible="True"
@@ -427,7 +426,7 @@
                             <myTilt:TiltableControl Tap="About_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtAbout" Text="关于"  />
-                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.3.0.1218"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.3.1.1230"  />
                                 </StackPanel>
                             </myTilt:TiltableControl>
                         </StackPanel>

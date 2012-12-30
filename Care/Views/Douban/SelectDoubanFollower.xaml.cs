@@ -19,7 +19,6 @@ using System.IO.IsolatedStorage;
 using Care.Tool;
 using System.Collections;
 using System.Text.RegularExpressions;
-using HtmlAgilityPack;
 using System.ComponentModel;
 using DoubanSDK;
 using System.Collections.Generic;

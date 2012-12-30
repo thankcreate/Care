@@ -169,5 +169,13 @@ namespace Care.Tool
             RemovePreference("Douban_FollowerAvatar");
             RemovePreference("Douban_FollowerAvatar2");
         }
+
+        public static void RemoveDoubanLoginAccountPreference()
+        {
+            RemovePreference("Douban_NickName");
+            RemovePreference("Douban_ID");
+            RemovePreference("Douban_Token");
+            RemovePreference("Douban_Avatar");
+        }
     }
 }

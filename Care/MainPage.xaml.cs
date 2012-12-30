@@ -295,7 +295,10 @@ namespace Care
                     {
                         PreferenceHelper.SetPreference("Douban_Token", response.accesssToken);
                         PreferenceHelper.SavePreference();
-                        refreshModelDouban();
+                        Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            refreshModelDouban();
+                        });
                         return;
                     }
                     else
@@ -303,17 +306,25 @@ namespace Care
 
                         Deployment.Current.Dispatcher.BeginInvoke(() =>
                         {
-                            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Renren_ID")))
+                            if (!String.IsNullOrEmpty(PreferenceHelper.GetPreference("Douban_ID")))
                             {
-                                MessageBox.Show("豆瓣帐号已过期，请重新登陆喵~", ">_<", MessageBoxButton.OK);
+                                // 这里不能直接remove掉，因为有可能只是网络连接异常
+                                //PreferenceHelper.RemoveDoubanLoginAccountPreference();
+                                MessageBox.Show("网络连接异常或豆瓣登陆已过期~", ">_<", MessageBoxButton.OK);
                             }
-                            m_progressIndicatorHelper.PopTask("Renren");
+                            m_progressIndicatorHelper.PopTask("Douban");
                         });
                     }
                 });                
             }
             else
             {
+                if (String.IsNullOrEmpty(PreferenceHelper.GetPreference("Douban_ID")))
+                {
+                    m_progressIndicatorHelper.PopTask("Douban");
+                    return;
+                }       
+
                 String doubanFollowID = PreferenceHelper.GetPreference("Douban_FollowerID");
                 if (String.IsNullOrEmpty(doubanFollowID))
                 {
@@ -376,6 +387,7 @@ namespace Care
                 {
                     MessageBox.Show("人人帐号授权已过期，请重新登陆", ">_<", MessageBoxButton.OK);
                 }
+                PreferenceHelper.RemoveRenrenLoginAccountPreference();
                 m_progressIndicatorHelper.PopTask("Renren");
                 return;
             }
