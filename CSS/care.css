@@ -430,7 +430,7 @@ body #bsap_aplink, body #bsap_aplink:hover {
 	top:70px;
 }
 .toplogo a {
-	background:url(../Images/sp_flag1.png) no-repeat;
+	background:url(../images/sp_flag1.png) no-repeat;
 	width:135px;
 	height:145px;
 	display:block;
@@ -2056,7 +2056,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 	margin:0 auto
 }
 #footer-container .footer-top {
-	background:url(../Images/footer-top-bg.png) repeat-y 0 0;
+	background:url(../images/footer-top-bg.png) repeat-y 0 0;
 	min-height:194px
 }
 
