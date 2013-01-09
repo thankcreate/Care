@@ -1,11 +1,11 @@
 var gblPhotoShufflerDivId = "div-gallery";
 var gblPhotoShufflerImgId = "img-gallery"; 
 var gblImg = new Array(
-  "./Images/gallery_2.jpg",
-  "./Images/gallery_3.jpg",
-  "./Images/gallery_4.jpg",
-  "./Images/gallery_5.jpg",
-  "./Images/gallery_1.jpg"
+  "./images/gallery_2.jpg",
+  "./images/gallery_3.jpg",
+  "./images/gallery_4.jpg",
+  "./images/gallery_5.jpg",
+  "./images/gallery_1.jpg"
   );
 var gblPauseSeconds = 5;
 var gblFadeSeconds = .85;
