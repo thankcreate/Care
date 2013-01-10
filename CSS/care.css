@@ -2401,7 +2401,7 @@ filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#2a2a2a', endC
 
 #div-about {
 	background-color:#FFF;
-	height:560px;
+	height:620px;
 	filter: alpha(opacity=80);
     -moz-opacity:0.8;
     opacity: 0.8;
@@ -2411,4 +2411,8 @@ filter:progid:DXImageTransform.Microsoft.gradient( startColorstr='#2a2a2a', endC
 
 #div-about-header{
 	margin-left:320px;
+}
+
+#div-about a {
+	color:#666;
 }
