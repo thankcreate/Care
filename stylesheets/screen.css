@@ -436,8 +436,8 @@ blockquote {
 }
 
 hr {
-  border: none;
-  outline: none;
+  border:none;
+  outline: 0;
   height: 18px;
   background: transparent url('../images/hr.png') center center repeat-x;
   margin: 0 0 20px;
@@ -573,9 +573,13 @@ dd p:first-child {
 }
 
 .headerline{
+	display:inline
 	position:absolute;
+	margin:0px 0px 0px 0px;
+	border:0px 0px 0px 0px;
+	padding:0px 0px 0px 0px;
 	width:100%;
-	height:35px;
+	height:0px;
 	background-color:#5b7f98;
 }
 
@@ -821,4 +825,13 @@ dd p:first-child {
 
 .div-about-below{
 	width:855px;
+}
+
+.hrimg{
+	position:relative;
+	display:block;
+	position:inherit;
+	height:18px;
+	margin-bottom:20px;
+	background: transparent url('../images/hr.png') center center repeat-x;
 }
