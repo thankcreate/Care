@@ -150,7 +150,7 @@ namespace Care.Views.Lab.Test
             else if (param2 >= param1 && param2 >= param3 && param2 >= param4)
                 return "睡完午觉就无所事事的家伙";
             else if (param3 >= param1 && param3 >= param2 && param2 >= param4)
-                return "月色下的呤游者";
+                return "月色下的吟游者";
             else if (param4 >= param1 && param4 >= param2 && param4 >= param3)
                 return "程序员";
 

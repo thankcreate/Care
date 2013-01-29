@@ -10,18 +10,22 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using Care.Tool;
+using System.Threading;
 
 namespace Care
 {
     public partial class RssDetails : PhoneApplicationPage
     {
-        int m_nIndex = -1;
+        public ItemViewModel m_itemViewModel;
+
+        private ProgressIndicatorHelper m_progressIndicatorHelper;
 
         public RssDetails()
         {
             InitializeComponent();
             InitHeaderHeight();
-            this.Loaded += new RoutedEventHandler(RssDetails_Loaded);
+            this.Loaded += new RoutedEventHandler(RssDetails_Loaded);           
         }
 
         private void InitHeaderHeight()
@@ -32,22 +36,19 @@ namespace Care
 
         private void RssDetails_Loaded(object sender, RoutedEventArgs e)
         {
-            if (m_nIndex != -1)
+            if (m_itemViewModel != null)
             {
-                WebBrowser.NavigateToString(ConvertExtendedASCII(App.ViewModel.Items[m_nIndex].RssSummary));                
+                Microsoft.Phone.Shell.SystemTray.ProgressIndicator = new Microsoft.Phone.Shell.ProgressIndicator();
+                m_progressIndicatorHelper = new ProgressIndicatorHelper(Microsoft.Phone.Shell.SystemTray.ProgressIndicator, () => { });
+                m_progressIndicatorHelper.PushTaskInUIThread();
+                WebBrowser.Navigated += new EventHandler<System.Windows.Navigation.NavigationEventArgs>(WebBrowser_Navigated);
+                WebBrowser.NavigateToString(ConvertExtendedASCII(m_itemViewModel.RssSummary));                
             }
         }
 
-        protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        private void WebBrowser_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            IDictionary<string, string> queryString = this.NavigationContext.QueryString;
-            if (queryString.ContainsKey("Index"))
-            {
-                m_nIndex = int.Parse(queryString["Index"]);
-                this.DataContext = App.ViewModel.Items[m_nIndex];
-            }
-
-            base.OnNavigatedTo(e);
+            m_progressIndicatorHelper.PopTask();
         }
 
 

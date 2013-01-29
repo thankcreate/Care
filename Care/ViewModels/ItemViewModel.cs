@@ -68,6 +68,14 @@ namespace Care
             }
         }
 
+        public string IsCommentExists
+        {
+            get
+            {
+                return _type == EntryType.Feed ? "Collapsed" : "Visible";
+            }
+        }
+
         public string IconURL
         {
             get
@@ -192,22 +200,21 @@ namespace Care
             {
                 string timePart = ExtHelpers.TimeObjectToString(_timeObject);
                 string fromPart = "";
-                switch (Type)
-                {
-                    case EntryType.Renren:
-                        fromPart = "   来自人人";
-                        break;
-                    case EntryType.Douban:
-                        fromPart = "   来自豆瓣";
-                        break;
-                    case EntryType.SinaWeibo:
-                        fromPart = "   来自新浪微博";
-                        break;
-                    case EntryType.Feed:
-                        fromPart = "   来自RSS订阅";
-                        break;
-                }
-
+                //switch (Type)
+                //{
+                //    case EntryType.Renren:
+                //        fromPart = "   来自人人";
+                //        break;
+                //    case EntryType.Douban:
+                //        fromPart = "   来自豆瓣";
+                //        break;
+                //    case EntryType.SinaWeibo:
+                //        fromPart = "   来自新浪微博";
+                //        break;
+                //    case EntryType.Feed:
+                //        fromPart = "   来自RSS订阅";
+                //        break;
+                //}
                 return _time = timePart + fromPart;
             }
             set
@@ -217,6 +224,33 @@ namespace Care
                     _time = value;
                     NotifyPropertyChanged("Time");
                 }
+            }
+        }
+
+        public string From
+        {
+            get
+            {                
+                string fromPart = "";
+                switch (Type)
+                {
+                    case EntryType.Renren:
+                        fromPart = "来自人人";
+                        break;
+                    case EntryType.Douban:
+                        fromPart = "来自豆瓣";
+                        break;
+                    case EntryType.SinaWeibo:
+                        fromPart = "来自新浪微博";
+                        break;
+                    case EntryType.Feed:
+                        fromPart = "来自RSS订阅";
+                        break;
+                    default:
+                        fromPart = "来自火星";
+                        break;
+                }
+                return fromPart;
             }
         }
 

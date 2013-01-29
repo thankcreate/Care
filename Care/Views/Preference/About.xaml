@@ -45,7 +45,7 @@
                     <Image Height="170" Source="../../Images/Thumb/Heart_Blue.png"  HorizontalAlignment="Left"  Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="170" />
                     <StackPanel Margin="10,0,0,0"  VerticalAlignment="Bottom">
                         <TextBlock FontSize="25" Foreground="Black"  Text="我只在乎你" />
-                        <TextBlock FontSize="20" Foreground="Gray"  Text="V1.3.1.1230 " />
+                        <TextBlock FontSize="20" Foreground="Gray"  Text="V1.4.0.0117 " />
                         <TextBlock FontSize="20" Foreground="Gray"  Text="© 2012 ThankCreate Studio" />
                     </StackPanel>
                 </StackPanel>               

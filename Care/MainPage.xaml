@@ -10,7 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:myTilt="clr-namespace:Care"
     xmlns:c4fToolkit="clr-namespace:Coding4Fun.Phone.Controls;assembly=Coding4Fun.Phone.Controls"
-    xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit" 
     x:Class="Care.MainPage"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"    
     SupportedOrientations="Portrait"  Orientation="Portrait"
@@ -128,15 +128,34 @@
                     <!--</Border>-->
                     </c4fToolkit:ChatBubble>
 
-                    <Grid x:Name="FooterGrid" Margin="0,2,0,0" Grid.Row="1" Grid.Column="1">
+
+                    <StackPanel Visibility="{Binding IsCommentExists}"  VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal">
+                        <TextBlock x:Name="CommentCountBlockPrefix" Text="评论:" FontSize="15" >
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="Gray"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                        <TextBlock x:Name="CommentCountBlock" Text="{Binding CommentCount}" FontSize="15" >
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="Gray"/>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                    </StackPanel>
+                    
+                    <Grid x:Name="FooterGrid" Margin="0,2,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="20" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Left">
+                        <TextBlock x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="0" HorizontalAlignment="Left">
     					    <TextBlock.Foreground>
-    						    <SolidColorBrush Color="{StaticResource PhoneAccentColor}"/>
+    						    <SolidColorBrush Color="Gray"/>
     					    </TextBlock.Foreground>
+                        </TextBlock>
+                        <TextBlock x:Name="FromBlock" Text="{Binding From}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right">
+                            <TextBlock.Foreground>
+                                <SolidColorBrush Color="Gray"/>
+                            </TextBlock.Foreground>
                         </TextBlock>
                     </Grid>
 
@@ -342,7 +361,7 @@
     <Grid x:Name="LayoutRoot">
 
         <Grid.Background>
-            <ImageBrush ImageSource="Images/Background/bk.PNG" />
+            <ImageBrush ImageSource="Images/Background/bk.PNG"/>
         </Grid.Background>
         
         <!--Panorama control-->
@@ -372,7 +391,13 @@
                          x:Name="MainList"
                          SelectionChanged="MainListBoxSelectionChanged"
                          ItemsSource="{Binding Items}"
-                         ItemTemplate="{StaticResource StatusTemplateComplex}" Height="639" />
+                         ItemTemplate="{StaticResource StatusTemplateComplex}" Height="639" >
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
                 <!--</ScrollViewer>-->
             </controls:PanoramaItem>
 
@@ -411,6 +436,7 @@
                         <StackPanel>
                             <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleUsePassword"  Content="{Binding UsingPasswordText}"  IsChecked="{Binding UsingPassword, Mode=OneWay}" Header="使用密码" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black"  Click="toggleUsePassword_Click" />
                             <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleFetchImageInRetweet"  Content="{Binding NeedFetchImageInRetweetText}"  IsChecked="{Binding NeedFetchImageInRetweet}" Header="在图片墙中显示转发图片" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black" Click="toggleFetchImageInRetweet_Click" />
+                            <toolkit:ToggleSwitch Foreground="Black"  x:Name="toggleUseBlessingPage"  Content="{Binding UseBlessingPageText}"  IsChecked="{Binding UseBlessingPage}" Header="启动时显示心语墙" Style="{StaticResource ToggleSwitchStyle1}" BorderBrush="Black" Background="Black" Click="toggleUseBlessingPage_Click" />
                             <myTilt:TiltableControl Tap="textSeletRefreshItemCount_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,0,0,0"   Name="textSeletRefreshItemCount" Text="新鲜事条数" />
@@ -426,7 +452,7 @@
                             <myTilt:TiltableControl Tap="About_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtAbout" Text="关于"  />
-                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.3.1.1230"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.4.0.0117"  />
                                 </StackPanel>
                             </myTilt:TiltableControl>
                         </StackPanel>

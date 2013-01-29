@@ -27,7 +27,22 @@ namespace Care.Tool
         public delegate void AllTaskCompleteCallback();
         public AllTaskCompleteCallback m_delAllTaskCompleCallback;
 
+
         // 此函数应在UI线程执行
+        public void PushTaskInUIThread()
+        {
+            
+            Interlocked.Increment(ref m_nTaskInProcess);
+            // 如果是第一个任务，作更新加载条的操作
+            if (m_nTaskInProcess == 1)
+            {
+                m_progressIndicator.Text = "数据传输中";
+                m_progressIndicator.IsIndeterminate = true;
+                m_progressIndicator.IsVisible = true;
+            }            
+        }
+
+        // 此函数在内部转到UI线程执行
         public void PushTask()
         {
             Deployment.Current.Dispatcher.BeginInvoke(() =>

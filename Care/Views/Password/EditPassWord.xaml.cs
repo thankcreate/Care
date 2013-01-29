@@ -98,9 +98,9 @@ namespace Care.Views
                 MessageBox.Show("两次密码输入不一致");
                 return;
             }
-            if (txtNew.Text.Length < 4)
+            if (txtNew.Text.Length < 4 || txtNew.Text.Length > 6)
             {
-                MessageBox.Show("新密码至少4位");
+                MessageBox.Show("密码保持在4到6位之间");
                 return;
             }
             PreferenceHelper.SetPreference("Global_Password", txtNew.Text);

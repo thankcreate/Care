@@ -58,15 +58,26 @@
                        
                     </c4fToolkit:ChatBubble>
                     
-                    <Grid Margin="0,0,0,5">
+                    
+                    <Grid Margin="0,0,0,3">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>                            
+                        
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Foreground="Gray" Margin="0,10,0,0"  x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="0" HorizontalAlignment="Left" />
-                        <TextBlock Foreground="Gray" Margin="0,10,0,0" Text="评论:" FontSize="15" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" />
-                        <TextBlock Foreground="Gray" Margin="0,10,20,0"  x:Name="CommentBlock" Text="{Binding CommentCount}" FontSize="15" VerticalAlignment="Bottom" Grid.Column="2" HorizontalAlignment="Right" />
+                        
+                        <TextBlock Foreground="Gray" Margin="0,10,0,0" Text="评论:" FontSize="18" VerticalAlignment="Bottom" Grid.Column="0" HorizontalAlignment="Right" />
+                        <TextBlock Foreground="Gray" Margin="0,10,20,0"  x:Name="CommentBlock" Text="{Binding CommentCount}" FontSize="18" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" />
+                    </Grid>
+                    <Grid Margin="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Foreground="Gray" Margin="0,0,0,0"  x:Name="CreateTimeBlock" Text="{Binding Time}" FontSize="18" VerticalAlignment="Bottom" Grid.Column="0" HorizontalAlignment="Left" />
+                        <TextBlock Foreground="Gray" Margin="0,0,20,0"  x:Name="FromBlock" Text="{Binding From}" FontSize="18" VerticalAlignment="Bottom" Grid.Column="1" HorizontalAlignment="Right" />
                     </Grid>
                     
                  

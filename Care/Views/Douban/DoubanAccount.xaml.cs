@@ -161,7 +161,7 @@ namespace Care.Views.Douban
                     PreferenceHelper.SetPreference("Douban_NickName", info.name);
                     PreferenceHelper.SetPreference("Douban_Avatar", info.avatar);
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
+                    {   
                         NavigationService.Navigate(new Uri("/Views/Douban/DoubanAccount.xaml", UriKind.Relative));
                     });
                 }

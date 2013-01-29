@@ -49,6 +49,11 @@ namespace Care.Views.Lab
         {
             NavigationService.Navigate(new Uri("/Views/Lab/Chat.xaml", UriKind.Relative));
         }
+
+        private void Bless_ImageTap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            NavigationService.Navigate(new Uri("/Views/Lab/LabBlessePage.xaml", UriKind.Relative));
+        }
         
 
         private void adView1Event(object sender, SmartMad.Ads.WindowsPhone7.WPF.AdViewEventArgs args)

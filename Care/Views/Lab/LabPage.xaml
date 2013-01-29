@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:ControlTiltEffect"  
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:myTilt="clr-namespace:Care"
-    xmlns:my="clr-namespace:Microsoft.Advertising.Mobile.UI;assembly=Microsoft.Advertising.Mobile.UI" xmlns:my1="clr-namespace:Microsoft.Phone.Controls.Maps;assembly=Microsoft.Phone.Controls.Maps" xmlns:toolkitPrimitives="clr-namespace:Microsoft.Phone.Controls.Primitives;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:myTilt="clr-namespace:Care"    
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -38,36 +37,30 @@
             <ScrollViewer >
                 <Grid>                
                     <myTilt:TiltableControl>
-                         <Image Source="/Care;component/Images/Lab/BarChart.png"  Height="170" Name="TimeSpan"  Width="170" Margin="28,21,262,436" Tap="TimeSpan_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/BarChart.png"  Height="170" Name="TimeSpan"  Width="170" Margin="28,21,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"  Tap="TimeSpan_ImageTap" />
                      </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/Girl.png" Height="170" Margin="222,21,64,436" Name="CharactorAnalysis" Width="170" Tap="CharactorAnalysis_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/Girl.png" Height="170" Margin="222,21,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="CharactorAnalysis" Width="170" Tap="CharactorAnalysis_ImageTap" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/FlowChart.png" Height="170" Margin="28,214,258,243" Name="LovePercentage" Width="170" Tap="LovePercentage_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/FlowChart.png" Height="170" Margin="28,214,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="LovePercentage" Width="170" Tap="LovePercentage_ImageTap" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/Spy.png" Height="170" Margin="222,214,64,243" Name="PotentialEnemy" Width="170" Tap="PotentialEnemy_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/Spy.png" Height="170" Margin="222,214,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="PotentialEnemy" Width="170" Tap="PotentialEnemy_ImageTap" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/Cat.png" Height="170" Margin="28,410,258,47" Name="About" Width="170" Tap="About_ImageTap" />               
+                        <Image Source="/Care;component/Images/Lab/Heart.png" Height="170" Margin="28,410,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="Bless" Width="170" Tap="Bless_ImageTap" />
                     </myTilt:TiltableControl>
                     <myTilt:TiltableControl>
-                        <Image Source="/Care;component/Images/Lab/Chat.png" Height="170" Margin="222,410,64,47" Name="Chat" Width="170" Tap="Chat_ImageTap" />
+                        <Image Source="/Care;component/Images/Lab/Chat.png" Height="170" Margin="222,410,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="Chat" Width="170" Tap="Chat_ImageTap" />
+                    </myTilt:TiltableControl>
+                    <myTilt:TiltableControl>
+                        <Image Source="/Care;component/Images/Lab/Cat.png" Height="170" Margin="28,603,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" Name="About" Width="170" Tap="About_ImageTap" />
                     </myTilt:TiltableControl>
                 </Grid>                
             </ScrollViewer>
         </Grid>
         
-        <Grid x:Name="AdPanel" Grid.Row="2">
-            <SmartMad:AdView 
-                xmlns:SmartMad="clr-namespace:SmartMad.Ads.WindowsPhone7.WPF;assembly=SmartMad.Ads.WindowsPhone7" 
-                x:Name="adView1" 
-                AdPositionID="90027741"
-                AdInterval="30"
-                AdAnimation="AdAnimationNone"
-                IsDebugMode="False" AdViewEvent="adView1Event" AdViewFullscreenEvent="adView1FullscreenEvent" />
-        </Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

@@ -43,8 +43,8 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal">
-                <TextBox  x:Name="nameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Height="72" Width="338"  />
-                <Button  Margin="-25,0,0,0"  local:TiltEffect.SuppressTilt="True" Foreground="#FF4F55D1" Content="指定朋友" Click="Search_Click"></Button>
+                <TextBox  x:Name="nameBox" HorizontalAlignment="Left" VerticalAlignment="Top" Height="72" Width="378"  />
+                <Button  Margin="-25,0,0,0"  local:TiltEffect.SuppressTilt="True" Foreground="#FF4F55D1" Content="查找" Click="Search_Click"></Button>
             </StackPanel>
 
             <ListBox x:Name="ResultListBox"  Grid.Row="1" Grid.Column="0" Margin="12,0,0,0" ItemsSource="{Binding Friends}" Padding="0,0,0,0" SelectionChanged="ListSelectionChanged">

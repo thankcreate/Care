@@ -75,7 +75,7 @@ namespace Care
 
         public static string TimeObjectToString(DateTimeOffset offset)
         {
-            return offset.LocalDateTime.ToString("yy/MM/dd HH:mm:ff");                
+            return offset.LocalDateTime.ToString("yy-MM-dd HH:mm:ff");                
         }
     }
 }

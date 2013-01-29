@@ -11,7 +11,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-        shell:SystemTray.Opacity="0"
+    shell:SystemTray.Opacity="0"
     shell:SystemTray.ForegroundColor="#FF4F55D1"
     shell:SystemTray.BackgroundColor="Transparent"
     shell:SystemTray.IsVisible="True">

@@ -96,6 +96,39 @@ namespace Care
                 NotifyPropertyChanged("UsingPasswordText");
             }
         }
+
+        public String UseBlessingPage
+        {
+            // 只有False和True两种可能值
+            get
+            {
+                String ifUseBlessingPage = PreferenceHelper.GetPreference("Global_UseBlessingPage");
+                if (String.IsNullOrEmpty(ifUseBlessingPage))
+                {
+                    return "True";
+                }
+                return PreferenceHelper.GetPreference("Global_UseBlessingPage");
+            }
+            set
+            {
+                PreferenceHelper.SetPreference("Global_UseBlessingPage", value);
+                NotifyPropertyChanged("UseBlessingPage");
+                NotifyPropertyChanged("UseBlessingPageText");
+            }
+        }
+
+        public String UseBlessingPageText
+        {
+            // 直接依赖于UseBlessingPage的值
+            get
+            {
+                return UseBlessingPage == "True" ? "是" : "否";
+            }
+            set
+            {
+                NotifyPropertyChanged("UseBlessingPageText");
+            }
+        }
          
         public String NeedFetchImageInRetweet
         {

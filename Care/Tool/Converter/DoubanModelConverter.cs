@@ -38,151 +38,21 @@ namespace Care.Tool
             }          
         }
 
-        public static ItemViewModel ConvertDoubanStatuesToCommon(Statuses statues)
-        {
-            try
-            {
-                if (statues.title.Contains("关注")  // 新关注了某个人
-                   || statues.title.Contains("加入")    // 加入小组
-                   || statues.title.Contains("活动")    // 对某活动感兴趣
-                   || statues.title.Contains("歌曲")    // 某2添加了某歌曲
-                   || statues.title.Contains("试读")    // 正在试读
-                   || statues.title.Contains("豆瓣阅读")    // 豆瓣阅读
-                   || statues.title.Contains("使用")   // 开始使用
-                   || statues.title.Contains("日记"))   // 写了日记
-                {
-                    return null;
-                }
-
-                if (statues.type == "collect_book") // 不硬编码不舒服斯基
-                {
-                    return ConvertBookStatus(statues);
-                }
-                else if (statues.type == "collect_movie")
-                {
-                    return ConvertMovieStatus(statues);
-                }
-                else if (statues.type == "collect_music")
-                {
-                    return ConvertMusicStatus(statues);
-                }
-                else if (statues.title == "说：" || statues.type == "text")  // 豆瓣现在抽风，纯文字状态有时候type是null
-                {
-                    return ConvertTextStatus(statues);
-                }
-               
-                // should never got here
-                return null;
-            }
-            catch (System.Exception ex)
-            {
-                return null;
-            }        
-        }
-
-        public static ItemViewModel ConvertMusicStatus(Statuses statues)
+        public static ItemViewModel ConvertDoubanUnionStatues(Statuses statues)
         {
             ItemViewModel model = new ItemViewModel();
             model.IconURL = statues.user.small_avatar;
             model.LargeIconURL = PreferenceHelper.GetPreference("Douban_FollowerAvatar2");
             model.Title = statues.user.screen_name;
-            String MovieTitle = "";
+            String attachTitle = "";
             if (statues.attachments != null && statues.attachments.Count > 0)
             {
                 foreach (Statuses.Attachment attach in statues.attachments)
                 {
-                    if (attach.type == "music")
-                    {
-                        MovieTitle = attach.title;
-                    }
+                    attachTitle = attach.title;
                 }
             }
-            model.Content = TrimMark(statues.title) + " “" + MovieTitle + "”  " + statues.text;
-            //model.ImageURL = MiscTool.MakeFriendlyImageURL(statues.thumbnail_pic);
-            //model.MidImageURL = MiscTool.MakeFriendlyImageURL(status.bmiddle_pic);
-            //model.FullImageURL = MiscTool.MakeFriendlyImageURL(status.original_pic);
-            model.TimeObject = ExtHelpers.GetDoubanTimeFullObject(statues.created_at);
-            model.Type = EntryType.Douban;
-            model.ID = statues.id;
-            model.Comments = new ObservableCollection<CommentViewModel>();
-            model.CommentCount = statues.comments_count;
-            model.SharedCount = statues.reshared_count;
-            FiltPicture(statues, model);
-            return model;
-        }
-
-        public static ItemViewModel ConvertMovieStatus(Statuses statues)
-        {
-            ItemViewModel model = new ItemViewModel();
-            model.IconURL = statues.user.small_avatar;
-            model.LargeIconURL = PreferenceHelper.GetPreference("Douban_FollowerAvatar2");
-            model.Title = statues.user.screen_name;            
-            String MovieTitle = "";
-            if (statues.attachments != null && statues.attachments.Count > 0)
-            {
-                foreach (Statuses.Attachment attach in statues.attachments)
-                {
-                    if (attach.type == "movie")
-                    {
-                        MovieTitle = attach.title;
-                    }
-                }
-            }
-            model.Content = TrimMark(statues.title) + " “" + MovieTitle + "”  " + statues.text;
-            //model.ImageURL = MiscTool.MakeFriendlyImageURL(statues.thumbnail_pic);
-            //model.MidImageURL = MiscTool.MakeFriendlyImageURL(status.bmiddle_pic);
-            //model.FullImageURL = MiscTool.MakeFriendlyImageURL(status.original_pic);
-            model.TimeObject = ExtHelpers.GetDoubanTimeFullObject(statues.created_at);
-            model.Type = EntryType.Douban;
-            model.ID = statues.id;
-            model.Comments = new ObservableCollection<CommentViewModel>();
-            model.CommentCount = statues.comments_count;
-            model.SharedCount = statues.reshared_count;
-            FiltPicture(statues, model);
-            return model;
-        }
-
-        public static ItemViewModel ConvertBookStatus(Statuses statues)
-        {
-            ItemViewModel model = new ItemViewModel();
-            model.IconURL = statues.user.small_avatar;
-            model.LargeIconURL = PreferenceHelper.GetPreference("Douban_FollowerAvatar2");
-            model.Title = statues.user.screen_name;
-            String bookTitle = "";
-            if (statues.attachments != null && statues.attachments.Count > 0)
-            {                
-                foreach (Statuses.Attachment attach in statues.attachments)
-                {
-                    if (attach.type == "book")
-                    {
-                        bookTitle = attach.title;
-                    }                                   
-                }
-            }
-            model.Content = TrimMark(statues.title) + " “" + bookTitle + "”  " + statues.text;
-            //model.ImageURL = MiscTool.MakeFriendlyImageURL(statues.thumbnail_pic);
-            //model.MidImageURL = MiscTool.MakeFriendlyImageURL(status.bmiddle_pic);
-            //model.FullImageURL = MiscTool.MakeFriendlyImageURL(status.original_pic);
-            model.TimeObject = ExtHelpers.GetDoubanTimeFullObject(statues.created_at);
-            model.Type = EntryType.Douban;
-            model.ID = statues.id;
-            model.Comments = new ObservableCollection<CommentViewModel>();
-            model.CommentCount = statues.comments_count;
-            model.SharedCount = statues.reshared_count;
-            FiltPicture(statues, model);
-            return model;
-        }
-
-        public static ItemViewModel ConvertTextStatus(Statuses statues)
-        {
-            ItemViewModel model = new ItemViewModel();
-            model.IconURL = statues.user.small_avatar;
-            model.LargeIconURL = PreferenceHelper.GetPreference("Douban_FollowerAvatar2");
-            model.Title = statues.user.screen_name;            
-            model.Content = statues.text;
-            //model.ImageURL = MiscTool.MakeFriendlyImageURL(statues.thumbnail_pic);
-            //model.MidImageURL = MiscTool.MakeFriendlyImageURL(status.bmiddle_pic);
-            //model.FullImageURL = MiscTool.MakeFriendlyImageURL(status.original_pic);
+            model.Content = TrimMark(statues.title) + " " + attachTitle + " " + statues.text;
             model.TimeObject = ExtHelpers.GetDoubanTimeFullObject(statues.created_at);
             model.Type = EntryType.Douban;
             model.ID = statues.id;
@@ -190,21 +60,43 @@ namespace Care.Tool
             model.CommentCount = statues.comments_count;
             model.SharedCount = statues.reshared_count;
 
-            // 如果是转发
-            // Caution : 对于豆瓣而言，对转发的评论其实就是对原作评论
+
             if (statues.reshared_status != null)
             {
-                ItemViewModel shareModel = ConvertDoubanStatuesToCommon(statues.reshared_status);
-                if (shareModel == null)
-                    return null;
+                Statuses forwardStatus = statues.reshared_status;
+                ItemViewModel forwardModel = new ItemViewModel();
+                forwardModel.IconURL = forwardStatus.user.small_avatar;
+                forwardModel.LargeIconURL = PreferenceHelper.GetPreference("Douban_FollowerAvatar2");
+                forwardModel.Title = forwardStatus.user.screen_name;
+                String forwardAttachTitle = "";
+                if (forwardStatus.attachments != null && forwardStatus.attachments.Count > 0)
+                {
+                    foreach (Statuses.Attachment attach in forwardStatus.attachments)
+                    {
+                        forwardAttachTitle = attach.title;
+                    }
+                }
+                forwardModel.Content = TrimMark(forwardStatus.title) + " " + forwardAttachTitle + " " + forwardStatus.text;
+                forwardModel.TimeObject = ExtHelpers.GetDoubanTimeFullObject(forwardStatus.created_at);
+                forwardModel.Type = EntryType.Douban;
+                forwardModel.ID = forwardStatus.id;
+                forwardModel.Comments = new ObservableCollection<CommentViewModel>();
+                forwardModel.CommentCount = forwardStatus.comments_count;
+                forwardModel.SharedCount = forwardStatus.reshared_count;
+
+                if (PreferenceHelper.GetPreference("Global_NeedFetchImageInRetweet") != "False")
+                {
+                    FiltPicture(forwardStatus, forwardModel);
+                }
                 // 如果是转播的话，把model的text改成“转播”两字，不然空在那里很奇怪
-                model.Content = "转播"/*你妹*/;
-                model.ForwardItem = shareModel;
+                model.Content = "转播";
+                model.CommentCount = forwardModel.CommentCount;
+                model.SharedCount = forwardModel.SharedCount;
+                model.ForwardItem = forwardModel;
             }
             FiltPicture(statues, model);
             return model;
         }
-
 
         // 因为读过的内容会在Title里写个如下打分字样 ，要把它去掉
         // 读过[score]0[/score]

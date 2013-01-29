@@ -16,12 +16,13 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Resources;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 namespace Care.Views.Common
 {
     public partial class StatuesView : PhoneApplicationPage
     {
-        int m_nIndex = -1;
-        ItemViewModel m_statusModel;
+        //int m_nIndex = -1;
+        public ItemViewModel m_itemViewModel;
 
         public StatuesView()
         {
@@ -44,14 +45,7 @@ namespace Care.Views.Common
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            IDictionary<string, string> queryString = this.NavigationContext.QueryString;
-            if (queryString.ContainsKey("Index"))
-            {
-                m_nIndex = int.Parse(queryString["Index"]);                
-                m_statusModel = App.ViewModel.Items[m_nIndex];
-                this.DataContext = m_statusModel;
-            }
-
+            this.DataContext = m_itemViewModel;
             base.OnNavigatedTo(e);
         }
 
@@ -69,17 +63,17 @@ namespace Care.Views.Common
         private BitmapImage _forwardThumbSource;
         private void LoadImage()
         {
-            if (m_statusModel != null && !String.IsNullOrEmpty(m_statusModel.FullImageURL))
+            if (m_itemViewModel != null && !String.IsNullOrEmpty(m_itemViewModel.FullImageURL))
             {
-                _thumbSource = new BitmapImage(new Uri(m_statusModel.FullImageURL, UriKind.Absolute));
+                _thumbSource = new BitmapImage(new Uri(m_itemViewModel.FullImageURL, UriKind.Absolute));
                 _thumbSource.ImageOpened += new EventHandler<RoutedEventArgs>(ThumbImageOpened);
                 _thumbSource.CreateOptions = BitmapCreateOptions.BackgroundCreation | BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache;
                 ThumbImage.Source = _thumbSource;                
             }
 
-            if (m_statusModel.ForwardItem != null && !String.IsNullOrEmpty(m_statusModel.ForwardItem.FullImageURL))
+            if (m_itemViewModel.ForwardItem != null && !String.IsNullOrEmpty(m_itemViewModel.ForwardItem.FullImageURL))
             {
-                _forwardThumbSource = new BitmapImage(new Uri(m_statusModel.ForwardItem.FullImageURL, UriKind.Absolute));
+                _forwardThumbSource = new BitmapImage(new Uri(m_itemViewModel.ForwardItem.FullImageURL, UriKind.Absolute));
                 _forwardThumbSource.ImageOpened += new EventHandler<RoutedEventArgs>(ForwardThumbImageOpened);
                 _forwardThumbSource.CreateOptions = BitmapCreateOptions.BackgroundCreation | BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache;
                 RetweetThumbImage.Source = _forwardThumbSource;
@@ -120,13 +114,21 @@ namespace Care.Views.Common
             }
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (e.Content is CommentView)
+            {
+                CommentView commentView = e.Content as CommentView;
+                commentView.m_itemViewModel = m_itemViewModel;
+            }
+        }
+
         private void Comment_Click(object sender, EventArgs e)
         {            
             StringBuilder sb = new StringBuilder();                        
-            // 因为人人很BT，权限问题比较多，所以要带上FeedType和OwnerID
-            sb.AppendFormat("/Views/Common/CommentView.xaml?ID={0}&Type={1}&RenrenFeedType={2}&RenrenOwnerID={3}"
-               , m_statusModel.ID, m_statusModel.Type, m_statusModel.RenrenFeedType, m_statusModel.OwnerID);
-            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));            
+            // 1.因为人人很BT，权限问题比较多，所以要带上FeedType和OwnerID
+            // 2.豆瓣比较特殊，转发的评论其实就是原始广播的评论
+            NavigationService.Navigate(new Uri("/Views/Common/CommentView.xaml", UriKind.Relative));            
         }
     }
 }

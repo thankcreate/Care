@@ -57,11 +57,9 @@ namespace Care.Views.Common
         }
         #endregion
 
-        private EntryType m_type = EntryType.SinaWeibo;
-        private string m_id;
-        private string m_renrenFeedType;
-        private string m_renrenOwnerID;
         private int m_maxLenth;
+
+        public ItemViewModel m_itemViewModel;
 
         private SdkCmdBase cmdBase;
         private SdkNetEngine netEngine;        
@@ -75,21 +73,6 @@ namespace Care.Views.Common
         {
             IDictionary<string, string> queryString = this.NavigationContext.QueryString;
 
-            if (queryString.ContainsKey("ID")
-                && queryString.ContainsKey("Type"))
-            {
-                m_id = queryString["ID"];
-                m_type = (EntryType)Enum.Parse(typeof(EntryType), queryString["Type"], true);
-            }
-            if (queryString.ContainsKey("RenrenFeedType"))
-            {
-                m_renrenFeedType = queryString["RenrenFeedType"];
-            }
-            if (queryString.ContainsKey("RenrenOwnerID"))
-            {
-                m_renrenOwnerID = queryString["RenrenOwnerID"];
-            }
-
             String content = null;
             if (queryString.ContainsKey("Content"))
             {
@@ -98,27 +81,30 @@ namespace Care.Views.Common
                 {
                     StatusMessageBox.Text = content;
                 }      
-            }                 
+            }
+            if (m_itemViewModel == null)
+                NavigationService.GoBack();
             ChangeUIByInputType();
         }
 
         private void ChangeUIByInputType()
         {
-            if (m_type == EntryType.SinaWeibo)
+            EntryType tp = m_itemViewModel.Type;
+            if (tp == EntryType.SinaWeibo)
             {
                 m_maxLenth = 140;
                 WordMaxLength = "140";
                 WordCount = (140 - StatusMessageBox.Text.Length).ToString();
                 LogoSource = "../../Images/Thumb/weibologo.png";
             }
-            else if (m_type == EntryType.Renren)
+            else if (tp == EntryType.Renren)
             {
                 m_maxLenth = 140;
                 WordMaxLength = "140";
                 WordCount = (140 - StatusMessageBox.Text.Length).ToString();
                 LogoSource = "../../Images/Thumb/renren_logo.png";
             }
-            else if (m_type == EntryType.Douban)
+            else if (tp == EntryType.Douban)
             {
                 m_maxLenth = 140;
                 WordMaxLength = "140";
@@ -129,7 +115,8 @@ namespace Care.Views.Common
 
         private void SinaWeiboSend()
         {
-            if (String.IsNullOrEmpty(m_id))
+            String statusID = m_itemViewModel.ID;
+            if (String.IsNullOrEmpty(statusID))
                 return;
 
             String commentText = StatusMessageBox.Text;
@@ -145,7 +132,7 @@ namespace Care.Views.Common
             request.Method = WebMethod.Post;
             request.Path = "comments/create.json";
             request.AddParameter("access_token", App.SinaWeibo_AccessToken);
-            request.AddParameter("id", m_id);
+            request.AddParameter("id", statusID);
             request.AddParameter("comment", commentText);
             request.AddParameter("comment_ori", "0");
 
@@ -178,37 +165,40 @@ namespace Care.Views.Common
         private void RenrenSend()
         {
             // 对普通状态的评论
-            if (m_renrenFeedType == RenrenNews.FeedTypeStatus)
+            String renrenFeedType = m_itemViewModel.RenrenFeedType;
+            String ownerID = m_itemViewModel.OwnerID;
+            String statusID = m_itemViewModel.ID;
+            if (renrenFeedType == RenrenNews.FeedTypeStatus)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "status.addComment"));
-                param.Add(new APIParameter("status_id", m_id));
-                param.Add(new APIParameter("owner_id", m_renrenOwnerID));
+                param.Add(new APIParameter("status_id", statusID));
+                param.Add(new APIParameter("owner_id", ownerID));
                 param.Add(new APIParameter("content", StatusMessageBox.Text));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenAddCommentGetCallback, param);
             }
             // 对原创上传照片的评论
-            else if (m_renrenFeedType == RenrenNews.FeedTypeUploadPhoto)
+            else if (renrenFeedType == RenrenNews.FeedTypeUploadPhoto)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "photos.addComment"));
-                param.Add(new APIParameter("pid", m_id));
+                param.Add(new APIParameter("pid", statusID));
                 // 靠靠靠，有的地方是owner_id，有的地方是uid，谨记谨记~
-                param.Add(new APIParameter("uid", m_renrenOwnerID));
+                param.Add(new APIParameter("uid", ownerID));
                 param.Add(new APIParameter("content", StatusMessageBox.Text));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenAddCommentGetCallback, param);
             }
             // 对照片分享的评论
-            else if (m_renrenFeedType == RenrenNews.FeedTypeSharePhoto)
+            else if (renrenFeedType == RenrenNews.FeedTypeSharePhoto)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "share.addComment"));
-                param.Add(new APIParameter("share_id", m_id));
+                param.Add(new APIParameter("share_id", statusID));
                 // （呃~这里又变成user_id了么？好吧，一旦接受了这种设定，仿佛也挺有意思的呢..）   <=====  作废
                 //  虽然api文档里写的是user_id，但是其实应该写uid
-                param.Add(new APIParameter("user_id", m_renrenOwnerID));
+                param.Add(new APIParameter("user_id", ownerID));
                 param.Add(new APIParameter("content", StatusMessageBox.Text));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenAddCommentGetCallback, param);
@@ -248,7 +238,10 @@ namespace Care.Views.Common
 
         private void DoubanSend()
         {
-             if (String.IsNullOrEmpty(m_id))
+            String finalID = m_itemViewModel.ID;
+            if (m_itemViewModel.ForwardItem != null)
+                finalID = m_itemViewModel.ForwardItem.ID;
+            if (String.IsNullOrEmpty(finalID))
                 return;
 
             String commentText = StatusMessageBox.Text;
@@ -261,7 +254,7 @@ namespace Care.Views.Common
                 return;
             }
 
-            App.DoubanAPI.AddComments(m_id, commentText, (DoubanEventArgs args) =>
+            App.DoubanAPI.AddComments(finalID, commentText, (DoubanEventArgs args) =>
             {
                 if (args.errorCode == DoubanSdkErrCode.SUCCESS)
                 {
@@ -294,7 +287,7 @@ namespace Care.Views.Common
             String commentText = StatusMessageBox.Text;
             if (String.IsNullOrEmpty(commentText))
             {
-                MessageBox.Show("内容为空！");
+                MessageBox.Show("据说要智商超过250才能看到您写的字？", ">_<", MessageBoxButton.OK);
                 return;
             }
             else if (commentText.Length > m_maxLenth)
@@ -303,15 +296,16 @@ namespace Care.Views.Common
                 return;
             }
 
-            if (m_type == EntryType.SinaWeibo)
+            EntryType tp = m_itemViewModel.Type;
+            if (tp == EntryType.SinaWeibo)
             {
                 SinaWeiboSend();
             }
-            else if (m_type == EntryType.Renren)
+            else if (tp == EntryType.Renren)
             {
                 RenrenSend();
             }
-            else if (m_type == EntryType.Douban)
+            else if (tp == EntryType.Douban)
             {
                 DoubanSend();
             }        

@@ -49,7 +49,7 @@ namespace Care.Views
             }
         }
 
-
+        private ProgressIndicatorHelper m_progressIndicatorHelper;
         public RssAcount()
         {
             DataContext = this;
@@ -65,8 +65,15 @@ namespace Care.Views
             {
                 FollowerSitePath = "未设置";
             }
-
+            this.Loaded += new RoutedEventHandler(RssAcount_Loaded);
             InitializeComponent();
+           
+        }
+
+        void RssAcount_Loaded(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Phone.Shell.SystemTray.ProgressIndicator = new Microsoft.Phone.Shell.ProgressIndicator();
+            m_progressIndicatorHelper = new ProgressIndicatorHelper(Microsoft.Phone.Shell.SystemTray.ProgressIndicator, () => { });
         }
 
 
@@ -100,7 +107,7 @@ namespace Care.Views
         }
 
         private void UpdatePath_Click(object sender, RoutedEventArgs e)
-        {            
+        {
             String text = textSitePath.Text;
             if (text.StartsWith("http"))
             {
@@ -109,10 +116,12 @@ namespace Care.Views
                 client.DownloadStringCompleted += new DownloadStringCompletedEventHandler(client_DownloadStringCompleted);
                 try
                 {
+                    m_progressIndicatorHelper.PushTaskInUIThread();
                     client.DownloadStringAsync(new Uri(text));
                 }
                 catch
                 {
+                   m_progressIndicatorHelper.PopTask();
                    Deployment.Current.Dispatcher.BeginInvoke(() =>
                    {
                        MessageBox.Show("请输入合法地址");
@@ -129,10 +138,11 @@ namespace Care.Views
 
         private void client_DownloadStringCompleted(object sender, DownloadStringCompletedEventArgs e)
         {
+            m_progressIndicatorHelper.PopTask();
             try
             {
                 XmlReader reader = XmlReader.Create(new StringReader(e.Result));
-                SyndicationFeed feed = SyndicationFeed.Load(reader);
+                SyndicationFeed feed = SyndicationFeed.Load(reader);                
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     App.ViewModel.RssItems.Clear();
@@ -145,7 +155,7 @@ namespace Care.Views
             }
             catch (System.Exception ex)
             {                
-                MessageBox.Show("关注站点失败，如果直接输入地址，请输入rss地址\n即类似于www.xxx.com/feed，而不是直接输入www.xxx.com",
+                MessageBox.Show("关注站点失败，有可能是网络问题，也可能是该站点输出格式不规范。如果直接输入地址，请输入rss地址\n即类似于http://www.xxx.com/feed，而不是直接输入http://www.xxx.com",
                 "失败", MessageBoxButton.OK);
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {

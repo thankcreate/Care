@@ -97,7 +97,8 @@ namespace Care.Views.Common
             }
             catch (System.Exception ex)
             {
-            	
+                int a = 1;
+                a++;
             }
 
             if (!String.IsNullOrEmpty(m_picURL))
@@ -147,6 +148,12 @@ namespace Care.Views.Common
 
         private void send_Click(object sender, EventArgs e)
         {
+
+            if (String.IsNullOrEmpty(txtInput.Text))
+            {
+                MessageBox.Show("据说要智商超过250才能看到您写的字？", ">_<", MessageBoxButton.OK);
+                return;
+            }
             // 注意，此处要分两种情况 
             // 1.带有图片的发送
             // 2.不带图片的发送

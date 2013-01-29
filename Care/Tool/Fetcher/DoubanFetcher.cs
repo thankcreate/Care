@@ -69,7 +69,7 @@ namespace Care.Tool
             foreach (Statuses statues in statuesList)
             {
                 m_taskHelper.PushTask();
-                App.DoubanAPI.GetComments(statues.id, (args) =>
+                App.DoubanAPI.GetComments(statues.id,100, (args) =>
                 {
                     if (args.errorCode == DoubanSdkErrCode.SUCCESS && args.comments != null)
                     {

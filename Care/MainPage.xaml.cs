@@ -25,6 +25,8 @@ using Care.Views;
 using Care.Tool;
 using RenrenSDKLibrary;
 using DoubanSDK;
+using System.Windows.Navigation;
+using Care.Views.Common;
 
 namespace Care
 {
@@ -349,7 +351,7 @@ namespace Care
                 {
                     foreach (DoubanSDK.Statuses statues in args.statues)
                     {
-                        ItemViewModel model = DoubanModelConverter.ConvertDoubanStatuesToCommon(statues);
+                        ItemViewModel model = DoubanModelConverter.ConvertDoubanUnionStatues(statues);
                         if (model != null)
                         {
                             App.ViewModel.DoubanItems.Add(model);
@@ -592,7 +594,7 @@ namespace Care
             try
             {
                 reader = XmlReader.Create(new StringReader(e.Result));
-                feed = SyndicationFeed.Load(reader);
+                feed = SyndicationFeed.Load(reader);                
             }
             catch (System.Exception ex)
             {
@@ -634,30 +636,40 @@ namespace Care
         }
 
 
+        // V1.4版后重构了传值方法，直接在OnNavigatedFrom里把整个ItemViewModel传过去了
         private void MainListBoxSelectionChanged(object sender, EventArgs e)
         {
             if (MainList.SelectedIndex != -1)
             {
                 ItemViewModel item = App.ViewModel.Items[MainList.SelectedIndex];
+                m_lastSelectedIndex = MainList.SelectedIndex;
                 if (item.Type == EntryType.Feed)
-                {
-                    NavigationService.Navigate(new Uri("/Views/Rss/RssDetails.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
+                {                    
+                    NavigationService.Navigate(new Uri("/Views/Rss/RssDetails.xaml", UriKind.Relative));
                 }
-                if (item.Type == EntryType.SinaWeibo)
+                if (item.Type == EntryType.SinaWeibo
+                    || item.Type == EntryType.Renren
+                    || item.Type == EntryType.Douban)
                 {
-                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
-                }
-                if (item.Type == EntryType.Renren)
-                {
-                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
-                }
-                if (item.Type == EntryType.Douban)
-                {
-                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml?Index=" + MainList.SelectedIndex, UriKind.Relative));
+                    NavigationService.Navigate(new Uri("/Views/Common/StatuesView.xaml", UriKind.Relative));
                 }
             }
-
             MainList.SelectedIndex = -1;
+        }
+
+        private int m_lastSelectedIndex = 0;
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (e.Content is StatuesView)
+            {
+                StatuesView statuesView = e.Content as StatuesView;
+                statuesView.m_itemViewModel = App.ViewModel.Items[m_lastSelectedIndex];
+            }
+            else if (e.Content is RssDetails)
+            {
+                RssDetails rssDetailsView = e.Content as RssDetails;
+                rssDetailsView.m_itemViewModel = App.ViewModel.Items[m_lastSelectedIndex];
+            }
         }
 
         private void Test(object sender, RoutedEventArgs e)
@@ -675,6 +687,19 @@ namespace Care
             NavigationService.Navigate(new Uri("/Views/Rss/RssAcount.xaml", UriKind.Relative));
         }
 
+
+
+        private void toggleUseBlessingPage_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)toggleUseBlessingPage.IsChecked)
+            {
+                App.ViewModel.UseBlessingPage = "True";
+            }
+            else
+            {
+                App.ViewModel.UseBlessingPage = "False";
+            }
+        }
 
         private void toggleUsePassword_Click(object sender, RoutedEventArgs e)
         {

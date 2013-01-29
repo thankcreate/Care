@@ -5,20 +5,17 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <CurrentDeployCmdId>256</CurrentDeployCmdId>
-    <CurrentDeployID>30E884A8-265A-4089-B226-AD2326862248</CurrentDeployID>
+    <CurrentDeployID>7988B8C3-3ADE-488d-BA3E-D052AC9DC710</CurrentDeployID>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <CurrentDeployCmdId>256</CurrentDeployCmdId>
-    <CurrentDeployID>30E884A8-265A-4089-B226-AD2326862248</CurrentDeployID>
+    <CurrentDeployID>7988B8C3-3ADE-488d-BA3E-D052AC9DC710</CurrentDeployID>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{C089C8C0-30E0-4E22-80C0-CE093F111A43}">
         <SilverlightMobileCSProjectFlavor>
           <FullDeploy>False</FullDeploy>
-          <DebuggerType>Managed</DebuggerType>
-          <DebuggerAgentType>Managed</DebuggerAgentType>
-          <Tombstone>False</Tombstone>
         </SilverlightMobileCSProjectFlavor>
       </FlavorProperties>
     </VisualStudio>

@@ -18,16 +18,16 @@ using System.Text;
 using RenrenSDKLibrary;
 using DoubanSDK;
 using System.Runtime.Serialization.Json;
+using System.Windows.Navigation;
 
 namespace Care.Views.Common
 {
     public partial class CommentView : PhoneApplicationPage
     {
         public ObservableCollection<CommentViewModel> Comments{ get; private set; }
-        private string m_id = "";
-        private string m_renrenFeedType;
-        private string m_renrenOwnerID;
-        private EntryType m_type = EntryType.SinaWeibo;
+
+        public ItemViewModel m_itemViewModel;
+
 
         #region HeaderHeightProperty
         public static readonly DependencyProperty HeaderHeightProperty =
@@ -62,30 +62,26 @@ namespace Care.Views.Common
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            IDictionary<string, string> queryString = this.NavigationContext.QueryString;
-            if (queryString.ContainsKey("ID")
-                && queryString.ContainsKey("Type"))
+            if (m_itemViewModel == null)
             {
-                m_id = queryString["ID"];
-                m_type = (EntryType)Enum.Parse(typeof(EntryType), queryString["Type"], true);
+                NavigationService.GoBack();
             }
-            m_renrenFeedType = queryString["RenrenFeedType"];
-            m_renrenOwnerID = queryString["RenrenOwnerID"];
             RefreshComments();
             base.OnNavigatedTo(e);
         }
 
         private void RefreshComments()
         {
-            if (m_type == EntryType.SinaWeibo)
+            EntryType tp = m_itemViewModel.Type;
+            if (tp == EntryType.SinaWeibo)
             {
                 RefreshCommentsForSinaWeibo();
             }
-            else if (m_type == EntryType.Renren)
+            else if (tp == EntryType.Renren)
             {
                 RefreshCommentsForRenren();
             }
-            else if (m_type == EntryType.Douban)
+            else if (tp == EntryType.Douban)
             {
                 RefreshCommentsForDouban();
             }
@@ -93,9 +89,12 @@ namespace Care.Views.Common
 
         private void RefreshCommentsForDouban()
         {
-            if (String.IsNullOrEmpty(m_id))
+            String finalID = m_itemViewModel.ID;
+            if (m_itemViewModel.ForwardItem != null)
+                finalID = m_itemViewModel.ForwardItem.ID;
+            if (String.IsNullOrEmpty(finalID))
                 return;
-            App.DoubanAPI.GetComments(m_id, (GetCommentsEventArgs args) =>
+            App.DoubanAPI.GetComments(finalID, 100, (GetCommentsEventArgs args) =>
             {
                 if (args.errorCode == DoubanSdkErrCode.SUCCESS && args.comments != null)
                 {
@@ -119,6 +118,7 @@ namespace Care.Views.Common
                                 Comments.Add(model);
                             }
                         }
+                        UpdateCommentCount(sortList.Count);
                         AddEmptyTipCommentCleverly();
                     });
                 }
@@ -140,40 +140,44 @@ namespace Care.Views.Common
         private void RefreshCommentsForRenren()
         {
             // 普通文字状态
-            if (m_renrenFeedType == RenrenNews.FeedTypeStatus)
+            String renrenFeedType = m_itemViewModel.RenrenFeedType;
+            String renrenOwnerID = m_itemViewModel.OwnerID;
+            String statusID = m_itemViewModel.ID;
+            if (renrenFeedType == RenrenNews.FeedTypeStatus)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "status.getComment"));
 
-                param.Add(new APIParameter("status_id", m_id));
-                param.Add(new APIParameter("owner_id", m_renrenOwnerID));
+                param.Add(new APIParameter("status_id", statusID));
+                param.Add(new APIParameter("owner_id", renrenOwnerID));
                 param.Add(new APIParameter("order", "1"));
+                param.Add(new APIParameter("count", "100"));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenCommentGetCallback, param);
             }
             // 图片
-            else if (m_renrenFeedType == RenrenNews.FeedTypeUploadPhoto)
+            else if (renrenFeedType == RenrenNews.FeedTypeUploadPhoto)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "photos.getComments"));
 
-                param.Add(new APIParameter("pid", m_id));
-                param.Add(new APIParameter("uid", m_renrenOwnerID));
+                param.Add(new APIParameter("pid", statusID));
+                param.Add(new APIParameter("uid", renrenOwnerID));
                 param.Add(new APIParameter("order", "1"));
+                param.Add(new APIParameter("count", "100"));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenCommentGetCallback, param);
             }
-            else if (m_renrenFeedType == RenrenNews.FeedTypeSharePhoto)
+            else if (renrenFeedType == RenrenNews.FeedTypeSharePhoto)
             {
                 List<APIParameter> param = new List<APIParameter>();
                 param.Add(new APIParameter("method", "share.getComments"));
-
-                param.Add(new APIParameter("share_id", m_id));
-                param.Add(new APIParameter("user_id", m_renrenOwnerID));
+                param.Add(new APIParameter("share_id", statusID));
+                param.Add(new APIParameter("user_id", renrenOwnerID));
+                param.Add(new APIParameter("count", "100"));
 
                 App.RenrenAPI.RequestAPIInterface(RenrenShareCommentGetCallback, param);
             }
-          
         }
 
         private void RenrenShareCommentGetCallback(object sender, APIRequestCompletedEventArgs e)
@@ -203,6 +207,7 @@ namespace Care.Views.Common
                                 Comments.Add(model);
                             }
                         }
+                        UpdateCommentCount(Comments.Count);
                         AddEmptyTipCommentCleverly();
                     });
                 }
@@ -238,6 +243,7 @@ namespace Care.Views.Common
                             Comments.Add(model);
                         }
                     });
+                    UpdateCommentCount(Comments.Count);
                     AddEmptyTipCommentCleverly();
                 });
             }
@@ -270,10 +276,10 @@ namespace Care.Views.Common
 
         private void RefreshCommentsForSinaWeibo()
         {
-            if (string.IsNullOrEmpty(m_id))
+            if (string.IsNullOrEmpty(m_itemViewModel.ID))
                 return;
             SinaWeiboFetcher fetcher = new SinaWeiboFetcher();
-            fetcher.LoadSinaWeiboCommentByStatusID(m_id, (comments) =>
+            fetcher.LoadSinaWeiboCommentByStatusID(m_itemViewModel.ID, (comments) =>
             {
                 if (comments == null)
                 {
@@ -290,20 +296,53 @@ namespace Care.Views.Common
                             Comments.Add(model);
                         }                        
                     }
+                    UpdateCommentCount(comments.comments.Length);
                     AddEmptyTipCommentCleverly();
                 });
             }); 
         }
 
+        // 刷新相应条目的comment值
+        private void UpdateCommentCount(int num)
+        {
+            if (m_itemViewModel != null)
+            {
+                int nCount = 0;
+                try
+                {
+                    nCount = int.Parse(m_itemViewModel.CommentCount);
+                }
+                catch (System.Exception ex)
+                {
+                    nCount = 0;	
+                }
+                if (num > nCount)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        m_itemViewModel.CommentCount = num.ToString();
+                    });
+                }
+            }
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            if (e.Content is PostCommentView)
+            {
+                PostCommentView postCommentView = e.Content as PostCommentView;
+                postCommentView.m_itemViewModel = m_itemViewModel; ;
+            }
+            //else if (e.Content is StatuesView)
+            //{
+            //    StatuesView statusView = e.Content as StatuesView;
+            //    statusView.m_itemViewModel = m_itemViewModel; ;
+            //}
+        }
+
         private void WriteComment_Click(object sender, EventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("/Views/Common/PostCommentView.xaml?ID={0}&Type={1}&RenrenFeedType={2}&RenrenOwnerID={3}", 
-                m_id, 
-                m_type,
-                m_renrenFeedType,
-                m_renrenOwnerID);
-            NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
+            NavigationService.Navigate(new Uri("/Views/Common/PostCommentView.xaml", UriKind.Relative));
         }
 
         private void Refresh_Click(object sender, EventArgs e)
@@ -339,11 +378,7 @@ namespace Care.Views.Common
                 return;
             }
             StringBuilder sb = new StringBuilder();
-            sb.AppendFormat("/Views/Common/PostCommentView.xaml?ID={0}&Type={1}&RenrenFeedType={2}&RenrenOwnerID={3}&Content={4}",
-                m_id,
-                m_type,
-                m_renrenFeedType,
-                m_renrenOwnerID,
+            sb.AppendFormat("/Views/Common/PostCommentView.xaml?Content={0}",
                 content);
             NavigationService.Navigate(new Uri(sb.ToString(), UriKind.Relative));
         }

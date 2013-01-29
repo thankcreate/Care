@@ -106,6 +106,7 @@
     <Compile Include="DataModel\Renren\RenrenNews.cs" />
     <Compile Include="DataModel\Renren\RenrenSearchedMan.cs" />
     <Compile Include="DataModel\Renren\RenrenShareGetCommentsResult.cs" />
+    <Compile Include="Tool\BlessHelper.cs" />
     <Compile Include="Tool\Converter\DoubanModelConverter.cs" />
     <Compile Include="Tool\ExtHelpers.cs" />
     <Compile Include="DataModel\SinaWeibo\StatusItem.cs" />
@@ -123,6 +124,7 @@
     <Compile Include="Tool\RefreshViewHelper.cs" />
     <Compile Include="Tool\Converter\RenrenModelConverter.cs" />
     <Compile Include="Tool\TaskHelper.cs" />
+    <Compile Include="ViewModels\BlessItem.cs" />
     <Compile Include="ViewModels\ChatItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
     <Compile Include="ViewModels\RssSiteItem.cs" />
@@ -164,6 +166,12 @@
     </Compile>
     <Compile Include="Views\Lab\Chat.xaml.cs">
       <DependentUpon>Chat.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\LabBlessePage.xaml.cs">
+      <DependentUpon>LabBlessePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Lab\LabBlessPostPage.xaml.cs">
+      <DependentUpon>LabBlessPostPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Lab\LabMainPage.xaml.cs">
       <DependentUpon>LabMainPage.xaml</DependentUpon>
@@ -240,12 +248,27 @@
     <Compile Include="Views\SinaWeibo\SinaAcount.xaml.cs">
       <DependentUpon>SinaAcount.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Startup\BlessingPage.xaml.cs">
+      <DependentUpon>BlessingPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Views\Lab\LabBlessePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Lab\LabBlessPostPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Startup\BlessingPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Resource Include="CustomTheme\CustomThemeResources.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -414,7 +437,6 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="PanoramaBackground.png" />
     <Resource Include="Images\AIM.png" />
     <Resource Include="Images\Node.png" />
     <Resource Include="Images\RSS feeds.png" />
@@ -480,6 +502,12 @@
     <Resource Include="Images\Lab\Spy.png" />
     <Resource Include="Images\Thumb\Cheeky.png" />
     <Resource Include="Images\Lab\Chat.png" />
+    <Resource Include="Images\Blessing\bkg_blessing_1.jpg" />
+    <Resource Include="Images\Blessing\bkg_blessing_2.jpg" />
+    <Resource Include="Images\Blessing\bkg_blessing_3.jpg" />
+    <Resource Include="Images\Blessing\bkg_lab_bless.jpg" />
+    <Resource Include="Images\Lab\Heart.png" />
+    <Resource Include="Images\Blessing\enter.png" />
     <Content Include="Images\Thumb\CheekyTransparent.png" />
     <Resource Include="Images\Thumb\Closed Book.png" />
     <Resource Include="Images\Thumb\douban_logo.png" />
