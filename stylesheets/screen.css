@@ -699,6 +699,14 @@ dd p:first-child {
 	padding-top:22px;
 	padding-left:0px
 }
+.download-block {
+	width:305px;
+	float:left;
+	margin-right:0px;
+	padding-top:22px;
+	padding-left:0px
+}
+
 .footer-top .one-third.last {
 	margin-right:0
 }
