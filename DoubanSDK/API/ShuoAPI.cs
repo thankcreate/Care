@@ -56,13 +56,14 @@ namespace DoubanSDK
             });  
         }
 
-        public void GetComments(String id, GetCommentsCompleteHandler handler)
+        public void GetComments(String id, int count, GetCommentsCompleteHandler handler)
         {
             if (m_netEngine == null)
                 m_netEngine = new DoubanNetEngine();
             RestRequest request = new RestRequest();
             request.Method = WebMethod.Get;
-            request.Path = String.Format("shuo/v2/statuses/{0}/comments", id);            
+            request.Path = String.Format("shuo/v2/statuses/{0}/comments", id);
+            request.AddParameter("count", count.ToString());
 
             m_netEngine.SendRequest(request, (DoubanSdkResponse response) =>
             {

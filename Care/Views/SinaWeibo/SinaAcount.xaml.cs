@@ -161,8 +161,6 @@ namespace Care.Views
                 PreferenceHelper.SavePreference();
                 
                 refreshMySinaAccountID();
-
-
             }
             else if (errCode.errCode == SdkErrCode.NET_UNUSUAL)
             {
@@ -182,7 +180,7 @@ namespace Care.Views
                 Debug.WriteLine("Other Err.");
         }
 
-        // 得到当前用户ID
+        // 得到当前用户ID4
         // 新浪微博必须要先得到当前用户ID，再根据此ID拿到当前用户信息
         private void refreshMySinaAccountID()
         {

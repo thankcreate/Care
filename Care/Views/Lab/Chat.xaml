@@ -31,7 +31,7 @@
                 <Image Margin="5,0,0,0"  Width="30" Source="../../Images/Thumb/microscope.png" />
                 <TextBlock Margin="0,0,0,0"  Foreground="White" x:Name="ApplicationTitle" Text="奇怪的地方" Style="{StaticResource PhoneTextNormalStyle}"/>
             </StackPanel>
-            <TextBlock Foreground="White" x:Name="PageTitle" Text="智能聊天" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Foreground="White" x:Name="PageTitle" Text="非智能聊天" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->

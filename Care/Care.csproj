@@ -102,13 +102,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\BlessSlideControl.xaml.cs">
+      <DependentUpon>BlessSlideControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataModel\Renren\RenrenAddCommentResult.cs" />
     <Compile Include="DataModel\Renren\RenrenNews.cs" />
     <Compile Include="DataModel\Renren\RenrenSearchedMan.cs" />
     <Compile Include="DataModel\Renren\RenrenShareGetCommentsResult.cs" />
-    <Compile Include="Tool\BlessHelper.cs" />
+    <Compile Include="Tool\Misc\BlessHelper.cs" />
     <Compile Include="Tool\Converter\DoubanModelConverter.cs" />
-    <Compile Include="Tool\ExtHelpers.cs" />
+    <Compile Include="Tool\Misc\ExtHelpers.cs" />
     <Compile Include="DataModel\SinaWeibo\StatusItem.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -118,12 +121,13 @@
     <Compile Include="Tool\Fetcher\DoubanFetcher.cs" />
     <Compile Include="Tool\Fetcher\RenrenFetcher.cs" />
     <Compile Include="Tool\Fetcher\SinaWeiboFetcher.cs" />
-    <Compile Include="Tool\MiscTool.cs" />
-    <Compile Include="Tool\PictureMap.cs" />
-    <Compile Include="Tool\ProgressIndicatorHelper.cs" />
-    <Compile Include="Tool\RefreshViewHelper.cs" />
+    <Compile Include="Tool\Misc\MiscTool.cs" />
+    <Compile Include="Tool\Misc\PictureMap.cs" />
+    <Compile Include="Tool\UI\MaskViewHelper.cs" />
+    <Compile Include="Tool\UI\ProgressIndicatorHelper.cs" />
+    <Compile Include="Tool\UI\RefreshViewHelper.cs" />
     <Compile Include="Tool\Converter\RenrenModelConverter.cs" />
-    <Compile Include="Tool\TaskHelper.cs" />
+    <Compile Include="Tool\Misc\TaskHelper.cs" />
     <Compile Include="ViewModels\BlessItem.cs" />
     <Compile Include="ViewModels\ChatItemViewModel.cs" />
     <Compile Include="ViewModels\CommentViewModel.cs" />
@@ -209,7 +213,7 @@
     <Compile Include="Views\Rss\RssDetails.xaml.cs">
       <DependentUpon>RssDetails.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Tool\PreferenceHelper.cs" />
+    <Compile Include="Tool\Misc\PreferenceHelper.cs" />
     <Compile Include="Views\Password\EditPassWord.xaml.cs">
       <DependentUpon>EditPassWord.xaml</DependentUpon>
     </Compile>
@@ -233,8 +237,8 @@
     </Compile>
     <Compile Include="TiltEffect.cs" />
     <Compile Include="Tool\Converter\RSSFeedModelConverter.cs" />
-    <Compile Include="Tool\JSONConvert.cs" />
-    <Compile Include="Tool\OAuthBase.cs" />
+    <Compile Include="Tool\Misc\JSONConvert.cs" />
+    <Compile Include="Tool\Misc\OAuthBase.cs" />
     <Compile Include="Tool\Converter\SinaWeiboModelConverter.cs" />
     <Compile Include="ViewModels\CommonEntryList.cs" />
     <Compile Include="ViewModels\CommonEntryModel.cs" />
@@ -257,6 +261,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\BlessSlideControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Lab\LabBlessePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -528,12 +536,13 @@
     <Resource Include="Images\Thumb\yangmi.jpg" />
     <Resource Include="Images\Thumb\rotate.png" />
     <Resource Include="Images\Thumb\WriteCommentBack.png" />
+    <Resource Include="Sounds\cat.wav" />
     <Content Include="SmartMad\SmartMad.Ads.WindowsPhone7.dll" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataModel\RSS\" />
-    <Folder Include="Resource\" />
+    <Folder Include="Media\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DoubanSDK\DoubanSDK.csproj">

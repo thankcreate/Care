@@ -41,8 +41,6 @@
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/previous.png" Text="上一页" Click="Previos_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/download.png" Text="保存" Click="ApplicationBarIconButton_Click" />
             <shell:ApplicationBarIconButton IconUri="/Images/Bar/next.png" Text="下一页" Click="Next_Click" />
-
-
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

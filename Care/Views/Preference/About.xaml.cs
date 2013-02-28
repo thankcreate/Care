@@ -35,7 +35,7 @@ namespace Care.Views.Preference
         private void GotoSite_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             WebBrowserTask brTask = new WebBrowserTask();
-            brTask.Uri = new Uri("http://thankcreate.github.com/Care/");
+            brTask.Uri = new Uri("http://www.care4only1.com");
             brTask.Show();
         }
 

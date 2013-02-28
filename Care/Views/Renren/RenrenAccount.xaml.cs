@@ -155,6 +155,7 @@ namespace Care.Views
                 "publish_comment",
                 "read_user_share",                
                 "create_album", 
+                "status_update",
                 "photo_upload" };
             api.Login(this,scope, renren_LoginCompletedHandler);
         }

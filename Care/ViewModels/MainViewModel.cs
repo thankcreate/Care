@@ -52,6 +52,7 @@ namespace Care
         public string SinaWeiboCareID;
 
         public bool IsChanged;
+        public bool HasLoadBless = false;
 
         public ObservableCollection<PictureItem> PictureItems2 { get; private set; }
     

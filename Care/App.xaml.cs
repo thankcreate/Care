@@ -140,15 +140,12 @@ namespace Care
             NeedChangeStartPage = false;
             // 如果是到MainPage的话：
             bool needPassWord = PreferenceHelper.GetPreference("Global_UsePassword") == "True";
-            bool useBlessingPage = PreferenceHelper.GetPreference("Global_UseBlessingPage") != "False";
+            //bool useBlessingPage = PreferenceHelper.GetPreference("Global_UseBlessingPage") != "False";
             e.Cancel = true;
             RootFrame.Dispatcher.BeginInvoke(delegate
             {
-                if (useBlessingPage)
-                {
-                    RootFrame.Navigate(new Uri("/Views/Startup/BlessingPage.xaml", UriKind.Relative));
-                }
-                else if (needPassWord)
+                
+                if (needPassWord)
                 {
                     RootFrame.Navigate(new Uri("/Views/Password/PassWord.xaml", UriKind.Relative));
                 }                   

@@ -21,13 +21,15 @@ using System.Runtime.Serialization.Json;
 using System.IO.IsolatedStorage;
 using System.Xml;
 using System.ServiceModel.Syndication;
+using System.Windows.Threading;
+using Microsoft.Phone.Shell;
 using Care.Views;
 using Care.Tool;
 using RenrenSDKLibrary;
 using DoubanSDK;
 using System.Windows.Navigation;
 using Care.Views.Common;
-
+using Care.Controls;
 namespace Care
 {
 
@@ -38,6 +40,11 @@ namespace Care
         string m_strShowType = "";
         string m_strDataSource = "";
 
+        private DispatcherTimer timer;
+        private int HUBTILE_INTERVAL = 2;
+
+        MaskViewHelper maskViewHelper;
+
         // Constructor
         public MainPage()
         {
@@ -47,11 +54,22 @@ namespace Care
             TiltEffect.TiltableItems.Add(typeof(TiltableControl));
 
             InitializeComponent();
-            
+
+
+            ApplicationBar.IsVisible = false;
             // Set the data context of the listbox control to the sample data
             DataContext = App.ViewModel;
             this.Loaded += new RoutedEventHandler(MainPage_Loaded);            
             InitSinaWeiboInfo();
+            InitTimer();
+        }
+
+        private void InitTimer()
+        {
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(HUBTILE_INTERVAL);
+            timer.Tick += new EventHandler(Timer_Tick);
+            timer.Start();
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
@@ -86,17 +104,63 @@ namespace Care
             }
         }
 
+       
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
+            /*
+           * 必须要把BlessingPage放到这里作为一个遮罩层
+           * 不然的话会导致从BlessingPage到MainPage的跳转时间过长
+           */
+            bool useBlessingPage = PreferenceHelper.GetPreference("Global_UseBlessingPage") != "False";
+            if (useBlessingPage)
+            {
+                if (!App.ViewModel.HasLoadBless)
+                {
+                    if (maskViewHelper == null)
+                        maskViewHelper = new MaskViewHelper();
+                    maskViewHelper.InitView(this, bsControl);
+                    App.ViewModel.HasLoadBless = true;
+                }
+                else
+                {   
+                    ApplicationBar.IsVisible = true;
+                }
+            }
+            else
+            {                
+                ApplicationBar.IsVisible = true;
+            }
+
             if (App.ViewModel.IsChanged)
             {
                 refreshMainViewModel();
             }
         }
 
+
+        Control bsControl;
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            /*
+             * 必须要把BlessingPage放到这里作为一个遮罩层
+             * 不然的话会导致从BlessingPage到MainPage的跳转时间过长
+             * 这里先把底层alpha设为0,否则会显示1秒左右的底层再跳转到bless层
+            */
+            bool useBlessingPage = PreferenceHelper.GetPreference("Global_UseBlessingPage") != "False";
+            if (useBlessingPage)
+            {
+                if (!App.ViewModel.HasLoadBless)
+                {  
+                    this.Content.Opacity = 0;
+                }
+            }
+            else
+            {
+                ApplicationBar.IsVisible = true;
+            }
+
+
             toggleUsePassword.IsChecked = App.ViewModel.UsingPassword == "True" ? true : false;
             string value = string.Empty;
             IDictionary<string, string> queryString = this.NavigationContext.QueryString;
@@ -775,11 +839,52 @@ namespace Care
             PicList.SelectedIndex = -1;
         }
 
-    }
+        private List<HubTile> hubtiles = new List<HubTile>();
+        
+        private void hubTileLoaded(object sender, RoutedEventArgs e)
+        {
+            HubTile hub = sender as HubTile;                   
+            hub.IsFrozen = true;
+            hub.Tag = "Expanded";
+            if (!hubtiles.Contains(hub))
+            {
+                hubtiles.Add(hub);
+            }            
+        }
 
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (hubtiles == null || hubtiles.Count == 0)
+                return;
+            Random r = new Random();
+            foreach(HubTile hub in hubtiles)
+            {
+                int result = r.Next(5);
+
+                String tag = hub.Tag as String;
+                if (tag == "Expanded")
+                {
+                    if (result <= 3)
+                    {
+                        hub.Tag = "Expanded";
+                        VisualStateManager.GoToState(hub, "Expanded", true);
+                    }
+                    else if (result <= 4)
+                    {
+                        hub.Tag = "Flipped";
+                        VisualStateManager.GoToState(hub, "Flipped", true);
+                    }
+                }
+                else if (tag == "Flipped")
+                {
+                    hub.Tag = "Expanded";
+                    VisualStateManager.GoToState(hub, "Expanded", true);
+                }
+            }
+        }
+    }
 
     public class TiltableControl : Grid
     {
     }
-
 }

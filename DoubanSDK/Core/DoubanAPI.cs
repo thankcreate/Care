@@ -59,19 +59,18 @@ namespace DoubanSDK
             m_shuoAPI.GetUserTimeLine(id, count, handler);
         }
 
-        public void GetComments(String id, GetCommentsCompleteHandler handler)
+        public void GetComments(String id,int count, GetCommentsCompleteHandler handler)
         {
             if (m_shuoAPI == null)
                 m_shuoAPI = new ShuoAPI();
-            m_shuoAPI.GetComments(id, handler);
+            m_shuoAPI.GetComments(id,count, handler);
         }
 
         public void AddComments(String id, String text, CompleteHandler hanlder)
         {
             if (m_shuoAPI == null)
                 m_shuoAPI = new ShuoAPI();
-            m_shuoAPI.AddComments(id, text, hanlder);
-           
+            m_shuoAPI.AddComments(id, text, hanlder);           
         }
 
         public void PostStatusesWithPic(String text, String path, CompleteHandler hanlder)

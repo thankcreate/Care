@@ -67,9 +67,9 @@ namespace Care.Views
         public EditPassWord()
         {
             DataContext = this;
-            OriginalPassword = "123";
-            ConfrimPassword = "123";
-            NewPassword = "123";
+            OriginalPassword = "";
+            ConfrimPassword = "";
+            NewPassword = "";
             InitializeComponent();
             if (string.IsNullOrEmpty(PreferenceHelper.GetPreference("Global_Password")))
             {
@@ -87,7 +87,6 @@ namespace Care.Views
 
         private void Confirm_Click(object sender, EventArgs e)
         {
-
             if (!IsNeverSetBefore && txtOriginal.Text != PreferenceHelper.GetPreference("Global_Password"))
             {
                 MessageBox.Show("原始密码输入错误");
@@ -103,9 +102,22 @@ namespace Care.Views
                 MessageBox.Show("密码保持在4到6位之间");
                 return;
             }
+
+            // 这里因为TextBox无法设置键盘输入类型
+            // 用户仍可以输入数字以外的字符，但是登陆页实际上只有数字按钮
+            for (int i = 0; i < txtNew.Text.Length; ++i)
+            {
+                char mChar = txtNew.Text[i];
+                if (mChar < '0' || mChar > '9')
+                {
+                    MessageBox.Show("密码必须是数字");
+                    return;
+                }
+            }
+            
             PreferenceHelper.SetPreference("Global_Password", txtNew.Text);
             PreferenceHelper.SetPreference("Global_UsePassword", "True");
-            // refresh the butotn state
+            // refresh the butotn state 
             App.ViewModel.UsingPassword = "True";
             NavigationService.GoBack();            
         }

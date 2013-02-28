@@ -71,9 +71,11 @@ namespace Care.Tool
                         {
                             foreach (Comment comment in comments.comments)
                             {
+                                // 微博版要区分姓别
                                 // 要去掉她自己啊！！！！你个2货
                                 if (comment.user.id != status.user.id
-                                    && comment.user.id != PreferenceHelper.GetPreference("SinaWeibo_ID"))
+                                    && comment.user.id != PreferenceHelper.GetPreference("SinaWeibo_ID")
+                                    && comment.user.gender != status.user.gender)
                                 {
                                     CommentMan man = new CommentMan
                                     {
