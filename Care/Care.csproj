@@ -474,6 +474,7 @@
     </Content>
     <Content Include="Images\Bar\download.png" />
     <Content Include="Images\Bar\edit.png" />
+    <Content Include="Images\Bar\garbage.png" />
     <Content Include="Images\Bar\Help.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -202,6 +202,23 @@ namespace Care.Views.Lab
                 send_click(null, null);
             }
         }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            if (Items.Count != 0)
+            {
+                Items.Clear();
+            }
+            IsolatedStorageSettings settings = IsolatedStorageSettings.ApplicationSettings;
+            if (!settings.Contains("Global_ChatRecord"))
+            {
+                settings.Add("Global_ChatRecord", Items);
+            }
+            else
+            {
+                settings["Global_ChatRecord"] = Items;
+            }        
+        }
     }
 
 

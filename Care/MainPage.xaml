@@ -451,7 +451,7 @@
                             <myTilt:TiltableControl Tap="About_Tap">
                                 <StackPanel>
                                     <TextBlock Height="auto"  Foreground="Black" FontSize="30"  Margin="12,10,0,0"   Name="txtAbout" Text="关于"  />
-                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.5.0.0203"  />
+                                    <TextBlock FontSize="18"  Margin="12,0,0,0" Foreground="Gray"  Text="我只在乎你 V1.6.0.0405"  />
                                 </StackPanel>
                             </myTilt:TiltableControl>
                         </StackPanel>
